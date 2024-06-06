@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookingBad.DAL.Entities;
+namespace Repositories.Entities;
 
 public partial class CourtNumber
 {
@@ -12,6 +12,8 @@ public partial class CourtNumber
     public int? CourtId { get; set; }
 
     public bool? Status { get; set; }
+
+    public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
     public virtual Court? Court { get; set; }
 

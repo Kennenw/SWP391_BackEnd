@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Repositories/DTO/AccountDTO.cs
+/Repositories/DTO/AmenityCourtDTO.cs
+/Repositories/DTO/AmenityDTO.cs
+/Repositories/DTO/BookingDetailDTO.cs
+/Repositories/DTO/BookingDTO.cs
+/Repositories/DTO/CourtDTO.cs
+/Repositories/DTO/CourtNumberDTO.cs
+/Repositories/DTO/PagedResult.cs
+/Repositories/DTO/PostDTO.cs
+/Repositories/DTO/RoleDTO.cs
+/Repositories/DTO/ScheduleDTO.cs
+/Repositories/DTO/SlotTimeDTO.cs
+/Repositories/DTO/SortContent.cs

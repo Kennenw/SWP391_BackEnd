@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookingBad.DAL.Entities;
+namespace Repositories.Entities;
 
 public partial class Court
 {

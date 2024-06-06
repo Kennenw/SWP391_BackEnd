@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BookingBad.DAL;
-using BookingBad.BLL.DTO;
-using BookingBad.DAL.Entities;
-using BookingBad.BLL.Services;
+using Repositories;
+using Repositories.DTO;
+using Repositories.Entities;
+using Services;
 
 namespace BookingBad.API.Controllers
 {
@@ -35,7 +35,7 @@ namespace BookingBad.API.Controllers
                 sortCourtBy = sortCourtBy,
                 sortType = sortCourtType,
             };
-            var result = _courtServices.GetCourtsPage(sortContent, pageNumber, pageSize);
+            var result = _courtServices.GetCourts(sortContent, pageNumber, pageSize);
             if(result == null)
             {
                 return NoContent();
@@ -77,48 +77,27 @@ namespace BookingBad.API.Controllers
         }
 
         // POST: api/Courts
-        [HttpPost("Create")]
-        public ActionResult CreateCourt([FromBody] CourtDTO courtDTO)
+        [HttpPost]
+        public ActionResult CreateCourt([FromBody] CourtDTO courtDto)
         {
-            try
-            {
-                _courtServices.CreateCourt(courtDTO);
-                return Ok();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            _courtServices.CreateCourt(courtDto);
+            return Ok(new { message = "Court created successfully" });
         }
 
         // PUT: api/Courts/5
-        [HttpPut]
-        public ActionResult UpdateCourt(int id, [FromBody] CourtDTO courtDTO)
+        [HttpPut("{id}")]
+        public ActionResult UpdateCourt(int id, [FromBody] CourtDTO courtDto)
         {
-            try
-            {
-                _courtServices.UpdateCourt(id, courtDTO);
-                return Ok();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            _courtServices.UpdateCourt(id, courtDto);
+            return Ok(new { message = "Court updated successfully" });
         }
 
         // DELETE: api/Courts/5
         [HttpDelete("{id}")]
         public ActionResult DeleteCourt(int id)
         {
-            try
-            {
-                _courtServices.DeleteCourt(id);
-                return Ok();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            _courtServices.DeleteCourt(id);
+            return Ok(new { message = "Court deleted successfully" });
         }
     }
 }

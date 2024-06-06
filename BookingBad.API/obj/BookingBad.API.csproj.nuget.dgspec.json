@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj": {
-                "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj"
+              "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj": {
+                "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj"
               }
             }
           }
@@ -87,12 +87,12 @@
         }
       }
     },
-    "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj": {
+    "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj",
-        "projectName": "BookingBad.DAL",
-        "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj",
+        "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj",
+        "projectName": "Repositories",
+        "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
         "outputPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
@@ -169,12 +169,12 @@
         }
       }
     },
-    "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj": {
+    "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj",
-        "projectName": "BookingBad.BLL",
-        "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj",
+        "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
+        "projectName": "Services",
+        "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
         "outputPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\obj\\",
         "projectStyle": "PackageReference",
@@ -193,8 +193,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj": {
-                "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj"
+              "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj": {
+                "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj"
               }
             }
           }

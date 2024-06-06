@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using BookingBad.DAL.Entities;
+using Repositories.Entities;
 
-namespace BookingBad.DAL.Repositories
+namespace Repositories.Repositories
 {
     public class CourtNumberRepo : GenericRepository<CourtNumber>
     {
         public CourtNumberRepo() { }
-        public IEnumerable<CourtNumber> GetCourtNumberId(int id)
+        public List<CourtNumber> GetCourtNumber(int id)
         {
             return _dbSet.Where(c => c.CourtId == id).ToList();
         }
-
     }
 }

@@ -251,7 +251,7 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\obj\Debug\net8.0\BookingBad.API
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\obj\Debug\net8.0\ref\BookingBad.API.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\obj\Debug\net8.0\BookingBad.API.MvcApplicationPartsAssemblyInfo.cs
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\obj\Debug\net8.0\BookingBad.API.sourcelink.json
-D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BookingBad.BLL.dll
-D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BookingBad.DAL.dll
-D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BookingBad.BLL.pdb
-D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BookingBad.DAL.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Repositories.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Services.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Services.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Repositories.pdb

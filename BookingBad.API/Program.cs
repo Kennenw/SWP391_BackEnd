@@ -1,5 +1,5 @@
 
-namespace BookingBad.API
+namespace Repositories.API
 {
     public class Program
     {

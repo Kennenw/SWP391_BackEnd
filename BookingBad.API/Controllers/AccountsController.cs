@@ -5,13 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
-using BookingBad.DAL;
-using BookingBad.BLL.DTO;
-using BookingBad.DAL.Entities;
-using BookingBad.DAL.Repositories;
-using BookingBad.BLL.Services;
+using Repositories;
+using Repositories.DTO;
+using Repositories.Entities;
+using Repositories.Repositories;
+using Services;
 
 namespace BookingDemo.API.Controllers
 {
@@ -42,7 +41,7 @@ namespace BookingDemo.API.Controllers
             var result = accountServices.GetAccount(sortContent, pageNumber, pageSize);
             if (result == null)
             {
-                return NotFound(new { message = "Account is empty" });
+                return NotFound();
             }
             return Ok(result);
         }
@@ -61,7 +60,7 @@ namespace BookingDemo.API.Controllers
             var result = accountServices.PagedResult(searchTerm ,sortContent ,pageNumber ,pageSize );
             if (result == null)
             {
-                return NotFound(new {message = "Account not found"});
+                return NotFound();
             }
             return Ok(result);
         }
@@ -76,7 +75,7 @@ namespace BookingDemo.API.Controllers
 
             if (account == null)
             {
-                return NotFound(new { message = "Account not found" });
+                return NotFound();
             }
 
             return account;
@@ -101,7 +100,7 @@ namespace BookingDemo.API.Controllers
         public async Task<IActionResult> PutAccount(int id, AccountDTO accountDTO)
         {
             accountServices.UpdateAccount(id, accountDTO);
-            return Ok(new { message = "Account updated successfully" });
+            return NoContent();
         }
 
         // POST: api/Accounts
@@ -120,10 +119,10 @@ namespace BookingDemo.API.Controllers
             var account = this.accountServices.GetAccountById(id);
             if (account == null)
             {
-                return NotFound(new { message = "Account not found" });
+                return NotFound();
             }
             accountServices.DeleteAccount(id);
-            return Ok(new { message = "Account delete successfully" });
+            return NoContent();
         }
 
     }

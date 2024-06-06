@@ -1,12 +1,12 @@
-﻿
-using BookingBad.DAL.Entities;
+﻿using Repositories.DTO;
+using Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingBad.DAL.Repositories
+namespace Repositories.Repositories
 {
     public class AccountRepo : GenericRepository<Account>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookingBad.DAL.Entities;
+namespace Repositories.Entities;
 
 public partial class Booking
 {
@@ -17,8 +17,7 @@ public partial class Booking
 
     public string? Note { get; set; }
 
-    public bool? Status { get; set; }
-
+    public bool? Status { get; set; } 
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
     public virtual BookingType? BookingType { get; set; }
@@ -26,4 +25,5 @@ public partial class Booking
     public virtual Account? Customer { get; set; }
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public int TotalHours { get; set; }
 }

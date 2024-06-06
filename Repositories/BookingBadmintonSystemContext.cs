@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using BookingBad.DAL.Entities;
+using Repositories.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookingBad.DAL;
+namespace Repositories;
 
 public partial class BookingBadmintonSystemContext : DbContext
 {
@@ -149,6 +149,10 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.BookingId)
                 .HasConstraintName("FK_BookingDetail_Booking");
+
+            entity.HasOne(d => d.CourtNumber).WithMany(p => p.BookingDetails)
+                .HasForeignKey(d => d.CourtNumberId)
+                .HasConstraintName("FK_BookingDetail_CourtNumber");
 
             entity.HasOne(d => d.Schelude).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.ScheludeId)
