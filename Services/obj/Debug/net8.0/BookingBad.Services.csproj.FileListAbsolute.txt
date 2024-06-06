@@ -1,0 +1,16 @@
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Services.deps.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Services.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Services.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Repositories.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Repositories.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.csproj.AssemblyReference.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.GeneratedMSBuildEditorConfig.editorconfig
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.AssemblyInfoInputs.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.AssemblyInfo.cs
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.csproj.CoreCompileInputs.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.sourcelink.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingB.6A91CEBF.Up2Date
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\refint\BookingBad.Services.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\BookingBad.Services.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\ref\BookingBad.Services.dll

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repositories.Entities;
+namespace BookingBad.DAL.Entities;
 
 public partial class Schedule
 {
@@ -13,9 +13,9 @@ public partial class Schedule
 
     public int? BookingTypeId { get; set; }
 
-    public DateOnly? StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public DateOnly? EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public int? TotalHours { get; set; }
 

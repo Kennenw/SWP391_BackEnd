@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repositories.Entities;
+namespace BookingBad.DAL.Entities;
 
 public partial class BookingDetail
 {
@@ -11,15 +11,16 @@ public partial class BookingDetail
 
     public int? SlotId { get; set; }
 
-    public string? Date { get; set; }
+    public DateTime? Date { get; set; }
 
-    public string? Status { get; set; }
+    public bool? Status { get; set; }
 
     public int? ScheludeId { get; set; }
+    public int? CourtNumberId { get; set; }
+    public bool? CheckIn { get; set; }
 
     public virtual Booking? Booking { get; set; }
-
     public virtual Schedule? Schelude { get; set; }
-
+    public virtual CourtNumber? CourtNumber { get; set; }
     public virtual SlotTime? Slot { get; set; }
 }

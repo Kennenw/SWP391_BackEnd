@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingBad.DAL", "Repositories\BookingBad.DAL.csproj", "{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingBad.API", "BookingBad.API\BookingBad.API.csproj", "{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{F8AF2604-550F-423B-A9E9-EE8E410E5F20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingBad.BLL", "Services\BookingBad.BLL.csproj", "{F8AF2604-550F-423B-A9E9-EE8E410E5F20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

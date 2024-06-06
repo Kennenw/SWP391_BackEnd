@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Repositories.Entities;
+using BookingBad.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repositories;
+namespace BookingBad.DAL;
 
 public partial class BookingBadmintonSystemContext : DbContext
 {
@@ -143,13 +143,8 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
-            entity.Property(e => e.Date)
-                .HasMaxLength(10)
-                .IsFixedLength();
+            entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
-            entity.Property(e => e.Status)
-                .HasMaxLength(10)
-                .IsFixedLength();
 
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.BookingId)
@@ -273,7 +268,9 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
             entity.Property(e => e.BookingTypeId).HasColumnName("BookingTypeID");
             entity.Property(e => e.CourtNumberId).HasColumnName("CourtNumberID");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.BookingType).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.BookingTypeId)

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
-using Repositories.DTO;
-using Repositories.Entities;
-using Services;
+using BookingBad.DAL;
+using BookingBad.BLL.DTO;
+using BookingBad.DAL.Entities;
+using BookingBad.BLL.Services;
 
 namespace BookingBad.API.Controllers
 {
@@ -16,67 +16,112 @@ namespace BookingBad.API.Controllers
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly IBookingSevices _services;
+        private readonly IBookingSevices _bookingService;
 
         public BookingsController()
         {
-            _services = new BookingServices();
+            _bookingService = new BookingServices();
         }
 
         // GET: api/Bookings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBookings()
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBooking(
+            [FromQuery] SortBookingByEnum sortBookingBy,
+            [FromQuery] SortTypeEnum sortBookingType,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            return _services.GetBooking();
+            var sortContent = new SortContent
+            {
+                sortBookingBy = sortBookingBy,
+                sortType = sortBookingType,
+            };
+            var result = _bookingService.GetBooking(sortContent, pageNumber, pageSize);
+            if (result == null)
+            {
+                return NotFound(new { message = "Is empty" });
+            }
+            return Ok(result);
         }
 
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingDTO>> GetBooking(int id)
         {
-            return _services.GetBookingById(id);
+            return _bookingService.GetBookingById(id);
         }
 
-        // GET: api/Bookings/5
-        [HttpGet("{idUser}")]
-        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBookingByUser(int idUser)
+
+        // POST: api/Bookings/Fixed
+        [HttpPost("Fixed")]
+        public async Task<ActionResult> CreateFixedSchedule([FromBody] FlexibleScheduleRequest request)
         {
-            var booking =  _services.GetBookingByUserId(idUser);
-            if (booking == null)
+            try
             {
-                return NotFound();
+                await Task.Run(() => _bookingService.CreateFixedSchedule(request.BookingF, request.ScheduleF));
+                return Ok();
             }
-            return booking;
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // PUT: api/Bookings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, BookingDTO bookingDTO)
+        // POST: api/Bookings/SingleDay
+        [HttpPost("SingleDay")]
+        public async Task<ActionResult> CreateSingleDayBooking([FromBody] SingleDayBookingRequest request)
         {
-            _services.UpdateBooking(id, bookingDTO);
-            return Ok();
+            try
+            {
+                await Task.Run(() => _bookingService.CreateSingleDayBooking(request.BookingS, request.BookingDetailS));
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // POST: api/Bookings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(BookingDTO bookingDTO)
+        // POST: api/Bookings/Flexible
+        [HttpPost("Flexible")]
+        public async Task<ActionResult> CreateFlexibleSchedule([FromBody] FlexibleScheduleRequest request)
         {
-            _services.CreateBooking(bookingDTO);
-            return CreatedAtAction("GetBooking", new { id = bookingDTO.BookingId }, bookingDTO);
+            try
+            {
+                await Task.Run(() => _bookingService.CreateFlexibleSchedule(request.BookingF, request.ScheduleF));
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // POST: api/Bookings/CheckIn/{bookingDetailID}
+        [HttpPost("CheckIn/{bookingDetailID}")]
+        public async Task<ActionResult> CheckIn(int bookingDetailID)
+        {
+            try
+            {
+                _bookingService.CheckIn(bookingDetailID);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
-            var booking = _services.GetBookingById(id);
+            var booking = _bookingService.GetBookingById(id);
             if (booking == null)
             {
                 return NotFound();
             }
-            _services.DeleteBooking(id);
+            _bookingService.DeleteBooking(id);
             return NoContent();
         }
     }

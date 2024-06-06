@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3zU8wmHxYrvo2kvK69FSOl8FSyTQVmt30SWE/+wr3rUi2uHAww3bdi/Y9Zp4wJz0RiwZTQIn1Tz4DUBl8f9zuw==",
+  "dgSpecHash": "rsJYIPw6MGv4Q1+rNZwXlDh9HCGkCdahToSDEin0xT3VRx095CGwjZvH7czJajKHg9/XNRhAExSjl+nuE9RGew==",
   "success": true,
-  "projectFilePath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
+  "projectFilePath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Asus\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

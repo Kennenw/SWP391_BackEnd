@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\Services\BookingBad.BLL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4112,9 +4112,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj",
-      "projectName": "Repositories",
-      "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj",
+      "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj",
+      "projectName": "BookingBad.DAL",
+      "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
       "outputPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\obj\\",
       "projectStyle": "PackageReference",

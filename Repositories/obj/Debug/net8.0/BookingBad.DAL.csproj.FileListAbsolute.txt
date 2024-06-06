@@ -1,0 +1,15 @@
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.csproj.AssemblyReference.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.AssemblyInfoInputs.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.AssemblyInfo.cs
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.csproj.CoreCompileInputs.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.sourcelink.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\bin\Debug\net8.0\BookingBad.DAL.deps.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\bin\Debug\net8.0\BookingBad.DAL.runtimeconfig.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\bin\Debug\net8.0\BookingBad.DAL.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\bin\Debug\net8.0\BookingBad.DAL.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\refint\BookingBad.DAL.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\BookingBad.DAL.genruntimeconfig.cache
+D:\FPT\SE5\PRN212\Demo\BookingBad\Repositories\obj\Debug\net8.0\ref\BookingBad.DAL.dll

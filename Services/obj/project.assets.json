@@ -987,7 +987,7 @@
           }
         }
       },
-      "Repositories/1.0.0": {
+      "BookingBad.DAL/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -995,10 +995,10 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.5"
         },
         "compile": {
-          "bin/placeholder/Repositories.dll": {}
+          "bin/placeholder/BookingBad.DAL.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Repositories.dll": {}
+          "bin/placeholder/BookingBad.DAL.dll": {}
         }
       }
     }
@@ -2755,15 +2755,15 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Repositories/1.0.0": {
+    "BookingBad.DAL/1.0.0": {
       "type": "project",
-      "path": "../Repositories/Repositories.csproj",
-      "msbuildProject": "../Repositories/Repositories.csproj"
+      "path": "../Repositories/BookingBad.DAL.csproj",
+      "msbuildProject": "../Repositories/BookingBad.DAL.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Repositories >= 1.0.0"
+      "BookingBad.DAL >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2772,9 +2772,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
-      "projectName": "Services",
-      "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
+      "projectUniqueName": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj",
+      "projectName": "BookingBad.BLL",
+      "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\BookingBad.BLL.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
       "outputPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\obj\\",
       "projectStyle": "PackageReference",
@@ -2793,8 +2793,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj": {
-              "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj"
+            "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj": {
+              "projectPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\BookingBad.DAL.csproj"
             }
           }
         }

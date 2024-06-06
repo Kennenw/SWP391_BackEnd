@@ -1,11 +1,10 @@
-﻿using Repositories.Entities;
-using System;
+﻿using BookingBad.DAL.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Repositories
+namespace BookingBad.DAL.Repositories
 {
     public class ScheduleRepo : GenericRepository<Schedule>
     {

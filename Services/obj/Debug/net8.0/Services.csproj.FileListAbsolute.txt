@@ -6,10 +6,11 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\Services.csproj.Core
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\Services.deps.json
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\Services.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\Services.pdb
-D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\Repositories.dll
-D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\Repositories.pdb
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\Services.csproj.Up2Date
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\Services.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\refint\Services.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\Services.pdb
 D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\ref\Services.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\obj\Debug\net8.0\Services.sourcelink.json
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Repositories.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\Services\bin\Debug\net8.0\BookingBad.Repositories.pdb

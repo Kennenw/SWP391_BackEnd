@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
-using Repositories.DTO;
-using Repositories.Entities;
-using Services;
+using BookingBad.DAL;
+using BookingBad.BLL.DTO;
+using BookingBad.DAL.Entities;
+using BookingBad.BLL.Services;
 
 namespace BookingBad.API.Controllers
 {

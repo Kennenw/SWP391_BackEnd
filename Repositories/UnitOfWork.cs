@@ -1,5 +1,5 @@
-﻿using Repositories.Entities;
-using Repositories.Repositories;
+﻿using BookingBad.DAL.Entities;
+using BookingBad.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories
+namespace BookingBad.DAL
 {
 
     public class UnitOfWork

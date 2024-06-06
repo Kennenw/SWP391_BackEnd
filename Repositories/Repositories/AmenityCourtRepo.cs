@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repositories.DTO;
-using Repositories.Entities;
+using BookingBad.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Repositories
+namespace BookingBad.DAL.Repositories
 {
     public class AmenityCourtRepo : GenericRepository<AmenityCourt>
     {
@@ -17,6 +16,10 @@ namespace Repositories.Repositories
             return _dbSet.Where(c => c.CourtId == courtId)
                          .Include(c => c.Amenity)
                          .ToList();
+        }
+        public IEnumerable<AmenityCourt> GetByCourtId(int courtId)
+        {
+            return _dbSet.Where(ac => ac.CourtId == courtId).ToList();
         }
     }
 }
