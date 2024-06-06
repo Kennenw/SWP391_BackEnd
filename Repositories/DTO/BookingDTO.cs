@@ -22,31 +22,15 @@ namespace Repositories.DTO
 
         public bool? Status { get; set; }
     }
-    public class FixedBookingDTO
+    public class BookingRequestDTO
     {
         public int CustomerId { get; set; }
         public int CourtNumberId { get; set; }
-        public double TotalPrice { get; set; }
-        public string Note { get; set; }
-        public string DayOfWeek { get; set; }
-        public string StartTime { get; set; }
-        public int DurationMonths { get; set; }
-    }
-    public class SingleBookingDTO
-    {
-        public int CustomerId { get; set; }
-        public int CourtNumberId { get; set; }
-        public double TotalPrice { get; set; }
-        public string Note { get; set; }
-        public DateTime Date { get; set; }
-        public string StartTime { get; set; }
-    }
-    public class FlexibleBookingDTO
-    {
-        public int CustomerId { get; set; }
-        public int CourtNumberId { get; set; }
-        public double TotalPrice { get; set; }
-        public string Note { get; set; }
-        public int TotalHours { get; set; }
+        public int? PlayerQuantity { get; set; }
+        public int SlotId { get; set; }
+        public int months { get; set; } = 1;
+        public DateTime Date { get; set; }  
+        public string Note {  get; set; }
+        public int BookingTypeId { get; set; }
     }
 }

@@ -14,9 +14,7 @@ namespace Services
         public List<BookingDTO> GetBooking();
         public List<BookingDTO> GetBookingByUserId(int id);
         public BookingDTO GetBookingById(int id);
-        void CreateFixedBooking(FixedBookingDTO bookingDTO);
-        void CreateSingleBooking(SingleBookingDTO bookingDTO);
-        void CreateFlexibleBooking(FlexibleBookingDTO bookingDTO);
+        void CreateBooking(BookingRequestDTO bookingRequest);
         void CheckIn(int bookingDetailId);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
@@ -96,35 +94,76 @@ namespace Services
                 Status = booking.Status,
             };
         }
-
-        public void CreateFixedBooking(FixedBookingDTO bookingDTO)
+        public void CreateBooking(BookingRequestDTO bookingRequest)
         {
-            var startDate = DateTime.Now.Date;
-            var endDate = startDate.AddMonths(bookingDTO.DurationMonths);
-            var dayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), bookingDTO.DayOfWeek, true);
+            var bookingType = _unitOfWork.BookingTypeRepo.GetById(bookingRequest.BookingTypeId);
+            var courtNumber = _unitOfWork.CourtNumberRepo.GetById(bookingRequest.CourtNumberId);
+            var slotTime = _unitOfWork.SlotTimeRepo.GetById(bookingRequest.SlotId);
+            int months = bookingRequest.months;
+            if (bookingType == null || courtNumber == null || slotTime == null)
+            {
+                throw new Exception("Invalid booking details.");
+            }
 
             var booking = new Booking
             {
-                CustomerId = bookingDTO.CustomerId,
-                BookingTypeId = 1, 
-                TotalPrice = bookingDTO.TotalPrice,
-                Note = bookingDTO.Note,
-                Status = true,
+                CustomerId = bookingRequest.CustomerId,
+                BookingTypeId = bookingRequest.BookingTypeId,
+                PlayerQuantity = bookingRequest.PlayerQuantity,
+                TotalPrice = slotTime.Price.Value,
+                Note = bookingRequest.Note,
+                Status = true
             };
             _unitOfWork.BookingRepo.Create(booking);
             _unitOfWork.SaveChanges();
 
+            switch (bookingRequest.BookingTypeId)
+            {
+                case 1: 
+                    CreateFixedBooking(months , booking, bookingRequest);
+                    break;
+
+                case 2: 
+                    CreateSingleBooking(booking, bookingRequest);
+                    break;
+
+                case 3: 
+                    CreateFlexibleBooking(booking, bookingRequest);
+                    break;
+
+                default:
+                    throw new Exception("Unknown booking type");
+            }
+        }
+
+        public void CheckIn(int bookingDetailId)
+        {
+            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
+            if (bookingDetail != null)
+            {
+                bookingDetail.CheckIn = false;
+                _unitOfWork.BookingDetailRepo.Update(bookingDetail);
+                _unitOfWork.SaveChanges();
+            }
+        }
+
+        private void CreateFixedBooking(int months,Booking booking, BookingRequestDTO bookingRequest)
+        {
+            var startDate = DateTime.Now.Date;
+            var endDate = startDate.AddMonths(months); 
+
             while (startDate <= endDate)
             {
-                if (startDate.DayOfWeek == dayOfWeek)
+                if (startDate.DayOfWeek == bookingRequest.Date.DayOfWeek)
                 {
                     var bookingDetail = new BookingDetail
                     {
                         BookingId = booking.BookingId,
-                        CourtNumberId = bookingDTO.CourtNumberId,
-                        SlotId = GetSlotIdByTime(bookingDTO.StartTime),
+                        CourtNumberId = bookingRequest.CourtNumberId,
+                        SlotId = bookingRequest.SlotId,
                         Date = startDate,
                         Status = true,
+                        CheckIn = true
                     };
                     _unitOfWork.BookingDetailRepo.Create(bookingDetail);
                 }
@@ -133,58 +172,30 @@ namespace Services
             _unitOfWork.SaveChanges();
         }
 
-        public void CreateSingleBooking(SingleBookingDTO bookingDTO)
+        private void CreateSingleBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
-            var booking = new Booking
-            {
-                CustomerId = bookingDTO.CustomerId,
-                BookingTypeId = 2, 
-                TotalPrice = bookingDTO.TotalPrice,
-                Note = bookingDTO.Note,
-                Status = true,
-            };
-            _unitOfWork.BookingRepo.Create(booking);
-            _unitOfWork.SaveChanges();
-
             var bookingDetail = new BookingDetail
             {
                 BookingId = booking.BookingId,
-                CourtNumberId = bookingDTO.CourtNumberId,
-                SlotId = GetSlotIdByTime(bookingDTO.StartTime),
-                Date = bookingDTO.Date,
+                CourtNumberId = bookingRequest.CourtNumberId,
+                SlotId = bookingRequest.SlotId,
+                Date = bookingRequest.Date,
                 Status = true,
+                CheckIn = true,
             };
             _unitOfWork.BookingDetailRepo.Create(bookingDetail);
             _unitOfWork.SaveChanges();
         }
 
-        public void CreateFlexibleBooking(FlexibleBookingDTO bookingDTO)
+        private void CreateFlexibleBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
-            var booking = new Booking
-            {
-                CustomerId = bookingDTO.CustomerId,
-                BookingTypeId = 3, 
-                TotalPrice = bookingDTO.TotalPrice,
-                Note = bookingDTO.Note,
-                TotalHours = bookingDTO.TotalHours,
-                Status = true,
-            };
-            _unitOfWork.BookingRepo.Create(booking);
-            _unitOfWork.SaveChanges();
-
+            var totalHours = 10; 
+            var remainingHours = totalHours;
+            booking.TotalPrice = (booking.TotalPrice / totalHours) * remainingHours;
+            _unitOfWork.BookingRepo.Update(booking);
         }
-
-        public void CheckIn(int bookingDetailId)
-        {
-            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
-            if (bookingDetail != null)
-            {
-                bookingDetail.Status = true; 
-                _unitOfWork.BookingDetailRepo.Update(bookingDetail);
-                _unitOfWork.SaveChanges();
-            }
-        }
-        private int GetSlotIdByTime(string time)
+    
+    private int GetSlotIdByTime(string time)
         {
             var slot = _unitOfWork.SlotTimeRepo.GetAll().FirstOrDefault(s => s.StartTime == time);
             return slot?.SlotId ?? 0;

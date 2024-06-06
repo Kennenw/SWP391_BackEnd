@@ -32,36 +32,34 @@ namespace Repositories.API.Controllers
             return _bookingService.GetBookingById(id);
         }
 
-        // POST: api/Bookings/Fixed
-        [HttpPost("Fixed")]
-        public ActionResult CreateFixedBooking([FromBody] FixedBookingDTO bookingDTO)
+        // POST: api/Bookings/Create
+        [HttpPost("Create")]
+        public ActionResult CreateBooking([FromBody] BookingRequestDTO bookingRequestDTO)
         {
-            _bookingService.CreateFixedBooking(bookingDTO);
-            return Ok(new { message = "Fixed booking created successfully" });
-        }
-
-        // POST: api/Bookings/Single
-        [HttpPost("Single")]
-        public ActionResult CreateSingleBooking([FromBody] SingleBookingDTO bookingDTO)
-        {
-            _bookingService.CreateSingleBooking(bookingDTO);
-            return Ok(new { message = "Single booking created successfully" });
-        }
-
-        // POST: api/Bookings/Flexible
-        [HttpPost("Flexible")]
-        public ActionResult CreateFlexibleBooking([FromBody] FlexibleBookingDTO bookingDTO)
-        {
-            _bookingService.CreateFlexibleBooking(bookingDTO);
-            return Ok(new { message = "Flexible booking created successfully" });
+            try
+            {
+                _bookingService.CreateBooking(bookingRequestDTO);
+                return Ok(new { message = "Booking created successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // POST: api/Bookings/CheckIn/{bookingDetailId}
         [HttpPost("CheckIn/{bookingDetailId:int}")]
         public ActionResult CheckIn(int bookingDetailId)
         {
-            _bookingService.CheckIn(bookingDetailId);
-            return Ok(new { message = "Check-in successful" });
+            try
+            {
+                _bookingService.CheckIn(bookingDetailId);
+                return Ok(new { message = "Check-in successful" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // DELETE: api/Bookings/5
