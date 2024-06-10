@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "vZ3wFlz+tSqVJOAvWczhiKBpaE39NCxnl37dl7fkXvfuNTQISe1nhvV1kwu/EQ5vyV8q1YVoQgyLy7Pb397zjw==",
+  "dgSpecHash": "ZmeF+mzAQKNY0p8FglYJo5yGiqG3vP4gRVm4LOTdlpRl1jS8pdwr1kglAQGX4BHfUAwch0+nrVMgpkKZW1QhHA==",
   "success": true,
   "projectFilePath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\Repositories.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Asus\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.codeanalysis.common\\4.5.0\\microsoft.codeanalysis.common.4.5.0.nupkg.sha512",

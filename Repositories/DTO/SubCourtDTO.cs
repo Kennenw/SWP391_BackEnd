@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Repositories.DTO
 {
-    public class CourtNumberDTO
+    public class SubCourtDTO
     {
-        public int CourtNumberId { get; set; }
+        public int SubCourtId { get; set; }
 
         public int? Number { get; set; }
 
         public int? CourtId { get; set; }
 
+        public bool? Status { get; set; }
     }
 }

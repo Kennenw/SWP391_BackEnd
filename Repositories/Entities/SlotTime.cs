@@ -15,7 +15,13 @@ public partial class SlotTime
 
     public bool? Status { get; set; }
 
+    public int? ManagerId { get; set; }
+
+    public int? SubCourtId { get; set; }
+
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
-    public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+    public virtual Account? Manager { get; set; }
+
+    public virtual SubCourt? SubCourt { get; set; }
 }

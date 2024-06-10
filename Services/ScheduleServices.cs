@@ -32,7 +32,7 @@ namespace Services
             var existingSchedules = _unitOfWork.ScheduleRepo.GetAll();
 
             // Ensure no overlapping slot IDs for the same court number
-            bool isCourtNumberConflict = existingSchedules.Any(s => s.CourtNumberId == scheduleDTO.CourtNumberId && s.SlotId == scheduleDTO.SlotId);
+            bool isCourtNumberConflict = existingSchedules.Any(s => s.SubCourtId == scheduleDTO.CourtNumberId && s.SlotId == scheduleDTO.SlotId);
 
             if (isCourtNumberConflict)
             {
@@ -41,7 +41,7 @@ namespace Services
             var schedule = new Schedule
             {
                 ScheduleId = scheduleDTO.ScheduleId,
-                CourtNumberId = scheduleDTO.CourtNumberId,
+                SubCourtId = scheduleDTO.CourtNumberId,
                 SlotId = scheduleDTO.SlotId,
                 Status = true,
             };
@@ -65,7 +65,7 @@ namespace Services
             return _unitOfWork.ScheduleRepo.GetSlotByCourt(CourtId).Select(schedule => new ScheduleDTO
             {
                 ScheduleId = schedule.ScheduleId,
-                CourtNumberId = schedule.CourtNumberId,
+                CourtNumberId = schedule.SubCourtId,
                 SlotId = schedule.SlotId,
             }).ToList();
         }
@@ -74,7 +74,7 @@ namespace Services
             return _unitOfWork.ScheduleRepo.GetAll().Select(schedule => new ScheduleDTO 
             { 
                 ScheduleId = schedule.ScheduleId,
-                CourtNumberId = schedule.CourtNumberId,
+                CourtNumberId = schedule.SubCourtId,
                 SlotId = schedule.SlotId,
             }).ToList();
         }
@@ -84,7 +84,7 @@ namespace Services
             return new ScheduleDTO
             {
                 ScheduleId = schedule.ScheduleId,
-                CourtNumberId = schedule.CourtNumberId,
+                CourtNumberId = schedule.SubCourtId,
                 SlotId = schedule.SlotId,
             };
         }
@@ -95,14 +95,14 @@ namespace Services
             var existingSchedules = _unitOfWork.ScheduleRepo.GetAll();
 
             // Ensure no overlapping slot IDs for the same court number
-            bool isCourtNumberConflict = existingSchedules.Any(s => s.CourtNumberId == scheduleDTO.CourtNumberId && s.SlotId == scheduleDTO.SlotId);
+            bool isCourtNumberConflict = existingSchedules.Any(s => s.SubCourtId == scheduleDTO.CourtNumberId && s.SlotId == scheduleDTO.SlotId);
 
             if (isCourtNumberConflict)
             {
                 throw new InvalidOperationException("A schedule with the same court number and slot ID already exists.");
             }
             var schedule = _unitOfWork.ScheduleRepo.GetById(id);
-            schedule.CourtNumberId = scheduleDTO.CourtNumberId;
+            schedule.SubCourtId = scheduleDTO.CourtNumberId;
             schedule.SlotId = scheduleDTO.SlotId;
             _unitOfWork.ScheduleRepo.Update(schedule);
             _unitOfWork.SaveChanges();

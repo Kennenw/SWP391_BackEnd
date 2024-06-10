@@ -17,5 +17,9 @@ namespace Repositories.Repositories
         {
             return _dbSet.FirstOrDefault(a => a.Email == email && a.Password == password);
         }
+        public Account GetAccountByEmail(string email )
+        {
+            return _dbSet.FirstOrDefault(a => a.Email == email );
+        }
     }
 }

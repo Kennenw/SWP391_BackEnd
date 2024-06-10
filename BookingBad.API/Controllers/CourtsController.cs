@@ -18,13 +18,14 @@ namespace BookingBad.API.Controllers
     {
         private readonly ICourtServices _courtServices;
 
-        public CourtsController()
+        public CourtsController(CourtServices courtServices)
         {
-            _courtServices = new CourtServices();
+            _courtServices = courtServices;
         }
 
         [HttpGet]       
         public ActionResult<IEnumerable<CourtDTO>> GetCourt(
+            [FromQuery]int managerId,
             [FromQuery]SortCourtByEnum sortCourtBy ,
             [FromQuery]SortTypeEnum sortCourtType ,
             [FromQuery] int pageNumber = 1, 
@@ -35,7 +36,7 @@ namespace BookingBad.API.Controllers
                 sortCourtBy = sortCourtBy,
                 sortType = sortCourtType,
             };
-            var result = _courtServices.GetCourts(sortContent, pageNumber, pageSize);
+            var result = _courtServices.GetCourts(managerId, sortContent, pageNumber, pageSize);
             if(result == null)
             {
                 return NoContent();
@@ -76,20 +77,56 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
-        // POST: api/Courts
-        [HttpPost]
-        public ActionResult CreateCourt([FromBody] CourtDTO courtDto)
+        // POST: api/Courts/Create
+        [HttpPost("Create")]
+        public ActionResult CreateCourt([FromForm] CourtCreateDTO courtCreateDTO)
         {
-            _courtServices.CreateCourt(courtDto);
-            return Ok(new { message = "Court created successfully" });
+            try
+            {
+                _courtServices.CreateCourt(courtCreateDTO);
+                return Ok(new { message = "Court created successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // PUT: api/Courts/5
-        [HttpPut("{id}")]
-        public ActionResult UpdateCourt(int id, [FromBody] CourtDTO courtDto)
+
+        // PUT: api/Courts/Update/{id}
+        [HttpPut("Update/{id}")]
+        public ActionResult UpdateCourt(int id, [FromBody] CourtDTO courtDTO)
         {
-            _courtServices.UpdateCourt(id, courtDto);
+            _courtServices.UpdateCourt(id, courtDTO);
             return Ok(new { message = "Court updated successfully" });
+        }
+
+        // POST: api/Courts/UploadImage/{id}
+        [HttpPost("UploadImage/{id}")]
+        public ActionResult UploadImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new { message = "Invalid file" });
+            }
+
+            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+            if (!Directory.Exists(uploads))
+            {
+                Directory.CreateDirectory(uploads);
+            }
+
+            var filePath = Path.Combine(uploads, $"{Guid.NewGuid()}_{file.FileName}");
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+            var relativePath = $"/Images/{Path.GetFileName(filePath)}";
+            _courtServices.UpdateCourtImage(id, relativePath);
+
+            return Ok(new { message = "Image uploaded successfully", path = relativePath });
         }
 
         // DELETE: api/Courts/5

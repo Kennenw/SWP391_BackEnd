@@ -15,15 +15,27 @@ public partial class Court
 
     public string? CloseTime { get; set; }
 
-    public string? Rule { get; set; }
+    public string? Rules { get; set; }
 
     public bool? Status { get; set; }
 
     public string? Image { get; set; }
 
-    public virtual Area? Area { get; set; }
+    public int? ManagerId { get; set; }
+
+    public string? Title { get; set; }
+
+    public string? Address { get; set; }
+
+    public double? TotalRate { get; set; }
+
+    public double? Rate { get; set; }
 
     public virtual ICollection<AmenityCourt> AmenityCourts { get; set; } = new List<AmenityCourt>();
 
-    public virtual ICollection<CourtNumber> CourtNumbers { get; set; } = new List<CourtNumber>();
+    public virtual Area? Area { get; set; }
+
+    public virtual Account? Manager { get; set; }
+
+    public virtual ICollection<SubCourt> SubCourts { get; set; } = new List<SubCourt>();
 }

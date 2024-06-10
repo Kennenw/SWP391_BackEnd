@@ -11,13 +11,17 @@ public partial class Post
 
     public byte[]? Image { get; set; }
 
-    public string? Context { get; set; }
+    public string? Content { get; set; }
 
-    public string? Vote { get; set; }
+    public double? TotalRate { get; set; }
 
     public bool? Status { get; set; }
 
-    public virtual Account? Account { get; set; }
+    public double? Rate { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public string? Images { get; set; }
+
+    public string? Title { get; set; }
+
+    public virtual Account? Account { get; set; }
 }

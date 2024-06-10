@@ -21,11 +21,15 @@ public partial class Account
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<Area> Areas { get; set; } = new List<Area>();
+    public string? Image { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public virtual ICollection<Court> Courts { get; set; } = new List<Court>();
 
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual Role? Role { get; set; }
+
+    public virtual ICollection<SlotTime> SlotTimes { get; set; } = new List<SlotTime>();
 }

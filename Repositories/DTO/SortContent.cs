@@ -19,6 +19,7 @@ namespace Repositories.DTO
         CourtName = 2,
         AreaId = 3,
         OpenTime = 4,
+        ManagerId = 5,
     }
 
     public enum SortAccountByEnum

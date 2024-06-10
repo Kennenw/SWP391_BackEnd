@@ -12,7 +12,7 @@ namespace Repositories.Repositories
         public ScheduleRepo() { }
         public List<Schedule> GetSlotByCourt(int id)
         {
-            return _dbSet.Where(c => c.CourtNumberId == id).ToList();
+            return _dbSet.Where(c => c.SubCourtId == id).ToList();
         }
 
     }

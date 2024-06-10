@@ -106,7 +106,7 @@ namespace BookingDemo.API.Controllers
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(AccountDTO account)
+        public async Task<ActionResult<AccountDTO>> PostAccount(AccountDTO account)
         {
             accountServices.CreateAccount(account);
             return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);

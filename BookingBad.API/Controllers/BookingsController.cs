@@ -18,13 +18,10 @@ namespace Repositories.API.Controllers
     {
         private readonly IBookingSevices _bookingService;
 
-        public BookingsController()
+        public BookingsController(IBookingSevices bookingService)
         {
-            _bookingService = new BookingServices();
+            _bookingService = bookingService;
         }
-
-
-
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingDTO>> GetBooking(int id)
@@ -32,13 +29,12 @@ namespace Repositories.API.Controllers
             return _bookingService.GetBookingById(id);
         }
 
-        // POST: api/Bookings/Create
-        [HttpPost("Create")]
-        public ActionResult CreateBooking([FromBody] BookingRequestDTO bookingRequestDTO)
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking([FromBody] BookingRequestDTO bookingRequest)
         {
             try
             {
-                _bookingService.CreateBooking(bookingRequestDTO);
+                _bookingService.CreateBooking(bookingRequest);
                 return Ok(new { message = "Booking created successfully" });
             }
             catch (Exception ex)

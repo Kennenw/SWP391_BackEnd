@@ -10,5 +10,6 @@ namespace Repositories.Repositories
     public class CourtRepo : GenericRepository<Court>
     {
         public CourtRepo() { }
+
     }
 }

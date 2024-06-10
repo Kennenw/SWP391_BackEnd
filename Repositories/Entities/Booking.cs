@@ -17,7 +17,16 @@ public partial class Booking
 
     public string? Note { get; set; }
 
-    public bool? Status { get; set; } 
+    public bool? Status { get; set; }
+
+    public int? TotalHours { get; set; }
+
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    public int? MonthsDuration { get; set; }
+
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
     public virtual BookingType? BookingType { get; set; }
@@ -25,5 +34,4 @@ public partial class Booking
     public virtual Account? Customer { get; set; }
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-    public int TotalHours { get; set; }
 }

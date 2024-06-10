@@ -9,13 +9,11 @@ public partial class Payment
 
     public int? BookingId { get; set; }
 
-    public int? PaymentMethodId { get; set; }
+    public DateTime? PaymentDate { get; set; }
 
-    public bool? Status { get; set; }
+    public double? PaymentAmount { get; set; }
 
-    public double? Amount { get; set; }
+    public double? TotalAmount { get; set; }
 
     public virtual Booking? Booking { get; set; }
-
-    public virtual PaymentMenthod? PaymentMethod { get; set; }
 }

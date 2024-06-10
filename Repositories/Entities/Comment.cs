@@ -13,9 +13,7 @@ public partial class Comment
 
     public string? Context { get; set; }
 
-    public int? PostId { get; set; }
+    public int? UserId { get; set; }
 
     public bool? Status { get; set; }
-
-    public virtual Post? Post { get; set; }
 }

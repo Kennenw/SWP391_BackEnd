@@ -12,6 +12,6 @@ namespace Repositories.Repositories
         public AmenityRepo() 
         {
         }
-        
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Repositories;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Repositories;
 using Repositories.DTO;
 using Repositories.Entities;
 using System;
@@ -22,10 +23,16 @@ namespace Services
     public class BookingServices : IBookingSevices
     {
         private readonly UnitOfWork _unitOfWork;
+        private readonly IPaymentServices _vnPayService;
 
         public BookingServices()
         {
             _unitOfWork ??= new UnitOfWork();
+        }
+        public BookingServices(IPaymentServices vnPayService)
+        {
+            _unitOfWork ??= new UnitOfWork();
+            _vnPayService = vnPayService;
         }
         public void DeleteBooking(int id)
         {
@@ -97,14 +104,13 @@ namespace Services
         public void CreateBooking(BookingRequestDTO bookingRequest)
         {
             var bookingType = _unitOfWork.BookingTypeRepo.GetById(bookingRequest.BookingTypeId);
-            var courtNumber = _unitOfWork.CourtNumberRepo.GetById(bookingRequest.CourtNumberId);
+            var courtNumber = _unitOfWork.SubCourtRepo.GetById(bookingRequest.SubCourtId);
             var slotTime = _unitOfWork.SlotTimeRepo.GetById(bookingRequest.SlotId);
-            int months = bookingRequest.months;
             if (bookingType == null || courtNumber == null || slotTime == null)
             {
                 throw new Exception("Invalid booking details.");
             }
-
+           
             var booking = new Booking
             {
                 CustomerId = bookingRequest.CustomerId,
@@ -120,7 +126,7 @@ namespace Services
             switch (bookingRequest.BookingTypeId)
             {
                 case 1: 
-                    CreateFixedBooking(months , booking, bookingRequest);
+                    CreateFixedBooking(booking, bookingRequest);
                     break;
 
                 case 2: 
@@ -147,10 +153,10 @@ namespace Services
             }
         }
 
-        private void CreateFixedBooking(int months,Booking booking, BookingRequestDTO bookingRequest)
+        private void CreateFixedBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
             var startDate = DateTime.Now.Date;
-            var endDate = startDate.AddMonths(months); 
+            var endDate = startDate.AddMonths(bookingRequest.MonthsDuration); 
 
             while (startDate <= endDate)
             {
@@ -159,7 +165,7 @@ namespace Services
                     var bookingDetail = new BookingDetail
                     {
                         BookingId = booking.BookingId,
-                        CourtNumberId = bookingRequest.CourtNumberId,
+                        SubCourtId = bookingRequest.SubCourtId,
                         SlotId = bookingRequest.SlotId,
                         Date = startDate,
                         Status = true,
@@ -177,7 +183,7 @@ namespace Services
             var bookingDetail = new BookingDetail
             {
                 BookingId = booking.BookingId,
-                CourtNumberId = bookingRequest.CourtNumberId,
+                SubCourtId = bookingRequest.SubCourtId,
                 SlotId = bookingRequest.SlotId,
                 Date = bookingRequest.Date,
                 Status = true,
@@ -189,16 +195,25 @@ namespace Services
 
         private void CreateFlexibleBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
-            var totalHours = 10; 
-            var remainingHours = totalHours;
-            booking.TotalPrice = (booking.TotalPrice / totalHours) * remainingHours;
+            var totalHours = CalculateTotalHours(bookingRequest.SlotId); 
+            booking.TotalHours = totalHours;
+            booking.TotalPrice = (booking.TotalPrice / totalHours) * totalHours;
             _unitOfWork.BookingRepo.Update(booking);
         }
-    
-    private int GetSlotIdByTime(string time)
+
+        private int CalculateTotalHours(int slotId)
         {
-            var slot = _unitOfWork.SlotTimeRepo.GetAll().FirstOrDefault(s => s.StartTime == time);
-            return slot?.SlotId ?? 0;
+            var slotTime = _unitOfWork.SlotTimeRepo.GetById(slotId);
+            if (slotTime == null)
+            {
+                throw new Exception("Invalid Slot");
+            }
+
+            var startTime = TimeSpan.Parse(slotTime.StartTime);
+            var endTime = TimeSpan.Parse(slotTime.EndTime);
+            var totalHours = (int)(endTime - startTime).TotalHours;
+
+            return totalHours;
         }
     }
 }

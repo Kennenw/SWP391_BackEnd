@@ -14,5 +14,6 @@ namespace Repositories.Repositories
         {
             return _dbSet.Where(c => c.CustomerId == id).ToList();
         }
+
     }
 }

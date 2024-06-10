@@ -25,12 +25,15 @@ namespace Repositories.DTO
     public class BookingRequestDTO
     {
         public int CustomerId { get; set; }
-        public int CourtNumberId { get; set; }
-        public int? PlayerQuantity { get; set; }
-        public int SlotId { get; set; }
-        public int months { get; set; } = 1;
-        public DateTime Date { get; set; }  
-        public string Note {  get; set; }
         public int BookingTypeId { get; set; }
+        public int SubCourtId { get; set; }
+        public int SlotId { get; set; }
+        public DateTime Date { get; set; }
+        public int PlayerQuantity { get; set; }
+        public string Note { get; set; }
+        public int MonthsDuration { get; set; }
+        public DayOfWeek DayOfWeek { get; set; } 
+        public int TotalHours { get; set; } 
+
     }
 }

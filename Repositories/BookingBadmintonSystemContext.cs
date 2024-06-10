@@ -30,23 +30,21 @@ public partial class BookingBadmintonSystemContext : DbContext
 
     public virtual DbSet<BookingType> BookingTypes { get; set; }
 
+    public virtual DbSet<CheckIn> CheckIns { get; set; }
+
     public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<Court> Courts { get; set; }
 
-    public virtual DbSet<CourtNumber> CourtNumbers { get; set; }
-
     public virtual DbSet<Payment> Payments { get; set; }
-
-    public virtual DbSet<PaymentMenthod> PaymentMenthods { get; set; }
 
     public virtual DbSet<Post> Posts { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Schedule> Schedules { get; set; }
-
     public virtual DbSet<SlotTime> SlotTimes { get; set; }
+
+    public virtual DbSet<SubCourt> SubCourts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -66,6 +64,9 @@ public partial class BookingBadmintonSystemContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.FullName).HasMaxLength(50);
+            entity.Property(e => e.Image)
+                .HasMaxLength(30)
+                .IsFixedLength();
             entity.Property(e => e.Password)
                 .HasMaxLength(30)
                 .IsFixedLength();
@@ -81,9 +82,9 @@ public partial class BookingBadmintonSystemContext : DbContext
 
         modelBuilder.Entity<Amenity>(entity =>
         {
-            entity.ToTable("Amenity");
+            entity.HasKey(e => e.AmenitiId).HasName("PK_Amenity");
 
-            entity.Property(e => e.AmenityId).HasColumnName("AmenityID");
+            entity.Property(e => e.AmenitiId).HasColumnName("AmenitiID");
             entity.Property(e => e.Description).HasMaxLength(50);
         });
 
@@ -97,11 +98,11 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.HasOne(d => d.Amenity).WithMany(p => p.AmenityCourts)
                 .HasForeignKey(d => d.AmenityId)
-                .HasConstraintName("FK_AmenityCourt_Amenity");
+                .HasConstraintName("FK_AmenityCourt_Amenities");
 
             entity.HasOne(d => d.Court).WithMany(p => p.AmenityCourts)
                 .HasForeignKey(d => d.CourtId)
-                .HasConstraintName("FK_AmenityCourt_Court");
+                .HasConstraintName("FK_AmenityCourt_Court1");
         });
 
         modelBuilder.Entity<Area>(entity =>
@@ -112,11 +113,6 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.AreaId).HasColumnName("AreaID");
             entity.Property(e => e.Location).HasMaxLength(50);
-            entity.Property(e => e.ManagerId).HasColumnName("ManagerID");
-
-            entity.HasOne(d => d.Manager).WithMany(p => p.Areas)
-                .HasForeignKey(d => d.ManagerId)
-                .HasConstraintName("FK_Area_Account");
         });
 
         modelBuilder.Entity<Booking>(entity =>
@@ -126,7 +122,9 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
             entity.Property(e => e.BookingTypeId).HasColumnName("BookingTypeID");
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.Note).HasMaxLength(250);
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.BookingType).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.BookingTypeId)
@@ -145,22 +143,19 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
+            entity.Property(e => e.SubCourtId).HasColumnName("SubCourtID");
 
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.BookingId)
                 .HasConstraintName("FK_BookingDetail_Booking");
 
-            entity.HasOne(d => d.CourtNumber).WithMany(p => p.BookingDetails)
-                .HasForeignKey(d => d.CourtNumberId)
-                .HasConstraintName("FK_BookingDetail_CourtNumber");
-
-            entity.HasOne(d => d.Schelude).WithMany(p => p.BookingDetails)
-                .HasForeignKey(d => d.ScheludeId)
-                .HasConstraintName("FK_BookingDetail_Schedule");
-
             entity.HasOne(d => d.Slot).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.SlotId)
                 .HasConstraintName("FK_BookingDetail_SlotTime");
+
+            entity.HasOne(d => d.SubCourt).WithMany(p => p.BookingDetails)
+                .HasForeignKey(d => d.SubCourtId)
+                .HasConstraintName("FK_BookingDetail_SubCourt1");
         });
 
         modelBuilder.Entity<BookingType>(entity =>
@@ -171,6 +166,21 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.Description).HasMaxLength(100);
         });
 
+        modelBuilder.Entity<CheckIn>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
+            entity.Property(e => e.CheckInId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CheckInID");
+            entity.Property(e => e.CheckInTime).HasColumnType("datetime");
+
+            entity.HasOne(d => d.BookingDetail).WithMany()
+                .HasForeignKey(d => d.BookingDetailId)
+                .HasConstraintName("FK_CheckIns_BookingDetail");
+        });
+
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.ToTable("Comment");
@@ -178,12 +188,7 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.Context).HasMaxLength(450);
             entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.PostId).HasColumnName("PostID");
             entity.Property(e => e.Title).HasMaxLength(200);
-
-            entity.HasOne(d => d.Post).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.PostId)
-                .HasConstraintName("FK_Comment_Post");
         });
 
         modelBuilder.Entity<Court>(entity =>
@@ -198,19 +203,17 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.OpenTime)
                 .HasMaxLength(10)
                 .IsFixedLength();
+            entity.Property(e => e.Title)
+                .HasMaxLength(100)
+                .IsFixedLength();
 
             entity.HasOne(d => d.Area).WithMany(p => p.Courts)
                 .HasForeignKey(d => d.AreaId)
                 .HasConstraintName("FK_Court_Area");
-        });
 
-        modelBuilder.Entity<CourtNumber>(entity =>
-        {
-            entity.ToTable("CourtNumber");
-
-            entity.HasOne(d => d.Court).WithMany(p => p.CourtNumbers)
-                .HasForeignKey(d => d.CourtId)
-                .HasConstraintName("FK_CourtNumber_Court");
+            entity.HasOne(d => d.Manager).WithMany(p => p.Courts)
+                .HasForeignKey(d => d.ManagerId)
+                .HasConstraintName("FK_Court_Account");
         });
 
         modelBuilder.Entity<Payment>(entity =>
@@ -219,23 +222,11 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
-            entity.Property(e => e.PaymentMethodId).HasColumnName("PaymentMethodID");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Booking).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.BookingId)
                 .HasConstraintName("FK_Payment_Booking");
-
-            entity.HasOne(d => d.PaymentMethod).WithMany(p => p.Payments)
-                .HasForeignKey(d => d.PaymentMethodId)
-                .HasConstraintName("FK_Payment_PaymentMenthod");
-        });
-
-        modelBuilder.Entity<PaymentMenthod>(entity =>
-        {
-            entity.ToTable("PaymentMenthod");
-
-            entity.Property(e => e.PaymentMenthodId).HasColumnName("PaymentMenthodID");
-            entity.Property(e => e.Description).HasMaxLength(30);
         });
 
         modelBuilder.Entity<Post>(entity =>
@@ -244,9 +235,12 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.PostId).HasColumnName("PostID");
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
-            entity.Property(e => e.Context).HasMaxLength(450);
+            entity.Property(e => e.Content).HasMaxLength(450);
             entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.Vote)
+            entity.Property(e => e.Images)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.Title)
                 .HasMaxLength(10)
                 .IsFixedLength();
 
@@ -265,43 +259,37 @@ public partial class BookingBadmintonSystemContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<Schedule>(entity =>
-        {
-            entity.ToTable("Schedule");
-
-            entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
-            entity.Property(e => e.BookingTypeId).HasColumnName("BookingTypeID");
-            entity.Property(e => e.CourtNumberId).HasColumnName("CourtNumberID");
-            entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.SlotId).HasColumnName("SlotID");
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.BookingType).WithMany(p => p.Schedules)
-                .HasForeignKey(d => d.BookingTypeId)
-                .HasConstraintName("FK_Schedule_BookingType");
-
-            entity.HasOne(d => d.CourtNumber).WithMany(p => p.Schedules)
-                .HasForeignKey(d => d.CourtNumberId)
-                .HasConstraintName("FK_Schedule_CourtNumber");
-
-            entity.HasOne(d => d.Slot).WithMany(p => p.Schedules)
-                .HasForeignKey(d => d.SlotId)
-                .HasConstraintName("FK_Schedule_SlotTime");
-        });
-
         modelBuilder.Entity<SlotTime>(entity =>
         {
             entity.HasKey(e => e.SlotId);
 
             entity.ToTable("SlotTime");
 
-            entity.Property(e => e.SlotId).HasColumnName("SlotID");
             entity.Property(e => e.EndTime)
                 .HasMaxLength(10)
                 .IsFixedLength();
             entity.Property(e => e.StartTime)
                 .HasMaxLength(10)
                 .IsFixedLength();
+
+            entity.HasOne(d => d.Manager).WithMany(p => p.SlotTimes)
+                .HasForeignKey(d => d.ManagerId)
+                .HasConstraintName("FK_SlotTime_Account");
+
+            entity.HasOne(d => d.SubCourt).WithMany(p => p.SlotTimes)
+                .HasForeignKey(d => d.SubCourtId)
+                .HasConstraintName("FK_SlotTime_SubCourt");
+        });
+
+        modelBuilder.Entity<SubCourt>(entity =>
+        {
+            entity.HasKey(e => e.SubCourtId).HasName("PK_CourtNumber");
+
+            entity.ToTable("SubCourt");
+
+            entity.HasOne(d => d.Court).WithMany(p => p.SubCourts)
+                .HasForeignKey(d => d.CourtId)
+                .HasConstraintName("FK_SubCourt_Court");
         });
 
         OnModelCreatingPartial(modelBuilder);

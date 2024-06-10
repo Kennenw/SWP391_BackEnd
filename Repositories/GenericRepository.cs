@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
+
 
         public List<T> GetAll()
         {
@@ -70,6 +72,7 @@ namespace Repositories
             tracker.State = EntityState.Modified;
             _context.SaveChanges();
         }
+
 
 
         public void Update(int id,  T entity)

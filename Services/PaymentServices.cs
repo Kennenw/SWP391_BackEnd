@@ -1,8 +1,10 @@
 ﻿using Repositories;
+using Repositories.DTO;
 using Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,52 +12,61 @@ namespace Services
 {
     public interface IPaymentServices
     {
-        public List<Payment> GetPayment();
-        public Payment GetPaymentById(int id);
-        public void CreatePayment(Payment payment);
-        public void UpdatePayment(int id, Payment payment);
-        public void DeletePayment(int id);
+        string CreatePaymentUrl(PaymentRequestDTO paymentRequest, string baseUrl);
+        bool VerifySignature(string queryString);
     }
     public class PaymentServices : IPaymentServices
     {
         private readonly UnitOfWork _unitOfWork;
-
+        private readonly VnPayConfig _config;
         public PaymentServices()
+        { }
+        public PaymentServices(VnPayConfig config)
         {
             _unitOfWork ??= new UnitOfWork();
+            _config = config;
         }
-        public void CreatePayment(Payment payment)
+        public string CreatePaymentUrl(PaymentRequestDTO paymentRequest, string baseUrl)
         {
-            payment.Status = true;
-            _unitOfWork.PaymentRepo.Create(payment);
-            _unitOfWork.SaveChanges();
-        }
+            string locale = "vn";
+            string currCode = "VND";
+            string vnpVersion = "2.1.0";
+            string vnpCommand = "pay";
+            string vnpOrderInfo = paymentRequest.OrderDescription;
 
-        public void DeletePayment(int id)
-        {
-            var items = _unitOfWork.PaymentRepo.GetById(id);
-            if(items != null)
+            SortedDictionary<string, string> vnpParams = new SortedDictionary<string, string>
             {
-                items.Status = false;
-                _unitOfWork.PaymentRepo.Update(items);
-                _unitOfWork.SaveChanges();
-            }
+                { "vnp_Version", vnpVersion },
+                { "vnp_Command", vnpCommand },
+                { "vnp_TmnCode", _config.vnp_TmnCode },
+                { "vnp_Amount", (paymentRequest.Amount * 100).ToString() },
+                { "vnp_CurrCode", currCode },
+                { "vnp_TxnRef", paymentRequest.OrderId },
+                { "vnp_OrderInfo", vnpOrderInfo },
+                { "vnp_Locale", locale },
+                { "vnp_ReturnUrl", _config.vnp_ReturnUrl },
+                { "vnp_IpAddr", paymentRequest.IpAddress },
+                { "vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss") }
+            };
+
+            string queryString = string.Join("&", vnpParams.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            string signData = queryString + "&vnp_SecureHash=" + BuildSignature(queryString);
+            return _config.vnp_Url + "?" + signData;
         }
 
-        public List<Payment> GetPayment()
+        public bool VerifySignature(string queryString)
         {
-            return _unitOfWork.PaymentRepo.GetAll();
+            string rawQueryString = queryString.Substring(0, queryString.LastIndexOf("&", StringComparison.Ordinal));
+            string receivedHash = queryString.Substring(queryString.LastIndexOf("vnp_SecureHash=", StringComparison.Ordinal) + 15);
+            string calculatedHash = BuildSignature(rawQueryString);
+            return string.Equals(receivedHash, calculatedHash, StringComparison.OrdinalIgnoreCase);
         }
 
-        public Payment GetPaymentById(int id)
+        private string BuildSignature(string inputData)
         {
-            return _unitOfWork.PaymentRepo.GetById(id);
-        }
-
-        public void UpdatePayment(int id, Payment payment)
-        {
-            _unitOfWork.PaymentRepo.Update(id, payment);
-            _unitOfWork.SaveChanges();
+            var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(_config.vnp_HashSecret));
+            byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(inputData));
+            return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
     }
 }

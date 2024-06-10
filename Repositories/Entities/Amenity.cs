@@ -5,7 +5,7 @@ namespace Repositories.Entities;
 
 public partial class Amenity
 {
-    public int AmenityId { get; set; }
+    public int AmenitiId { get; set; }
 
     public string? Description { get; set; }
 

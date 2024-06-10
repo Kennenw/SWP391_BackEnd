@@ -255,3 +255,5 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Repositories.d
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Services.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Services.pdb
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Repositories.pdb
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.AspNetCore.WebUtilities.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.Net.Http.Headers.dll

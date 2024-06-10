@@ -14,9 +14,7 @@ namespace Repositories.Repositories
         public AmenityCourtRepo() { }
         public List<AmenityCourt> GetAmenityByCourtId(int courtId)
         {
-            return _dbSet.Where(c => c.CourtId == courtId)
-                         .Include(c => c.Amenity)
-                         .ToList();
+            return _dbSet.Where(c => c.CourtId == courtId).ToList();
         }
     }
 }

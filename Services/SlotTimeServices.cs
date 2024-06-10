@@ -21,9 +21,11 @@ namespace Services
     public class SlotTimeServices : ISlotTimeServices
     {
         private readonly UnitOfWork _unitOfWork;
+        private readonly BookingServices _bookingServices;
         public SlotTimeServices()
         {
               _unitOfWork ??= new UnitOfWork();
+              _bookingServices = new BookingServices();
         }
         public void CreateSlot(SlotTimeDTO slotTimeDTO)
         {

@@ -1,4 +1,5 @@
-﻿using Repositories.Entities;
+﻿using Repositories.DTO;
+using Repositories.Entities;
 using Repositories.Repositories;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Repositories
         private PaymentRepo _paymentRepo;
         private PostRepo _post;
         private ScheduleRepo _schedule;
-        private CourtNumberRepo _courtNumber;
+        private SubCourtRepo _subCourt;
 
         public UnitOfWork() => _context = new BookingBadmintonSystemContext();
         
@@ -131,7 +132,7 @@ namespace Repositories
             }
         }
 
-        public AreaRepo areaRepo
+        public AreaRepo AreaRepo
         {
             get
             {
@@ -146,11 +147,11 @@ namespace Repositories
                 return _court ??= new Repositories.CourtRepo();
             }
         }
-        public CourtNumberRepo CourtNumberRepo
+        public SubCourtRepo SubCourtRepo
         {
             get
             {
-                return _courtNumber ??= new Repositories.CourtNumberRepo();
+                return _subCourt ??= new Repositories.SubCourtRepo();
             }
         }
         public void SaveChanges()

@@ -1,4 +1,6 @@
 ﻿
+using Repositories;
+using Repositories.DTO;
 using Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,37 +13,68 @@ namespace Services
 
     public interface IAreaServices
     {
-        public List<Area> GetComplexe();
-        public Area GetComplexeById(int id);
-        public void CreateComplexe(Area area);
-        public void UpdateComplexe(int id, Area area);
-        public void DeleteComplexe(int id);
+        public List<AreaDTO> GetArea();
+        public AreaDTO GetAreaById(int id);
+        public void CreateArea(AreaDTO areaDTO);
+        public void UpdateArea(int id, AreaDTO areaDTO);
+        public void DeleteArea(int id);
     }
     public class AreaServices : IAreaServices
     {
-        public void CreateComplexe(Area area)
+        private readonly UnitOfWork _unitOfWork;
+
+        public AreaServices()
         {
-            throw new NotImplementedException();
+            _unitOfWork ??= new UnitOfWork();
+        }
+        public void CreateArea(AreaDTO areaDTO)
+        {
+            var area = new Area();
+            area.Location = areaDTO.Location;
+            area.Status = true;
+            _unitOfWork.AreaRepo.Create(area);
+            _unitOfWork.SaveChanges();
         }
 
-        public void DeleteComplexe(int id)
+        public void DeleteArea(int id)
         {
-            throw new NotImplementedException();
+            var items = _unitOfWork.AreaRepo.GetById(id);
+            if(items != null)
+            {
+                items.Status = false;
+                _unitOfWork.AreaRepo.Update(items);
+                _unitOfWork.SaveChanges();
+            }
         }
 
-        public List<Area> GetComplexe()
+        public List<AreaDTO> GetArea()
         {
-            throw new NotImplementedException();
+            return _unitOfWork.AreaRepo.GetAll().Select(ar => new AreaDTO
+            {
+                AreaId = ar.AreaId,
+                Location = ar.Location,
+                Status = ar.Status  
+            }).ToList();
         }
 
-        public Area GetComplexeById(int id)
+        public AreaDTO GetAreaById(int id)
         {
-            throw new NotImplementedException();
+            var item = _unitOfWork.AreaRepo.GetById(id);
+            return new AreaDTO
+            {
+                AreaId = item.AreaId,
+                Location = item.Location,
+                Status = item.Status
+            };
         }
 
-        public void UpdateComplexe(int id, Area area)
+        public void UpdateArea(int id, AreaDTO areaDTO)
         {
-            throw new NotImplementedException();
+            var item = _unitOfWork.AreaRepo.GetById(id);
+            item.Location = areaDTO.Location;
+            item.Status = areaDTO.Status;
+            _unitOfWork.AreaRepo.Update(item);
+            _unitOfWork.SaveChanges();
         }
     }
 }
