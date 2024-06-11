@@ -25,14 +25,19 @@ namespace Repositories
         private CourtRepo _court;
         private BookingDetailsRepo _bookingDetails;
         private BookingTypeRepo _bookingType;
-        private PaymentMenthodRepo _paymentMenthod;
         private PaymentRepo _paymentRepo;
         private PostRepo _post;
-        private ScheduleRepo _schedule;
         private SubCourtRepo _subCourt;
+        private CheckInRepo _checkIn;
 
         public UnitOfWork() => _context = new BookingBadmintonSystemContext();
-        
+        public  CheckInRepo CheckInRepo
+        {
+            get
+            {
+                return _checkIn ??= new CheckInRepo();
+            }
+        }
 
         public AccountRepo AccountRepo
         {
@@ -73,13 +78,6 @@ namespace Repositories
             }
         }
 
-        public ScheduleRepo ScheduleRepo
-        {
-            get
-            {
-                return _schedule ??= new Repositories.ScheduleRepo();
-            }
-        }
         public PostRepo PostRepo
         {
             get
@@ -94,13 +92,7 @@ namespace Repositories
                 return _paymentRepo ??= new Repositories.PaymentRepo();
             }
         }
-        public PaymentMenthodRepo PaymentMenthodRepo
-        {
-            get
-            {
-                return _paymentMenthod ??= new Repositories.PaymentMenthodRepo();
-            }
-        }
+
         public BookingTypeRepo BookingTypeRepo
         {
             get

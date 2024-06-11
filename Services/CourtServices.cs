@@ -66,7 +66,7 @@ namespace Services
                     CloseTime = c.CloseTime,
                     ManagerId = c.ManagerId,
                     Image = c.Image,
-                    Rule = c.Rule,
+                    Rule = c.Rules ,
                     Status = c.Status,
             }).ToList();
             
@@ -96,7 +96,7 @@ namespace Services
                 OpenTime = court.OpenTime,
                 CloseTime = court.CloseTime,
                 ManagerId = court.ManagerId,
-                Rule = court.Rule,
+                Rule = court.Rules,
                 Image = court.Image,
                 Status = court.Status,
                 SubCourts = subCourts.Select(sc => new SubCourtDTO
@@ -124,7 +124,7 @@ namespace Services
                 court.CourtName = courtDTO.CourtName;
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
-                court.Rule = courtDTO.Rule;
+                court.Rules = courtDTO.Rule;
                 court.Status = courtDTO.Status;
                 court.Image = courtDTO.Image;
                 _unitOfWork.CourtRepo.Update(court);
@@ -159,7 +159,7 @@ namespace Services
                 OpenTime = courtDTO.OpenTime,
                 CloseTime = courtDTO.CloseTime,
                 ManagerId = courtDTO.ManagerId,
-                Rule = courtDTO.Rule,
+                Rules = courtDTO.Rule,
                 Status = true,
                 Image = imagePath,
             };
@@ -244,7 +244,7 @@ namespace Services
                 CourtName = c.CourtName,
                 OpenTime = c.OpenTime,
                 CloseTime = c.CloseTime,
-                Rule = c.Rule,
+                Rule = c.Rules,
                 Status = c.Status
             }).ToList();
 

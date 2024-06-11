@@ -15,8 +15,6 @@ public partial class BookingDetail
 
     public bool? Status { get; set; }
 
-    public bool? CheckIn { get; set; }
-
     public int? SubCourtId { get; set; }
 
     public virtual Booking? Booking { get; set; }

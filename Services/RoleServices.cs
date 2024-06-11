@@ -1,6 +1,7 @@
 ﻿using Repositories;
 using Repositories.Entities;
 using Repositories.DTO;
+using Repositories.Repositories;
 
 namespace Services
 {
@@ -11,6 +12,7 @@ namespace Services
         public void CreateRole(RoleDTO role);
         public void UpdateRole(int id, RoleDTO role);
         public void DeleteRole(int id);
+        Task<bool> UpdateRole(int user_id, UserRole role_id);
     }
     public class RoleServices : IRoleServices
     {
@@ -70,6 +72,22 @@ namespace Services
                 _unitOfWork.RoleRepo.Update(role);
                 _unitOfWork.SaveChanges();
             }
+        }
+
+        public async Task<bool> UpdateRole(int user_id, UserRole role_id)
+        {
+            var user = _unitOfWork.AccountRepo.GetById(user_id);
+
+            if (user == null)
+                throw new Exception("Invalid user id");
+
+            if (user.RoleId != (int)role_id)
+            {
+                user.RoleId = (int)role_id;
+                _unitOfWork.SaveChanges();
+            }
+
+            return true;
         }
     }
 }

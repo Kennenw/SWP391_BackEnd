@@ -34,7 +34,6 @@ namespace Services
                 Title = commentDTO.Title,
                 Image = commentDTO.Image,
                 Context = commentDTO.Context,
-                PostId = commentDTO.PostId,
                 Status = true
             };
             _unitOfWork.CommentRepo.Create(comment);
@@ -60,7 +59,6 @@ namespace Services
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
-                PostId = comment.PostId
             }).ToList();
         }
 
@@ -73,7 +71,6 @@ namespace Services
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
-                PostId = comment.PostId
             };
         }
 
@@ -85,7 +82,6 @@ namespace Services
                 comment.Title = commentDTO.Title;
                 comment.Image = commentDTO.Image;
                 comment.Context = commentDTO.Context;
-                comment.PostId = commentDTO.PostId;
                 _unitOfWork.CommentRepo.Update(comment);
                 _unitOfWork.SaveChanges();
             }

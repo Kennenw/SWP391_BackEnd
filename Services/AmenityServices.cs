@@ -32,7 +32,7 @@ namespace Services
             return _unitOfWork.AmenityRepo.GetAll()
                 .Select(amenity => new AmenityDTO
                 {
-                    AmenityId = amenity.AmenityId,
+                    AmenityId = amenity.AmenitiId,
                     Description = amenity.Description,
                     Status = amenity.Status,
                 }).ToList();
@@ -47,7 +47,7 @@ namespace Services
             }
             return new AmenityDTO
             {
-                AmenityId = amenity.AmenityId,
+                AmenityId = amenity.AmenitiId,
                 Description = amenity.Description,
                 Status = amenity.Status,
             };

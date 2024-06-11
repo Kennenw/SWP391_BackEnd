@@ -75,6 +75,7 @@ namespace Repositories
 
 
 
+
         public void Update(int id,  T entity)
         {
             if(id != null)
@@ -84,5 +85,10 @@ namespace Repositories
                 _context.SaveChanges();
             }
         }
+    }
+    public class SuccessObject<T> where T : class
+    {
+        public string? Message { get; set; }
+        public T? Data { get; set; } = null;
     }
 }

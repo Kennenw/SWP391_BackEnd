@@ -33,8 +33,7 @@ namespace Services
             {
                 AccountId = postDTO.AccountId,
                 Image = postDTO.Image,
-                Context = postDTO.Context,
-                Vote = postDTO.Vote,
+
             };
         }
 
@@ -61,16 +60,7 @@ namespace Services
                     PostId = post.PostId,
                     AccountId = post.AccountId,
                     Image = post.Image,
-                    Context = post.Context,
-                    Vote = post.Vote,
-                    Comments = post.Comments.Select(c => new CommentDTO
-                    {
-                        CommentId = c.CommentId,
-                        Title = c.Title,
-                        Image = c.Image,
-                        Context = c.Context,
-                        PostId = c.PostId
-                    }).ToList()
+                    
                 });
             }
 
@@ -90,16 +80,7 @@ namespace Services
                 PostId = post.PostId,
                 AccountId = post.AccountId,
                 Image = post.Image,
-                Context = post.Context,
-                Vote = post.Vote,
-                Comments = post.Comments.Select(c => new CommentDTO
-                {
-                    CommentId = c.CommentId,
-                    Title = c.Title,
-                    Image = c.Image,
-                    Context = c.Context,
-                    PostId = c.PostId
-                }).ToList()
+
             };
         }
 
@@ -110,8 +91,7 @@ namespace Services
             {
                 post.AccountId = postDTO.AccountId;
                 post.Image = postDTO.Image;
-                post.Context = postDTO.Context;
-                post.Vote = postDTO.Vote;
+
                 post.Status = false;
                 _unitOfWork.PostRepo.Update(post);
                 _unitOfWork.SaveChanges();

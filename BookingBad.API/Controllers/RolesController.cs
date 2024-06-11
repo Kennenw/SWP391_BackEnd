@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Repositories.DTO;
 using Repositories.Entities;
+using Repositories.Repositories;
 using Services;
 
 namespace BookingDemo.API.Controllers
@@ -48,13 +49,12 @@ namespace BookingDemo.API.Controllers
             return role;
         }
 
-        // PUT: api/Roles/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRole(int id, RoleDTO role)
+
+        [HttpPut("id")]
+        public async Task<IActionResult> UpdateRole( int role_id, RoleDTO roleDTO)
         {
-            roleSrvices.UpdateRole(id,role);
-            return NoContent();
+            roleSrvices.UpdateRole(role_id, roleDTO);  
+            return Ok();
         }
 
         // POST: api/Roles
@@ -65,6 +65,7 @@ namespace BookingDemo.API.Controllers
             roleSrvices.CreateRole(role);
             return CreatedAtAction("GetRole", new { id = role.RoleId }, role);
         }
+
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]

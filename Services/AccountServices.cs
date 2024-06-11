@@ -1,6 +1,10 @@
 ﻿using Repositories;
 using Repositories.DTO;
 using Repositories.Entities;
+using Repositories.Repositories;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
 
 namespace Services
 {
@@ -9,16 +13,18 @@ namespace Services
         public PagedResult<AccountDTO> GetAccount(SortContent sortContent, int pageNumber, int pageSize);
         public AccountDTO GetAccountById(int id);
         public AccountDTO GetAccountByName(string name);
-        public void CreateAccount(AccountDTO account);
-        public void UpdateAccount(int id, AccountDTO account);
         public void DeleteAccount(int id);
         public AccountDTO Login(string username, string password);
         public PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
         SelfProfile GetSelfProfile(int id);
-        public int RegistUser(RegisterInformation info);
+        bool RegisterUser(RegisterInformation info);
         public bool UpdatePassword(string email, UpdatePassword info);
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
+        public bool IsUserExist(string? email);
+        public bool IsAdminAndStaff(int user_id);
+        public bool IsAdmin(int user_id);
+        bool UpdateRoleUser(int user_id, Role role_id);
     }
     public class AccountServices : IAccountServices
     {
@@ -119,25 +125,10 @@ namespace Services
             };
         }
 
-        public void UpdateAccount(int id, AccountDTO accountDTO)
-        {
-            var account = _unitOfWork.AccountRepo.GetById(id);
-            if (account != null)
-            {
-                account.AccountName = accountDTO.AccountName;
-                account.Password = accountDTO.Password;
-                account.FullName = accountDTO.FullName;
-                account.Phone = accountDTO.Phone;
-                account.Email = accountDTO.Email;
-                account.RoleId = accountDTO.RoleId;
-                account.Status = accountDTO.Status;
-                _unitOfWork.AccountRepo.Update(account);
-                _unitOfWork.SaveChanges();
-            }
-        }
 
         public void DeleteAccount(int id)
         {
+
             var account = _unitOfWork.AccountRepo.GetById(id);
             if (account != null)
             {
@@ -147,21 +138,6 @@ namespace Services
             }
         }
 
-        public void CreateAccount(AccountDTO accountDTO)
-        {
-            var account = new Account
-            {
-                AccountName = accountDTO.AccountName,
-                Password = accountDTO.Password,
-                FullName = accountDTO.FullName,
-                Phone = accountDTO.Phone,
-                Email = accountDTO.Email,
-                RoleId = accountDTO.RoleId,
-                Status = true,
-            };
-            _unitOfWork.AccountRepo.Create(account);
-            _unitOfWork.SaveChanges();
-        }
 
         public AccountDTO Login(string username, string password)
         {
@@ -238,25 +214,44 @@ namespace Services
 
         public SelfProfile GetSelfProfile(int id)
         {
-            return null;
+            var user = _unitOfWork.AccountRepo.GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+            return new SelfProfile
+            {
+                UserName = user.AccountName,
+                FullName = user.FullName,
+                PhoneNumber = user.Phone,
+                ImgUrl = user.Image,
+            };
         }
 
-        public int RegistUser(RegisterInformation info)
+        public bool IsUserExist(string? email)
         {
-            var user = new Account
+            return _unitOfWork.AccountRepo.IsUserExist(email);
+        }
+
+        public bool RegisterUser(RegisterInformation info)
+        {
+            var check = _unitOfWork.AccountRepo.GetAccountByEmail(info.Email);
+            if(check == null)
             {
-                AccountName = info.UserName,
-                Phone = info.PhoneNum,
-                Email = info.Email,
-                FullName = info.FullName,
-                Password = info.Password,
+                var user = new Account
+                {
+                    AccountName = info.UserName,
+                    Phone = info.PhoneNum,
+                    Email = info.Email,
+                    FullName = info.FullName,
+                    Password = info.Password,
 
-            };
-            _unitOfWork.AccountRepo.Create(user);
-            _unitOfWork.SaveChanges();
-            return user.AccountId;
-
-
+                };
+                _unitOfWork.AccountRepo.Create(user);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public bool UpdatePassword(string email, UpdatePassword info)
@@ -267,6 +262,7 @@ namespace Services
                 user.Password = info.NewPassword;
                 _unitOfWork.AccountRepo.Update(user);
                 _unitOfWork.SaveChanges();
+                Console.WriteLine("Update sussecfully.");
                 return true;
             }
             else
@@ -274,7 +270,6 @@ namespace Services
                 Console.WriteLine("Error: New password must be different from the current password.");
                 return false;
             }
-            return false;
         }
 
         public bool UpdateProfile(int user_id, UpdateProfileUser param)
@@ -317,6 +312,32 @@ namespace Services
             _unitOfWork.AccountRepo.Update(user);
             _unitOfWork.SaveChanges();
             return 1;
+        }
+        public bool IsAdmin(int user_id)
+        {
+            return _unitOfWork.AccountRepo.IsAdmin(user_id);
+        }
+
+        public bool IsAdminAndStaff(int user_id)
+        {
+            return _unitOfWork.AccountRepo.IsAdminAndStaff(user_id);
+        }
+
+        public bool UpdateRoleUser(int user_id, Role role_id)
+        {
+            var user = _unitOfWork.AccountRepo.GetById(user_id);
+
+            if (user == null)
+                throw new Exception("Invalid user id");
+
+            if (user.RoleId != role_id.RoleId)
+            {
+                user.RoleId = role_id.RoleId;
+                _unitOfWork.AccountRepo.Update(user);
+                _unitOfWork.SaveChanges();
+            }
+
+            return true;
         }
     }
 }

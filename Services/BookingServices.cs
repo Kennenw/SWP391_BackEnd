@@ -147,15 +147,19 @@ namespace Services
             var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
             if (bookingDetail != null)
             {
-                bookingDetail.CheckIn = false;
-                _unitOfWork.BookingDetailRepo.Update(bookingDetail);
+                var checkIn = new CheckIn
+                {
+                    BookingDetail = bookingDetail,
+                    CheckInTime = DateTime.Now,
+                };
+                _unitOfWork.CheckInRepo.Create(checkIn);
                 _unitOfWork.SaveChanges();
             }
         }
 
         private void CreateFixedBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
-            var startDate = DateTime.Now.Date;
+            var startDate = bookingRequest.Date.Date;
             var endDate = startDate.AddMonths(bookingRequest.MonthsDuration); 
 
             while (startDate <= endDate)
@@ -169,7 +173,6 @@ namespace Services
                         SlotId = bookingRequest.SlotId,
                         Date = startDate,
                         Status = true,
-                        CheckIn = true
                     };
                     _unitOfWork.BookingDetailRepo.Create(bookingDetail);
                 }
@@ -187,7 +190,6 @@ namespace Services
                 SlotId = bookingRequest.SlotId,
                 Date = bookingRequest.Date,
                 Status = true,
-                CheckIn = true,
             };
             _unitOfWork.BookingDetailRepo.Create(bookingDetail);
             _unitOfWork.SaveChanges();
@@ -195,25 +197,25 @@ namespace Services
 
         private void CreateFlexibleBooking(Booking booking, BookingRequestDTO bookingRequest)
         {
-            var totalHours = CalculateTotalHours(bookingRequest.SlotId); 
+            var totalHours = bookingRequest.TotalHours;
             booking.TotalHours = totalHours;
-            booking.TotalPrice = (booking.TotalPrice / totalHours) * totalHours;
-            _unitOfWork.BookingRepo.Update(booking);
-        }
 
-        private int CalculateTotalHours(int slotId)
-        {
-            var slotTime = _unitOfWork.SlotTimeRepo.GetById(slotId);
-            if (slotTime == null)
+            while (totalHours > 0)
             {
-                throw new Exception("Invalid Slot");
+                var bookingDetail = new BookingDetail
+                {
+                    BookingId = booking.BookingId,
+                    SubCourtId = bookingRequest.SubCourtId,
+                    SlotId = bookingRequest.SlotId,
+                    Date = bookingRequest.Date,
+                    Status = true
+                };
+
+                _unitOfWork.BookingDetailRepo.Create(bookingDetail);
+                totalHours--;
             }
 
-            var startTime = TimeSpan.Parse(slotTime.StartTime);
-            var endTime = TimeSpan.Parse(slotTime.EndTime);
-            var totalHours = (int)(endTime - startTime).TotalHours;
-
-            return totalHours;
+           _unitOfWork.SaveChanges();
         }
     }
 }
