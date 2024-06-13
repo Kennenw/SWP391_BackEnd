@@ -135,6 +135,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            },
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"
@@ -150,6 +154,10 @@
             "Microsoft.AspNetCore.WebUtilities": {
               "target": "Package",
               "version": "[8.0.5, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
           "imports": [
