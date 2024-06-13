@@ -12,7 +12,6 @@ namespace Services
         public void CreateRole(RoleDTO role);
         public void UpdateRole(int id, RoleDTO role);
         public void DeleteRole(int id);
-        Task<bool> UpdateRole(int user_id, UserRole role_id);
     }
     public class RoleServices : IRoleServices
     {
@@ -25,7 +24,8 @@ namespace Services
         {
             var role = new Role
             {
-                RoleName = roleDTO.RoleName
+                RoleName = roleDTO.RoleName,
+                Status = true
             };
             _unitOfWork.RoleRepo.Create(role);
             _unitOfWork.SaveChanges();
@@ -45,7 +45,11 @@ namespace Services
         public RoleDTO GetRoleById(int id)
         {
             var check =  _unitOfWork.RoleRepo.GetById(id);
-                return new RoleDTO
+            if (check == null || check.Status == false)
+            {
+                return null;
+            }
+            return new RoleDTO
                 {
                     RoleId = check.RoleId,
                     RoleName = check.RoleName
@@ -54,7 +58,7 @@ namespace Services
 
         public List<RoleDTO> GetRole()
         {
-            return _unitOfWork.RoleRepo.GetAll()
+            return _unitOfWork.RoleRepo.GetAll().Where(ar => ar.Status == true)
                     .Select(role => new RoleDTO
                     {
                         RoleId = role.RoleId,
@@ -65,7 +69,7 @@ namespace Services
         public void UpdateRole(int id, RoleDTO roleDTO)
         {
             var role = _unitOfWork.RoleRepo.GetById(id);
-            if (role != null)
+            if (role != null || role.Status == true)
             {
                 role.RoleName = roleDTO.RoleName;
                 role.Status = true;
@@ -74,20 +78,5 @@ namespace Services
             }
         }
 
-        public async Task<bool> UpdateRole(int user_id, UserRole role_id)
-        {
-            var user = _unitOfWork.AccountRepo.GetById(user_id);
-
-            if (user == null)
-                throw new Exception("Invalid user id");
-
-            if (user.RoleId != (int)role_id)
-            {
-                user.RoleId = (int)role_id;
-                _unitOfWork.SaveChanges();
-            }
-
-            return true;
-        }
     }
 }

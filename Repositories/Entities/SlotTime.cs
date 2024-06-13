@@ -19,7 +19,11 @@ public partial class SlotTime
 
     public int? SubCourtId { get; set; }
 
+    public int? CourtId { get; set; }
+
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
+
+    public virtual Court? Court { get; set; }
 
     public virtual Account? Manager { get; set; }
 

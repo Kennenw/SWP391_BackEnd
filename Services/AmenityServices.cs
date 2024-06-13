@@ -29,7 +29,8 @@ namespace Services
 
         public List<AmenityDTO> GetAmenities()
         {
-            return _unitOfWork.AmenityRepo.GetAll()
+            return _unitOfWork.AmenityRepo.GetAll().
+                Where(ar => ar.Status == true)
                 .Select(amenity => new AmenityDTO
                 {
                     AmenityId = amenity.AmenitiId,
@@ -41,7 +42,7 @@ namespace Services
         public AmenityDTO GetAmenityById(int id)
         {
             var amenity = _unitOfWork.AmenityRepo.GetById(id);
-            if (amenity == null)
+            if (amenity == null || amenity.Status == false)
             {
                 return null;
             }

@@ -15,6 +15,7 @@ namespace Repositories.DTO
         public string? EndTime { get; set; }
 
         public double? Price { get; set; }
+        public int? ManagerId { get; set; }
 
         public bool? Status { get; set; }
     }

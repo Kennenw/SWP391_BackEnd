@@ -23,17 +23,13 @@ namespace Services
     public class BookingServices : IBookingSevices
     {
         private readonly UnitOfWork _unitOfWork;
-        private readonly IPaymentServices _vnPayService;
+
 
         public BookingServices()
         {
             _unitOfWork ??= new UnitOfWork();
         }
-        public BookingServices(IPaymentServices vnPayService)
-        {
-            _unitOfWork ??= new UnitOfWork();
-            _vnPayService = vnPayService;
-        }
+
         public void DeleteBooking(int id)
         {
             var items = _unitOfWork.BookingRepo.GetById(id);
@@ -141,7 +137,7 @@ namespace Services
                     throw new Exception("Unknown booking type");
             }
         }
-
+      
         public void CheckIn(int bookingDetailId)
         {
             var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);

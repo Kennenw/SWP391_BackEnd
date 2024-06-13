@@ -1,4 +1,5 @@
-﻿using Repositories.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using Repositories.DTO;
 using Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,11 @@ namespace Repositories.Repositories
                 res = user.RoleId == (int)UserRole.Admin || user.RoleId == (int)UserRole.Staff;
             }
             return res;
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.Where(ar => ar.Status == true).CountAsync();
         }
     }
 }

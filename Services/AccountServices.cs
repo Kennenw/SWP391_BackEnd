@@ -25,6 +25,8 @@ namespace Services
         public bool IsAdminAndStaff(int user_id);
         public bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
+        Task UploadAccountImage(int accountId, string base64Image);
+
     }
     public class AccountServices : IAccountServices
     {
@@ -63,7 +65,7 @@ namespace Services
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -72,7 +74,7 @@ namespace Services
                 Phone = a.Phone,
                 Email = a.Email,
                 RoleId = a.RoleId,
-                Status = a.Status
+                Status = true
             }).ToList();
             return new PagedResult<AccountDTO>
             {
@@ -86,6 +88,10 @@ namespace Services
         public AccountDTO GetAccountById(int id)
         {
             var account = _unitOfWork.AccountRepo.GetById(id);
+            if(account == null || account.Status == false)
+            {
+                return null;
+            }
             return new AccountDTO
             {
                 AccountId = account.AccountId,
@@ -96,7 +102,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
-                ManagedCourts = account.Courts.Select(c => new CourtDTO
+                ManagedCourts = account.Courts.Where(ar => ar.Status == true).Select(c => new CourtDTO
                 {
                     CourtId = c.CourtId,
                     AreaId = c.AreaId,
@@ -112,6 +118,10 @@ namespace Services
         public AccountDTO GetAccountByName(string name)
         {
             var account = _unitOfWork.AccountRepo.GetByName(name);
+            if (account == null || account.Status == false)
+            {
+                return null;
+            }
             return new AccountDTO
             {
                 AccountId = account.AccountId,
@@ -192,7 +202,7 @@ namespace Services
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -200,6 +210,7 @@ namespace Services
                 FullName = a.FullName,
                 Phone = a.Phone,
                 Email = a.Email,
+                Image = a.Image,
                 RoleId = a.RoleId,
                 Status = a.Status
             }).ToList();
@@ -215,7 +226,7 @@ namespace Services
         public SelfProfile GetSelfProfile(int id)
         {
             var user = _unitOfWork.AccountRepo.GetById(id);
-            if (user == null)
+            if (user == null || user.Status == false)
             {
                 return null;
             }
@@ -245,7 +256,8 @@ namespace Services
                     Email = info.Email,
                     FullName = info.FullName,
                     Password = info.Password,
-
+                    RoleId = 2,
+                    Status = true
                 };
                 _unitOfWork.AccountRepo.Create(user);
                 _unitOfWork.SaveChanges();
@@ -279,10 +291,10 @@ namespace Services
             {
                 user.AccountName = param.UserName;
                 user.FullName = param.FullName;
-                if (param.ImgUrl != user.Image)
-                {
+                //if (param.ImgUrl != user.Image)
+                //{
 
-                }
+                //}
                 user.Phone = param.PhoneNumber;
                 _unitOfWork.AccountRepo.Update(user);
                 _unitOfWork.SaveChanges();
@@ -293,7 +305,7 @@ namespace Services
         public async Task<int> SettingPassword(int user_id, SettingPasswordRequest info)
         {
             var user =  _unitOfWork.AccountRepo.GetById(user_id);
-            if (user == null)
+            if (user == null || user.Status == false)
             {
                 return -2;
             }
@@ -327,7 +339,7 @@ namespace Services
         {
             var user = _unitOfWork.AccountRepo.GetById(user_id);
 
-            if (user == null)
+            if (user == null || user.Status == false)
                 throw new Exception("Invalid user id");
 
             if (user.RoleId != role_id.RoleId)
@@ -338,6 +350,30 @@ namespace Services
             }
 
             return true;
+        }
+
+        public async Task UploadAccountImage(int accountId, string base64Image)
+        {
+            var user = _unitOfWork.AccountRepo.GetById(accountId);
+            if (user == null) return;
+
+            // Giải mã chuỗi base64 về mảng byte
+            byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            await File.WriteAllBytesAsync(filePath, imageBytes);
+
+            user.Image = fileName; // Lưu tên file vào cột Image
+
+            _unitOfWork.AccountRepo.Update(user);
+            _unitOfWork.SaveChanges();
         }
     }
 }

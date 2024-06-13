@@ -46,7 +46,7 @@ namespace BookingDemo.API.Controllers
             }
             return Ok(result);
         }
-        [HttpGet("Search")]
+        [HttpGet("Search-Account")]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> SearchAccount(
             [FromQuery] string searchTerm, 
             [FromQuery] SortAccountByEnum sortAccountBy, 
@@ -114,7 +114,7 @@ namespace BookingDemo.API.Controllers
             {
                 return Ok(new SuccessObject<object> { Message = "Mật khẩu không trùng khớp" });
             }
-            if (accountServices.IsUserExist(info.Email))
+            if (!accountServices.IsUserExist(info.Email))
             {
                 return Ok(new SuccessObject<object> { Message = "Email này đã tồn tại" });
             }
@@ -206,6 +206,17 @@ namespace BookingDemo.API.Controllers
                 return Ok(new SuccessObject<object> { Message = "Bạn không có quyền truy cập !" });
             accountServices.DeleteAccount(id);
             return Ok(new SuccessObject<object> { Message = "Xóa thành công" });                          
+        }
+
+        [HttpPost("UploadAccountImage/{accountId}")]
+        public async Task<IActionResult> UploadCourtImage(int accountId, [FromBody] Base64ImageModel model)
+        {
+            if (string.IsNullOrEmpty(model.Base64Image))
+                return BadRequest("No image uploaded.");
+
+            await accountServices.UploadAccountImage(accountId, model.Base64Image);
+
+            return Ok("Image uploaded successfully.");
         }
     }
 }

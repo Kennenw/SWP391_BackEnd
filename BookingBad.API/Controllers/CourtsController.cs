@@ -39,12 +39,12 @@ namespace BookingBad.API.Controllers
             var result = _courtServices.GetCourts(managerId, sortContent, pageNumber, pageSize);
             if(result == null)
             {
-                return NoContent();
+                return NotFound();
             }return Ok(result);
         }
 
         // GET: api/Court/Search
-        [HttpGet("Search")]
+        [HttpGet("Search-Court")]
         public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
             [FromQuery] string searchTerm,
             [FromQuery] SortCourtByEnum sortCourtBy,
@@ -79,19 +79,19 @@ namespace BookingBad.API.Controllers
 
         // POST: api/Courts/Create
         [HttpPost("Create")]
-        public ActionResult CreateCourt([FromForm] CourtCreateDTO courtCreateDTO)
+        public async Task<IActionResult> CreateCourt(CourtDTO courtCreateDTO)
         {
             try
             {
-                _courtServices.CreateCourt(courtCreateDTO);
+                _courtServices.CreateCourtAsync(courtCreateDTO);
                 return Ok(new { message = "Court created successfully" });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
+            
         }
-
 
         // PUT: api/Courts/Update/{id}
         [HttpPut("Update/{id}")]
@@ -101,32 +101,15 @@ namespace BookingBad.API.Controllers
             return Ok(new { message = "Court updated successfully" });
         }
 
-        // POST: api/Courts/UploadImage/{id}
-        [HttpPost("UploadImage/{id}")]
-        public ActionResult UploadImage(int id, IFormFile file)
+        [HttpPost("UploadCourtImage/{courtId}")]
+        public async Task<IActionResult> UploadCourtImage(int courtId, [FromBody] Base64ImageModel model)
         {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest(new { message = "Invalid file" });
-            }
+            if (string.IsNullOrEmpty(model.Base64Image))
+                return BadRequest("No image uploaded.");
 
-            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "Images");
-            if (!Directory.Exists(uploads))
-            {
-                Directory.CreateDirectory(uploads);
-            }
+            await _courtServices.UploadCourtImageAsync(courtId, model.Base64Image);
 
-            var filePath = Path.Combine(uploads, $"{Guid.NewGuid()}_{file.FileName}");
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-
-            var relativePath = $"/Images/{Path.GetFileName(filePath)}";
-            _courtServices.UpdateCourtImage(id, relativePath);
-
-            return Ok(new { message = "Image uploaded successfully", path = relativePath });
+            return Ok("Image uploaded successfully.");
         }
 
         // DELETE: api/Courts/5

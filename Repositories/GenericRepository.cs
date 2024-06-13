@@ -40,9 +40,7 @@ namespace Repositories
                 _dbSet.Add(entity);
                 _context.SaveChanges();
             }
-        }
-        
-        
+        }              
         public bool Remove(T entity)
         {
            
@@ -51,30 +49,21 @@ namespace Repositories
              return true;
             
         }
-
-
         public T GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
-
-
         public T GetByName(string code)
         {
             return _dbSet.Find(code);
         } 
-
-
         public void Update(T entity)
         {
             var tracker = _context.Attach(entity);
             tracker.State = EntityState.Modified;
             _context.SaveChanges();
         }
-
-
-
 
         public void Update(int id,  T entity)
         {
@@ -84,6 +73,10 @@ namespace Repositories
                 tracker.State = EntityState.Modified;
                 _context.SaveChanges();
             }
+        }
+        public async Task<double> SumAsync(Expression<Func<T, double?>> selector)
+        {
+            return (double)await _dbSet.SumAsync(selector);
         }
     }
     public class SuccessObject<T> where T : class

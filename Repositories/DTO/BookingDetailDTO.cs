@@ -14,10 +14,11 @@ namespace Repositories.DTO
 
         public int? SlotId { get; set; }
 
-        public string? Date { get; set; }
+        public DateTime? Date { get; set; }
 
-        public string? Status { get; set; }
+        public bool? Status { get; set; }
 
-        public int? ScheludeId { get; set; }
+        public int? SubCourtId { get; set; }
+        public int? TimeReducedInMinutes { get; set; }
     }
 }

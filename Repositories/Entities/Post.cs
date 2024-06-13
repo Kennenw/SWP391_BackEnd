@@ -9,8 +9,6 @@ public partial class Post
 
     public int? AccountId { get; set; }
 
-    public byte[]? Image { get; set; }
-
     public string? Content { get; set; }
 
     public double? TotalRate { get; set; }
@@ -19,7 +17,7 @@ public partial class Post
 
     public double? Rate { get; set; }
 
-    public string? Images { get; set; }
+    public string? Image { get; set; }
 
     public string? Title { get; set; }
 

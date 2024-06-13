@@ -16,10 +16,10 @@ namespace Services
         public PagedResult<CourtDTO> GetCourts(int managerId, SortContent sortContent, int pageNumber, int pageSize);
         CourtDTO GetCourtById(int id);
         void UpdateCourt(int courtId,CourtDTO courtDTO);
-        Task CreateCourt(CourtCreateDTO courtDTO);
+        Task<Court> CreateCourtAsync(CourtDTO courtDTO);
         public PagedResult<CourtDTO> SearchCourts(string searchTerm, SortContent sortContent, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
-        public void UpdateCourtImage(int courtId, string imagePath);
+        Task UploadCourtImageAsync(int courtId, string base64Image);
     }
     public class CourtServices : ICourtServices
     {
@@ -126,32 +126,13 @@ namespace Services
                 court.CloseTime = courtDTO.CloseTime;
                 court.Rules = courtDTO.Rule;
                 court.Status = courtDTO.Status;
-                court.Image = courtDTO.Image;
                 _unitOfWork.CourtRepo.Update(court);
                 _unitOfWork.SaveChanges();
             }
         }
 
-        public async Task CreateCourt(CourtCreateDTO courtDTO)
+        public async Task<Court> CreateCourtAsync(CourtDTO courtDTO)
         {
-            string imagePath = null;
-            if (courtDTO.Image != null && courtDTO.Image.Length > 0)
-            {
-                var uploads = Path.Combine(Directory.GetCurrentDirectory(), "Images");
-                if (!Directory.Exists(uploads))
-                {
-                    Directory.CreateDirectory(uploads);
-                }
-
-                var filePath = Path.Combine(uploads, $"{Guid.NewGuid()}_{courtDTO.Image.FileName}");
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    courtDTO.Image.CopyTo(stream);
-                }
-
-                imagePath = $"/Images/{Path.GetFileName(filePath)}"; 
-            }
             var court = new Court
             {
                 AreaId = courtDTO.AreaId,
@@ -161,7 +142,6 @@ namespace Services
                 ManagerId = courtDTO.ManagerId,
                 Rules = courtDTO.Rule,
                 Status = true,
-                Image = imagePath,
             };
             _unitOfWork.CourtRepo.Create(court);
             _unitOfWork.SaveChanges();
@@ -185,7 +165,19 @@ namespace Services
                 };
                 _unitOfWork.AmenityCourtRepo.Create(amenties);
             }
-
+            foreach (var slot in courtDTO.SlotTime)
+            {
+                var slotTime = new SlotTime
+                {
+                    StartTime = slot.StartTime,
+                    EndTime = slot.EndTime,
+                    Price = slot.Price,
+                    ManagerId = slot.ManagerId,
+                    Status = true
+                };
+                _unitOfWork.SlotTimeRepo.Create(slotTime);
+            }
+            return court;
         }
 
         public bool DeleteCourt(int id)
@@ -245,6 +237,7 @@ namespace Services
                 OpenTime = c.OpenTime,
                 CloseTime = c.CloseTime,
                 Rule = c.Rules,
+                Image = c.Image,
                 Status = c.Status
             }).ToList();
 
@@ -257,17 +250,30 @@ namespace Services
             };
         }
 
-        public void UpdateCourtImage(int courtId, string imagePath)
+        public async Task UploadCourtImageAsync(int courtId, string base64Image)
         {
             var court = _unitOfWork.CourtRepo.GetById(courtId);
+            if (court == null) return;
 
-            if (court != null)
-            {
-                court.Image = imagePath;
-                _unitOfWork.CourtRepo.Update(court);
-                _unitOfWork.SaveChanges();
-            }
+            // Giải mã chuỗi base64 về mảng byte
+            byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
+
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            await File.WriteAllBytesAsync(filePath, imageBytes);
+
+            court.Image = fileName; // Lưu tên file vào cột Image
+
+            _unitOfWork.CourtRepo.Update(court);
+            _unitOfWork.SaveChanges();
         }
+
     }
 }
 

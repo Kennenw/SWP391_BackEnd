@@ -51,9 +51,9 @@ namespace BookingBad.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAmenity(int id, AmenityDTO amenityDTO)
-        {
+        { 
             amenityServices.UpdateAmenity(id, amenityDTO);
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Amenities

@@ -141,6 +141,7 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
+            entity.Property(e => e.CheckInTime).HasColumnType("datetime");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
             entity.Property(e => e.SubCourtId).HasColumnName("SubCourtID");
@@ -187,7 +188,7 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.Context).HasMaxLength(450);
-            entity.Property(e => e.Image).HasColumnType("image");
+            entity.Property(e => e.Image).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(200);
         });
 
@@ -209,7 +210,7 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.HasOne(d => d.Area).WithMany(p => p.Courts)
                 .HasForeignKey(d => d.AreaId)
-                .HasConstraintName("FK_Court_Area");
+                .HasConstraintName("FK_Court_Area1");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.Courts)
                 .HasForeignKey(d => d.ManagerId)
@@ -236,9 +237,8 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.PostId).HasColumnName("PostID");
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
             entity.Property(e => e.Content).HasMaxLength(450);
-            entity.Property(e => e.Image).HasColumnType("image");
-            entity.Property(e => e.Images)
-                .HasMaxLength(10)
+            entity.Property(e => e.Image)
+                .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.Title)
                 .HasMaxLength(10)
@@ -271,6 +271,10 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.StartTime)
                 .HasMaxLength(10)
                 .IsFixedLength();
+
+            entity.HasOne(d => d.Court).WithMany(p => p.SlotTimes)
+                .HasForeignKey(d => d.CourtId)
+                .HasConstraintName("FK_SlotTime_Court");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.SlotTimes)
                 .HasForeignKey(d => d.ManagerId)

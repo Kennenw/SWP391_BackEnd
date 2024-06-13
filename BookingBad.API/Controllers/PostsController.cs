@@ -23,11 +23,31 @@ namespace BookingBad.API.Controllers
             postServices = new PostServices();
         }
 
-        // GET: api/Posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPost(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            return postServices.GetPost();
+            var result = postServices.GetPost(pageNumber, pageSize);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("Search-Post")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> SearchPost(
+            [FromQuery] string searchTerm,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = postServices.PostPagedResult(searchTerm, pageNumber, pageSize);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
         // GET: api/Posts/5
@@ -45,7 +65,6 @@ namespace BookingBad.API.Controllers
         }
 
         // PUT: api/Posts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPost(int id, PostDTO post)
         {
@@ -54,7 +73,6 @@ namespace BookingBad.API.Controllers
         }
 
         // POST: api/Posts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<PostDTO>> PostPost(PostDTO post)
         {
@@ -74,6 +92,17 @@ namespace BookingBad.API.Controllers
 
             postServices.DeletePost(id);
             return NoContent();
+        }
+
+        [HttpPost("UploadPostImage/{postId}")]
+        public async Task<IActionResult> UploadCourtImage(int postId, [FromBody] Base64ImageModel model)
+        {
+            if (string.IsNullOrEmpty(model.Base64Image))
+                return BadRequest("No image uploaded.");
+
+            await postServices.UploadPostImage(postId, model.Base64Image);
+
+            return Ok("Image uploaded successfully.");
         }
     }
 }

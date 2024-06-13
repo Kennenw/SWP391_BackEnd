@@ -11,14 +11,18 @@ namespace Repositories.DTO
         public int PostId { get; set; }
 
         public int? AccountId { get; set; }
+        public string? Content { get; set; }
 
-        public byte[]? Image { get; set; }
+        public double? TotalRate { get; set; }
 
-        public string? Context { get; set; }
+        public bool? Status { get; set; }
 
-        public string? Vote { get; set; }
+        public double? Rate { get; set; }
 
-        public List<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
+        public string? Image { get; set; }
+
+        public string? Title { get; set; }
+
     }
 
     public class CommentDTO
@@ -27,7 +31,7 @@ namespace Repositories.DTO
 
         public string? Title { get; set; }
 
-        public byte[]? Image { get; set; }
+        public string Image { get; set; }
 
         public string? Context { get; set; }
 

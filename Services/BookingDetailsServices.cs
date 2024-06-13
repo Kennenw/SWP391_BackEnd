@@ -55,5 +55,35 @@ namespace Services
             _unitOfWork.BookingDetailRepo.Update(id, bookingDetail);
             _unitOfWork.SaveChanges();
         }
+        public void CheckIns(int bookingDetailId, int timeReducedInMinutes)
+        {
+            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
+            if (bookingDetail != null)
+            {
+                var checkIn = new CheckIn
+                {
+                    BookingDetailId = bookingDetailId,
+                    CheckInTime = DateTime.Now,
+                };
+
+                _unitOfWork.CheckInRepo.Create(checkIn);
+                _unitOfWork.SaveChanges();
+
+                //bookingDetail.CheckInTime = DateTime.Now;
+                //bookingDetail.TimeReducedInMinutes = timeReducedInMinutes;
+
+                var booking = _unitOfWork.BookingRepo.GetById(bookingDetail.BookingId.Value);
+                if (booking != null && booking.TotalHours.HasValue)
+                {
+                    var totalHoursReduced = timeReducedInMinutes / 60.0;
+                    booking.TotalHours -= (int)totalHoursReduced;
+                    _unitOfWork.BookingRepo.Update(booking);
+                }
+
+                _unitOfWork.BookingDetailRepo.Update(bookingDetail);
+                _unitOfWork.SaveChanges();
+            }
+        }
+
     }
 }

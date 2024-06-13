@@ -49,11 +49,13 @@ namespace Services
 
         public List<AreaDTO> GetArea()
         {
-            return _unitOfWork.AreaRepo.GetAll().Select(ar => new AreaDTO
+            return _unitOfWork.AreaRepo.GetAll().
+                Where(ar => ar.Status == true).
+                Select(ar => new AreaDTO
             {
                 AreaId = ar.AreaId,
                 Location = ar.Location,
-                Status = ar.Status  
+                Status = ar.Status,  
             }).ToList();
         }
 

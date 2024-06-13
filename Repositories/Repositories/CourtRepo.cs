@@ -1,4 +1,5 @@
-﻿using Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace Repositories.Repositories
     public class CourtRepo : GenericRepository<Court>
     {
         public CourtRepo() { }
-
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.Where(ar => ar.Status == true).CountAsync();
+        }
     }
 }

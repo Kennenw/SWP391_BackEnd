@@ -37,5 +37,7 @@ public partial class Court
 
     public virtual Account? Manager { get; set; }
 
+    public virtual ICollection<SlotTime> SlotTimes { get; set; } = new List<SlotTime>();
+
     public virtual ICollection<SubCourt> SubCourts { get; set; } = new List<SubCourt>();
 }

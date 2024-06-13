@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "8aao6E7+k7r6Lc6dhnaPZXQbzftHoZ96i+M7ynPFPrgyabWLx8dvloXW4oNlxFZa6MoHaoGYHs/98176HLyvnQ==",
+  "dgSpecHash": "RyAPy+2xmPzmA0O4eMx6a7yM9OFpXKg5qFiEW5KC3h31Y5N2SHxNQf7LcR8LtxJAiXG3Ya0ggPPYfLkl1iuxrw==",
   "success": true,
   "projectFilePath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Asus\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\8.0.5\\microsoft.aspnetcore.webutilities.8.0.5.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

@@ -32,7 +32,6 @@ namespace Repositories.DTO
         public int PlayerQuantity { get; set; }
         public string Note { get; set; }
         public int MonthsDuration { get; set; }
-        public DayOfWeek DayOfWeek { get; set; } 
         public int TotalHours { get; set; } 
 
     }

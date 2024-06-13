@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xNgUnpmnxe380IjpQqb468SPprGsDAoF+cQJdLDDVLSisi0uzOvvdPBzuNf1ktq0aJtwJY+J1qeCdqL8wLhJRQ==",
+  "dgSpecHash": "GjJSDVhNeoHiON7dnOm8wcWLi30WTcyjr6MlrWz/KYp2R6RJoO2F9vu+Yk/wGcrUG0FxGNkxLcxAEUiwqERDBA==",
   "success": true,
   "projectFilePath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\BookingBad.API\\BookingBad.API.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,9 @@
     "C:\\Users\\Asus\\.nuget\\packages\\humanizer.core.zh-cn\\2.14.1\\humanizer.core.zh-cn.2.14.1.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.24\\microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\8.0.5\\microsoft.aspnetcore.webutilities.8.0.5.nupkg.sha512",
