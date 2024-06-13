@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\dto\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\dto\\emaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\emaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -42,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,7 +86,32 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Program.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "RelativeToolTip": "BookingBad.API\\Program.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAB4AAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T14:47:25.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "EmailSettings.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\EmailSettings.cs",
+              "RelativeDocumentMoniker": "Repositories\\DTO\\EmailSettings.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\EmailSettings.cs",
+              "RelativeToolTip": "Repositories\\DTO\\EmailSettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T14:47:21.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "BookingBad.API",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
               "RelativeDocumentMoniker": "BookingBad.API\\BookingBad.API.csproj",
@@ -89,7 +122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
               "RelativeDocumentMoniker": "BookingBad.API\\appsettings.json",
@@ -101,7 +134,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.Development.json",
               "RelativeDocumentMoniker": "BookingBad.API\\appsettings.Development.json",
@@ -113,7 +146,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "BookingBadmintonSystemContext.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\BookingBadmintonSystemContext.cs",
               "RelativeDocumentMoniker": "Repositories\\BookingBadmintonSystemContext.cs",
@@ -125,7 +158,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "EmailDTO.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\EmailDTO.cs",
               "RelativeDocumentMoniker": "Repositories\\DTO\\EmailDTO.cs",
@@ -133,12 +166,11 @@
               "RelativeToolTip": "Repositories\\DTO\\EmailDTO.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-13T07:29:51.354Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-13T07:29:51.354Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "AccountServices.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\AccountServices.cs",
               "RelativeDocumentMoniker": "Services\\AccountServices.cs",
@@ -150,7 +182,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "CourtRepo.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories\\CourtRepo.cs",
               "RelativeDocumentMoniker": "Repositories\\Repositories\\CourtRepo.cs",
@@ -162,7 +194,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "CourtDTO.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\CourtDTO.cs",
               "RelativeDocumentMoniker": "Repositories\\DTO\\CourtDTO.cs",
