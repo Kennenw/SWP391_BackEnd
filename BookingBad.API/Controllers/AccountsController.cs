@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Repositories;
 using Repositories.DTO;
 using Repositories.Entities;
 using Repositories.Repositories;
 using Services;
+using static Services.EmailServices;
 
 namespace BookingDemo.API.Controllers
 {
@@ -21,10 +23,21 @@ namespace BookingDemo.API.Controllers
     {
         private readonly IAccountServices  accountServices;
 
-        public AccountsController()
+        private readonly IEmailServices emailServices;
+
+
+     /*   public AccountsController()
         {
             accountServices = new AccountServices();
+        }*/
+
+        public AccountsController(IAccountServices accountServices, IEmailServices emailServices)
+        {
+            this.accountServices = accountServices;
+            this.emailServices = emailServices;
         }
+
+
 
         // GET: api/Accounts
         [HttpGet]
@@ -47,6 +60,8 @@ namespace BookingDemo.API.Controllers
             return Ok(result);
         }
         [HttpGet("Search")]
+
+
         public async Task<ActionResult<IEnumerable<AccountDTO>>> SearchAccount(
             [FromQuery] string searchTerm, 
             [FromQuery] SortAccountByEnum sortAccountBy, 
@@ -66,6 +81,7 @@ namespace BookingDemo.API.Controllers
             return Ok(result);
         }
 
+
         [HttpGet("SelfProfile/{id:int}")]
         public async Task<ActionResult<SelfProfile>> SeltProfile(int id)
         {
@@ -79,6 +95,7 @@ namespace BookingDemo.API.Controllers
             return account;
         }
 
+
         [HttpGet("id")]
         public async Task<ActionResult<AccountDTO>> GetAccount(int id)
         {
@@ -91,6 +108,48 @@ namespace BookingDemo.API.Controllers
 
             return account;
         }
+
+
+        // Endpoint to send OTP
+        [HttpPost("SendMail")]
+        public async Task<IActionResult> SendMail(string toEmail)
+        {
+            try
+            {
+                EmailDTO emailDTO = new EmailDTO
+                {
+                    ToEmail = toEmail,
+                    Subject = "Your OTP Code"
+                };
+                await emailServices.SendEmailAsync(emailDTO);
+                return Ok("OTP sent successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // Endpoint to verify OTP
+        [HttpPost("VerifyOtp")]
+        public IActionResult VerifyOtp([FromBody] OtpDTO request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Otp))
+            {
+                return BadRequest("Invalid request.");
+            }
+
+            bool isValid = emailServices.VerifyOtp(request.Email, request.Otp);
+            if (isValid)
+            {
+                return Ok("OTP verified successfully.");
+            }
+            else
+            {
+                return BadRequest("Invalid OTP.");
+            }
+        }
+
 
 
         [HttpGet("Login")]
@@ -122,6 +181,7 @@ namespace BookingDemo.API.Controllers
             return Ok(account);
         }
 
+
         [HttpPut("UpdatePass/{email}")]
         public async Task<IActionResult> UpdatePass(string email, UpdatePassword info)
         {
@@ -137,6 +197,7 @@ namespace BookingDemo.API.Controllers
             var account = accountServices.UpdatePassword(email, info);
             return Ok(account);
         }
+
 
         [HttpPut("UpdateProfile/{user_id}")]
         public async Task<IActionResult> UpdateProfile(int user_id, UpdateProfileUser info)
@@ -178,6 +239,7 @@ namespace BookingDemo.API.Controllers
             }
         }
 
+
         [HttpPut("{user_id}/to/{role_id}/by/{admin_id}")]
         public async Task<IActionResult> UpdateRoleUser(int user_id, Role role_id, int admin_id)
         {
@@ -198,6 +260,7 @@ namespace BookingDemo.API.Controllers
                 return Ok(new SuccessObject<object> { Message = ex.Message });
             }
         }
+
 
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteAccount(int id)
