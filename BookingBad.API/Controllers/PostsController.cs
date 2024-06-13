@@ -69,7 +69,7 @@ namespace BookingBad.API.Controllers
         public async Task<IActionResult> PutPost(int id, PostDTO post)
         {
             postServices.UpdatePost(id, post);
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Posts

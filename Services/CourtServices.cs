@@ -183,7 +183,7 @@ namespace Services
         public bool DeleteCourt(int id)
         {
             var court = _unitOfWork.CourtRepo.GetById(id);
-            if(court != null)
+            if(court == null)
             {
                 return false;
             }

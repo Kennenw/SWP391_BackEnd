@@ -83,7 +83,7 @@ namespace BookingBad.API.Controllers
         {
             try
             {
-                _courtServices.CreateCourtAsync(courtCreateDTO);
+                await _courtServices.CreateCourtAsync(courtCreateDTO);
                 return Ok(new { message = "Court created successfully" });
             }
             catch (Exception ex)

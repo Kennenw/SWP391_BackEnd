@@ -27,7 +27,8 @@ namespace BookingBad.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AmenityCourtDTO>>> GetAmenityCourts()
         {
-            return amenityCourtServices.GetAmenityCourts();
+            var items = amenityCourtServices.GetAmenityCourts();
+            return Ok(items);
         }
 
         // GET: api/AmenityCourts/Court/5
