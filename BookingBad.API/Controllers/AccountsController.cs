@@ -12,6 +12,7 @@ using Repositories.DTO;
 using Repositories.Entities;
 using Repositories.Repositories;
 using Services;
+using static Services.EmailServices;
 
 namespace BookingDemo.API.Controllers
 {
@@ -21,10 +22,20 @@ namespace BookingDemo.API.Controllers
     {
         private readonly IAccountServices  accountServices;
 
-        public AccountsController()
+        private readonly IEmailServices emailServices;
+
+        /*      public AccountsController()
+              {
+                  accountServices = new AccountServices();
+              }         
+        */
+
+        public AccountsController(IAccountServices accountServices, IEmailServices emailServices)
         {
-            accountServices = new AccountServices();
+            this.accountServices = accountServices;
+            this.emailServices = emailServices;
         }
+
 
         // GET: api/Accounts
         [HttpGet]
@@ -91,6 +102,47 @@ namespace BookingDemo.API.Controllers
 
             return account;
         }
+
+        // Endpoint to send OTP
+        [HttpPost("SendMail")]
+        public async Task<IActionResult> SendMail(string toEmail)
+        {
+            try
+            {
+                EmailDTO emailDTO = new EmailDTO
+                {
+                    ToEmail = toEmail,
+                    Subject = "Your OTP Code"
+                };
+                await emailServices.SendEmailAsync(emailDTO);
+                return Ok("OTP sent successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // Endpoint to verify OTP
+        [HttpPost("VerifyOtp")]
+        public IActionResult VerifyOtp([FromBody] OtpDTO request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Otp))
+            {
+                return BadRequest("Invalid request.");
+            }
+
+            bool isValid = emailServices.VerifyOtp(request.Email, request.Otp);
+            if (isValid)
+            {
+                return Ok("OTP verified successfully.");
+            }
+            else
+            {
+                return BadRequest("Invalid OTP.");
+            }
+        }
+
 
 
         [HttpGet("Login")]

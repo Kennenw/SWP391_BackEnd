@@ -520,3 +520,7 @@ D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\obj\Debug\net8.0\refin
 D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\obj\Debug\net8.0\BookingBad.API.pdb
 D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\obj\Debug\net8.0\BookingBad.API.genruntimeconfig.cache
 D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\obj\Debug\net8.0\ref\BookingBad.API.dll
+D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\bin\Debug\net8.0\MailKit.dll
+D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\bin\Debug\net8.0\MimeKit.dll
+D:\Main\Projects\FPT\SWP391\SWP391_BackEnd\BookingBad.API\bin\Debug\net8.0\NETCore.MailKit.dll
