@@ -3,6 +3,26 @@
   "WorkspaceRootPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\dto\\otpdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\otpdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\services\\emailservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\emailservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -18,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,20 +78,85 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OtpDTO.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\OtpDTO.cs",
+              "RelativeDocumentMoniker": "Repositories\\DTO\\OtpDTO.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\OtpDTO.cs",
+              "RelativeToolTip": "Repositories\\DTO\\OtpDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T16:05:10.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\AccountsController.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
+              "RelativeToolTip": "BookingBad.API\\Controllers\\AccountsController.cs",
+              "ViewState": "AQIAAOQAAAAAAAAAAAAiwBgAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T16:04:11.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AccountDTO.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\AccountDTO.cs",
+              "RelativeDocumentMoniker": "Repositories\\DTO\\AccountDTO.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\AccountDTO.cs",
+              "RelativeToolTip": "Repositories\\DTO\\AccountDTO.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAAwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T16:03:42.536Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
+              "RelativeDocumentMoniker": "BookingBad.API\\appsettings.json",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
+              "RelativeToolTip": "BookingBad.API\\appsettings.json",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAswBsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-06-13T16:02:32.869Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Program.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "RelativeToolTip": "BookingBad.API\\Program.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAA9wBYAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-13T16:02:30.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "EmailServices.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\EmailServices.cs",
               "RelativeDocumentMoniker": "Services\\EmailServices.cs",
               "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\EmailServices.cs",
               "RelativeToolTip": "Services\\EmailServices.cs",
-              "ViewState": "AQIAAC0AAAAAAAAAAAA+wAAAAAAAAAAA",
+              "ViewState": "AQIAADoAAAAAAAAAAAAqwE8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-13T15:54:43Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "ImageServices.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\ImageServices.cs",
               "RelativeDocumentMoniker": "Services\\ImageServices.cs",
@@ -79,8 +164,7 @@
               "RelativeToolTip": "Services\\ImageServices.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-13T15:48:23.934Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-13T15:48:23.934Z"
             }
           ]
         }
