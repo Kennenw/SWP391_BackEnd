@@ -125,7 +125,7 @@ namespace BookingDemo.API.Controllers
 
         // Endpoint to verify OTP
         [HttpPost("VerifyOtp")]
-        public ActionResult VerifyOtp([FromBody] OtpDTO request)
+        public IActionResult VerifyOtp([FromBody] OtpDTO request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Otp))
             {
@@ -135,13 +135,9 @@ namespace BookingDemo.API.Controllers
             bool isValid = emailServices.VerifyOtp(request.Email, request.Otp);
             if (isValid)
             {
-                // Trả về thông tin email cùng với thông điệp xác minh thành công
-                var response = new
-                {
-                    Email = request.Email,
-                    Message = "OTP verified successfully."
-                };
-                return Ok(response);
+                // Chuyển hướng người dùng đến URL chứa thông tin xác minh thành công
+                string redirectUrl = $"https://localhost:7088/api/Accounts/VerifySuccess?email={request.Email}&message=OTP verified successfully.";
+                return Redirect(redirectUrl);
             }
             else
             {
@@ -149,6 +145,11 @@ namespace BookingDemo.API.Controllers
             }
         }
 
+        [HttpGet("VerifySuccess")]
+        public IActionResult VerifySuccess(string email, string message)
+        {
+            return Ok(new { Email = email, Message = message });
+        }
 
 
 
