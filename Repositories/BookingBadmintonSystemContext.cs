@@ -40,6 +40,10 @@ public partial class BookingBadmintonSystemContext : DbContext
 
     public virtual DbSet<Post> Posts { get; set; }
 
+    public virtual DbSet<RatingCourt> RatingCourts { get; set; }
+
+    public virtual DbSet<RatingPost> RatingPosts { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<SlotTime> SlotTimes { get; set; }
@@ -47,6 +51,7 @@ public partial class BookingBadmintonSystemContext : DbContext
     public virtual DbSet<SubCourt> SubCourts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=(local);Database=BookingBadmintonSystem;UID=sa;PWD=123456;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,18 +61,14 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.ToTable("Account");
 
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
-            entity.Property(e => e.AccountName)
-                .HasMaxLength(10)
-                .IsFixedLength();
+            entity.Property(e => e.AccountName).HasMaxLength(50);
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.FullName).HasMaxLength(50);
-            entity.Property(e => e.Image)
-                .HasMaxLength(30)
-                .IsFixedLength();
+            entity.Property(e => e.Image).HasMaxLength(50);
             entity.Property(e => e.Password)
-                .HasMaxLength(30)
+                .HasMaxLength(15)
                 .IsFixedLength();
             entity.Property(e => e.Phone)
                 .HasMaxLength(12)
@@ -82,6 +83,8 @@ public partial class BookingBadmintonSystemContext : DbContext
         modelBuilder.Entity<Amenity>(entity =>
         {
             entity.HasKey(e => e.AmenitiId).HasName("PK_Amenity");
+
+            entity.HasIndex(e => e.Description, "unique_description").IsUnique();
 
             entity.Property(e => e.AmenitiId).HasColumnName("AmenitiID");
             entity.Property(e => e.Description).HasMaxLength(50);
@@ -110,8 +113,10 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.ToTable("Area");
 
+            entity.HasIndex(e => e.Location, "unique_location").IsUnique();
+
             entity.Property(e => e.AreaId).HasColumnName("AreaID");
-            entity.Property(e => e.Location).HasMaxLength(50);
+            entity.Property(e => e.Location).HasMaxLength(250);
         });
 
         modelBuilder.Entity<Booking>(entity =>
@@ -122,7 +127,7 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.BookingTypeId).HasColumnName("BookingTypeID");
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
             entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.Note).HasMaxLength(250);
+            entity.Property(e => e.Note).HasMaxLength(500);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.BookingType).WithMany(p => p.Bookings)
@@ -163,7 +168,7 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.ToTable("BookingType");
 
             entity.Property(e => e.BookingTypeId).HasColumnName("BookingTypeID");
-            entity.Property(e => e.Description).HasMaxLength(100);
+            entity.Property(e => e.Description).HasMaxLength(50);
         });
 
         modelBuilder.Entity<CheckIn>(entity =>
@@ -196,16 +201,14 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.ToTable("Court");
 
             entity.Property(e => e.CloseTime)
-                .HasMaxLength(10)
+                .HasMaxLength(20)
                 .IsFixedLength();
             entity.Property(e => e.CourtName).HasMaxLength(50);
             entity.Property(e => e.Image).HasMaxLength(50);
             entity.Property(e => e.OpenTime)
-                .HasMaxLength(10)
+                .HasMaxLength(20)
                 .IsFixedLength();
-            entity.Property(e => e.Title)
-                .HasMaxLength(100)
-                .IsFixedLength();
+            entity.Property(e => e.Title).HasMaxLength(100);
 
             entity.HasOne(d => d.Area).WithMany(p => p.Courts)
                 .HasForeignKey(d => d.AreaId)
@@ -235,17 +238,46 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.PostId).HasColumnName("PostID");
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
-            entity.Property(e => e.Content).HasMaxLength(450);
             entity.Property(e => e.Image)
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.Title)
-                .HasMaxLength(10)
+                .HasMaxLength(500)
                 .IsFixedLength();
 
             entity.HasOne(d => d.Account).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.AccountId)
                 .HasConstraintName("FK_Post_Account");
+        });
+
+        modelBuilder.Entity<RatingCourt>(entity =>
+        {
+            entity.ToTable("RatingCourt");
+
+            entity.HasOne(d => d.Court).WithMany(p => p.RatingCourts)
+                .HasForeignKey(d => d.CourtId)
+                .HasConstraintName("FK_RatingCourt_Court");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RatingCourts)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_RatingCourt_Account");
+        });
+
+        modelBuilder.Entity<RatingPost>(entity =>
+        {
+            entity.HasKey(e => e.RatingId);
+
+            entity.ToTable("RatingPost");
+
+            entity.Property(e => e.RatingId).HasColumnName("RatingID");
+
+            entity.HasOne(d => d.Post).WithMany(p => p.RatingPosts)
+                .HasForeignKey(d => d.PostId)
+                .HasConstraintName("FK_RatingPost_Post");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RatingPosts)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_RatingPost_Account");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -254,7 +286,7 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.RoleName)
-                .HasMaxLength(5)
+                .HasMaxLength(7)
                 .IsFixedLength();
         });
 
@@ -265,10 +297,10 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.ToTable("SlotTime");
 
             entity.Property(e => e.EndTime)
-                .HasMaxLength(10)
+                .HasMaxLength(20)
                 .IsFixedLength();
             entity.Property(e => e.StartTime)
-                .HasMaxLength(10)
+                .HasMaxLength(20)
                 .IsFixedLength();
 
             entity.HasOne(d => d.Court).WithMany(p => p.SlotTimes)

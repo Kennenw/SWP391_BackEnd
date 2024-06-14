@@ -18,9 +18,9 @@ namespace BookingBad.API.Controllers
     {
         private readonly ICourtServices _courtServices;
 
-        public CourtsController(CourtServices courtServices)
+        public CourtsController()
         {
-            _courtServices = courtServices;
+            _courtServices = new CourtServices();
         }
 
         [HttpGet]       
@@ -39,7 +39,7 @@ namespace BookingBad.API.Controllers
             var result = _courtServices.GetCourts(managerId, sortContent, pageNumber, pageSize);
             if(result == null)
             {
-                return NotFound();
+                return BadRequest(new { message = "No Court to find" });
             }return Ok(result);
         }
 
@@ -61,7 +61,7 @@ namespace BookingBad.API.Controllers
             var result = _courtServices.SearchCourts(searchTerm, sortContent, pageNumber, pageSize);
             if (result == null || !result.Items.Any())
             {
-                return NotFound();
+                return BadRequest(new { message = "No Court to find" });
             }
             return Ok(result);
         }

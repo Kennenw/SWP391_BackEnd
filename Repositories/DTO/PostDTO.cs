@@ -9,22 +9,13 @@ namespace Repositories.DTO
     public class PostDTO
     {
         public int PostId { get; set; }
-
         public int? AccountId { get; set; }
-        public string? Content { get; set; }
-
-        public double? TotalRate { get; set; }
-
-        public bool? Status { get; set; }
-
-        public double? Rate { get; set; }
-
+        public string? Context { get; set; }
+        public double? TotalRate { get; set; } = 0;
         public string? Image { get; set; }
-
         public string? Title { get; set; }
 
     }
-
     public class CommentDTO
     {
         public int CommentId { get; set; }
@@ -38,5 +29,11 @@ namespace Repositories.DTO
         public bool? Status { get; set; }
 
         public string? Image { get; set; }
+    }
+
+    public class RatingPostDTO
+    {
+        public int UserId { get; set; }
+        public double RatingValue { get; set; }
     }
 }

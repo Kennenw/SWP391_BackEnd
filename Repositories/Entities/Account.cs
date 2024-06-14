@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repositories.Entities;
+namespace Repositories
+    .Entities;
 
 public partial class Account
 {
@@ -28,6 +29,10 @@ public partial class Account
     public virtual ICollection<Court> Courts { get; set; } = new List<Court>();
 
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+
+    public virtual ICollection<RatingCourt> RatingCourts { get; set; } = new List<RatingCourt>();
+
+    public virtual ICollection<RatingPost> RatingPosts { get; set; } = new List<RatingPost>();
 
     public virtual Role? Role { get; set; }
 

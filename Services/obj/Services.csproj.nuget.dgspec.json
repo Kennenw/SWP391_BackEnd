@@ -135,6 +135,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"

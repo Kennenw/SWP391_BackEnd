@@ -8,6 +8,7 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BookingBad.API
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Azure.Core.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Azure.Identity.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Humanizer.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\MailKit.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Mapster.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Mapster.Core.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
@@ -54,7 +55,9 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.Visu
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\MimeKit.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NETCore.MailKit.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.Common.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.Configuration.dll
@@ -65,6 +68,7 @@ D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.Packagin
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.ProjectModel.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.Protocol.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\NuGet.Versioning.dll
+D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\BouncyCastle.Crypto.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\FPT\SE5\PRN212\Demo\BookingBad\BookingBad.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll

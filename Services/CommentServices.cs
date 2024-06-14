@@ -14,7 +14,7 @@ namespace Services
     {
         public List<CommentDTO> GetComment();
         public CommentDTO GetCommentById(int id); 
-        public void CreateComment(CommentDTO commentDTO);
+        public void CreateComment(int idUser,CommentDTO commentDTO);
         public void UpdateComment(int id, CommentDTO commentDTO);
         public void DeleteComment(int id);
     }
@@ -27,14 +27,16 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public void CreateComment(CommentDTO commentDTO)
+        public void CreateComment(int idUser,CommentDTO commentDTO)
         {
+            var user = _unitOfWork.AccountRepo.GetById(idUser);
             var comment = new Comment
             {
+                UserId = user.AccountId,
                 Title = commentDTO.Title,
                 Image = commentDTO.Image,
                 Context = commentDTO.Context,
-                Status = true
+                Status = true,
             };
             _unitOfWork.CommentRepo.Create(comment);
             _unitOfWork.SaveChanges();
@@ -53,20 +55,27 @@ namespace Services
 
         public List<CommentDTO> GetComment()
         {
-            return _unitOfWork.CommentRepo.GetAll().Select(comment => new CommentDTO
+            return _unitOfWork.CommentRepo.GetAll().Where(c => c.Status == true).Select(comment => new CommentDTO
             {
+                UserId = comment.UserId,
                 CommentId = comment.CommentId,
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
+                Status = comment.Status,    
             }).ToList();
         }
 
         public CommentDTO GetCommentById(int id)
         {
             var comment = _unitOfWork.CommentRepo.GetById(id);
+            if (comment == null || comment.Status == false)
+            {
+                return null;
+            }
             return new CommentDTO
             {
+                UserId = comment.UserId,
                 CommentId = comment.CommentId,
                 Title = comment.Title,
                 Image = comment.Image,

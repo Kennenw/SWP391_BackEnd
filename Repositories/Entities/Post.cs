@@ -9,17 +9,17 @@ public partial class Post
 
     public int? AccountId { get; set; }
 
-    public string? Content { get; set; }
+    public string? Context { get; set; }
 
-    public double? TotalRate { get; set; }
+    public double? TotalRate { get; set; } = 0;
 
     public bool? Status { get; set; }
-
-    public double? Rate { get; set; }
 
     public string? Image { get; set; }
 
     public string? Title { get; set; }
 
     public virtual Account? Account { get; set; }
+
+    public virtual ICollection<RatingPost> RatingPosts { get; set; } = new List<RatingPost>();
 }

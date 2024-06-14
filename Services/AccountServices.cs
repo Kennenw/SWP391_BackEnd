@@ -5,25 +5,28 @@ using Repositories.Repositories;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text;
+using Microsoft.Extensions.Caching.Memory;
+using System.Runtime.CompilerServices;
 
 namespace Services
 {
     public interface IAccountServices
     {
-        public PagedResult<AccountDTO> GetAccount(SortContent sortContent, int pageNumber, int pageSize);
-        public AccountDTO GetAccountById(int id);
-        public AccountDTO GetAccountByName(string name);
-        public void DeleteAccount(int id);
-        public AccountDTO Login(string username, string password);
-        public PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
+        PagedResult<AccountDTO> GetAccount(SortContent sortContent, int pageNumber, int pageSize);
+        AccountDTO GetAccountById(int id);
+        AccountDTO GetAccountByName(string name);
+        void DeleteAccount(int id);
+        AccountDTO Login(string username, string password);
+        PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
         SelfProfile GetSelfProfile(int id);
         bool RegisterUser(RegisterInformation info);
-        public bool UpdatePassword(string email, UpdatePassword info);
+        void RegisterStaff(Creates info);
+        bool UpdatePassword(string email, UpdatePassword info);
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
-        public bool IsUserExist(string? email);
-        public bool IsAdminAndStaff(int user_id);
-        public bool IsAdmin(int user_id);
+        bool IsUserExist(string? email);
+        bool IsAdminAndStaff(int user_id);
+        bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
         Task UploadAccountImage(int accountId, string base64Image);
 
@@ -264,6 +267,26 @@ namespace Services
                 return true;
             }
             return false;
+        }
+
+        public void RegisterStaff(Creates info)
+        {
+            var check = _unitOfWork.AccountRepo.GetAccountByEmail(info.Email);
+            if (check == null)
+            {
+                var user = new Account
+                {
+                    AccountName = info.AccountName,
+                    Phone = info.Phone,
+                    Email = info.Email,
+                    FullName = info.FullName,
+                    Password = info.Password,
+                    RoleId = info.RoleId,
+                    Status = true
+                };
+                _unitOfWork.AccountRepo.Create(user);
+                _unitOfWork.SaveChanges();
+            }
         }
 
         public bool UpdatePassword(string email, UpdatePassword info)

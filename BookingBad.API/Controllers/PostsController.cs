@@ -91,7 +91,7 @@ namespace BookingBad.API.Controllers
             }
 
             postServices.DeletePost(id);
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("UploadPostImage/{postId}")]
@@ -103,6 +103,17 @@ namespace BookingBad.API.Controllers
             await postServices.UploadPostImage(postId, model.Base64Image);
 
             return Ok("Image uploaded successfully.");
+        }
+
+        [HttpPost("RatePost/{postId}")]
+        public IActionResult RatePost(int postId, [FromBody] RatingPostDTO model)
+        {
+            if (model.RatingValue == null || model.RatingValue <= 0)
+                return BadRequest("Invalid rating.");
+
+            postServices.RatePost(postId, model.UserId, model.RatingValue);
+
+            return Ok("Rating added successfully.");
         }
     }
 }

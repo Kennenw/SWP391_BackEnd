@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[8.0.2, )"
             },
+            "NETCore.MailKit": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -218,6 +222,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"

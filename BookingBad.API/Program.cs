@@ -1,4 +1,10 @@
 
+using NETCore.MailKit.Extensions;
+using Repositories.DTO;
+using Repositories.Repositories;
+using Services;
+using static Services.EmailServices;
+
 namespace Repositories.API
 {
     public class Program
@@ -14,6 +20,43 @@ namespace Repositories.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Add session support
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            // Add distributed memory cache
+            builder.Services.AddDistributedMemoryCache();
+
+            // Add CORS support
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder => builder
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+
+            // Register EmailService as IEmailSender
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+            // Add MailKit services
+            builder.Services.AddMailKit(config => builder.Configuration.GetSection("EmailSettings").Bind(config));
+
+            // Register services
+            builder.Services.AddTransient<IEmailServices, EmailServices>();
+            builder.Services.AddTransient<IAccountServices, AccountServices>();
+
+            // Register repositories
+            builder.Services.AddScoped<AccountRepo>();
+
+            // Register memory cache
+            builder.Services.AddMemoryCache();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,8 +68,15 @@ namespace Repositories.API
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            // Use CORS middleware
+            app.UseCors("AllowReactApp");
+
             app.UseAuthorization();
 
+            // Use session middleware
+            app.UseSession();
 
             app.MapControllers();
 

@@ -18,7 +18,7 @@ namespace BookingBad.API.Controllers
     {
         private readonly ICommentServices commentServices;
 
-        public CommentsController(BookingBadmintonSystemContext context)
+        public CommentsController()
         {
             commentServices = new CommentServices();
         }
@@ -50,15 +50,15 @@ namespace BookingBad.API.Controllers
         public async Task<IActionResult> PutComment(int id, CommentDTO commentDTO)
         {
             commentServices.UpdateComment(id, commentDTO);
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO comment)
+        public async Task<ActionResult<CommentDTO>> PostComment(int iserId,CommentDTO comment)
         {
-            commentServices.CreateComment(comment);
+            commentServices.CreateComment(iserId, comment);
             return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
         }
 

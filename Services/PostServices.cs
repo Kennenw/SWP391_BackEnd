@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Services
 {
@@ -20,6 +21,7 @@ namespace Services
         public void DeletePost(int id);
         Task UploadPostImage(int postId, string base64Image);
         public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize);
+        void RatePost(int userId,int postId, double rating);
     }
     public class PostServices : IPostServices
     {
@@ -35,9 +37,10 @@ namespace Services
             Post post = new Post()
             {
                 AccountId = postDTO.AccountId,
-                Content = postDTO.Content,
+                Context = postDTO.Context,
                 Status = true,  
                 Title = postDTO.Title,
+                Image = postDTO.Image,
             };
             _unitOfWork.PostRepo.Create(post);
             _unitOfWork.SaveChanges();
@@ -67,7 +70,7 @@ namespace Services
                 PostId = a.PostId,
                 AccountId = a.AccountId,
                 Image = a.Image,
-                Content = a.Content,
+                Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
             }).ToList();
@@ -93,10 +96,9 @@ namespace Services
                 PostId = post.PostId,
                 AccountId = post.AccountId,
                 Image = post.Image,
-                Content = post.Content,
+                Context = post.Context,
                 TotalRate = post.TotalRate,
                 Title = post.Title,
-                Rate = post.Rate,
             };
         }
 
@@ -106,8 +108,7 @@ namespace Services
             if(post != null)
             {
                 post.Title = postDTO.Title;
-                post.Content = postDTO.Content;
-
+                post.Context = postDTO.Context;
                 _unitOfWork.PostRepo.Update(post);
                 _unitOfWork.SaveChanges();
             }
@@ -146,7 +147,7 @@ namespace Services
                 PostId = a.PostId,
                 AccountId = a.AccountId,
                 Image = a.Image,
-                Content = a.Content,
+                Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
             }).ToList();
@@ -157,6 +158,37 @@ namespace Services
                 PageNumber = pageNumber,
                 PageSize = pageSize,
             };
+        }
+
+        public void RatePost(int postId, int userId, double rating)
+        {
+            var post = _unitOfWork.PostRepo.GetById(postId);
+            if (post == null || post.Status == false) return;
+
+            var existingRating = _unitOfWork.RatingPostRepo.GetAll()
+                .FirstOrDefault(rp => rp.PostId == postId && rp.UserId == userId);
+
+            if (existingRating != null)
+            {
+                existingRating.RatingValue = rating;
+                _unitOfWork.RatingPostRepo.Update(existingRating);
+            }
+            else
+            {
+                var ratingPost = new RatingPost
+                {
+                    PostId = postId,
+                    UserId = userId,
+                    RatingValue = rating
+                };
+                _unitOfWork.RatingPostRepo.Create(ratingPost);
+            }  
+            var countRatings = post.RatingPosts.Count();
+            var totalRatings = post.RatingPosts.Sum(rp => rp.RatingValue);
+
+            post.TotalRate = totalRatings > 0 ? (double)totalRatings/countRatings : 0;
+            _unitOfWork.PostRepo.Update(post);
+            _unitOfWork.SaveChanges();
         }
     }
 }

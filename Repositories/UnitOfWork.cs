@@ -1,4 +1,5 @@
-﻿using Repositories.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using Repositories.DTO;
 using Repositories.Entities;
 using Repositories.Repositories;
 using System;
@@ -29,16 +30,34 @@ namespace Repositories
         private PostRepo _post;
         private SubCourtRepo _subCourt;
         private CheckInRepo _checkIn;
+        private RatingCourtRepo _ratingCourt;
+        private RatingPostRepo _ratingPost;
 
-        public UnitOfWork() => _context = new BookingBadmintonSystemContext();
-        public  CheckInRepo CheckInRepo
+        public UnitOfWork()
+        {
+            _context ??= new BookingBadmintonSystemContext();
+        }
+        public CheckInRepo CheckInRepo
         {
             get
             {
                 return _checkIn ??= new CheckInRepo();
             }
         }
-
+        public RatingPostRepo RatingPostRepo 
+        { 
+            get 
+            { 
+                return _ratingPost ??= new RatingPostRepo(); 
+            } 
+        }
+        public RatingCourtRepo RatingCourtRepo 
+        { 
+            get 
+            { 
+                return _ratingCourt ??= new RatingCourtRepo(); 
+            } 
+        }
         public AccountRepo AccountRepo
         {
             get
@@ -120,7 +139,7 @@ namespace Repositories
         {
             get
             {
-                 return _comment ??= new Repositories.CommentRepo();
+                return _comment ??= new Repositories.CommentRepo();
             }
         }
 
