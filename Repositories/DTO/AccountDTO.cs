@@ -28,6 +28,25 @@ namespace Repositories.DTO
         public List<CourtDTO> ManagedCourts { get; set; }
     }
 
+    public class StaffManagerDTO
+    {
+        public int AccountId { get; set; }
+
+        public string? AccountName { get; set; }
+
+        public string? Password { get; set; }
+
+        public string? FullName { get; set; }
+
+        public string? Phone { get; set; }
+
+        public string? Email { get; set; }
+        public string? Image { get; set; }
+        public int? RoleId { get; set; }
+
+        public bool? Status { get; set; }
+
+    }
     public class LoginInformation //request
     {
         [Required]

@@ -18,6 +18,9 @@ namespace Services
         public PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
         SelfProfile GetSelfProfile(int id);
         bool RegisterUser(RegisterInformation info);
+
+        bool RegisterStaffManager(StaffManagerDTO info);
+
         public bool UpdatePassword(string email, UpdatePassword info);
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
@@ -65,7 +68,7 @@ namespace Services
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -74,7 +77,7 @@ namespace Services
                 Phone = a.Phone,
                 Email = a.Email,
                 RoleId = a.RoleId,
-                Status = true
+                Status = a.Status
             }).ToList();
             return new PagedResult<AccountDTO>
             {
@@ -88,7 +91,7 @@ namespace Services
         public AccountDTO GetAccountById(int id)
         {
             var account = _unitOfWork.AccountRepo.GetById(id);
-            if(account == null || account.Status == false)
+            if(account == null)
             {
                 return null;
             }
@@ -102,7 +105,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
-                ManagedCourts = account.Courts.Where(ar => ar.Status == true).Select(c => new CourtDTO
+                ManagedCourts = account.Courts.Select(c => new CourtDTO
                 {
                     CourtId = c.CourtId,
                     AreaId = c.AreaId,
@@ -202,7 +205,7 @@ namespace Services
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -258,6 +261,28 @@ namespace Services
                     Password = info.Password,
                     RoleId = 2,
                     Status = true
+                };
+                _unitOfWork.AccountRepo.Create(user);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RegisterStaffManager(StaffManagerDTO info)
+        {
+            var check = _unitOfWork.AccountRepo.GetAccountByEmail(info.Email);
+            if (check == null)
+            {
+                var user = new Account
+                {
+                    AccountName = info.AccountName,
+                    Phone = info.Phone,
+                    Email = info.Email,
+                    FullName = info.FullName,
+                    Password = info.Password,
+                    RoleId = info.RoleId,
+                    Status = true   
                 };
                 _unitOfWork.AccountRepo.Create(user);
                 _unitOfWork.SaveChanges();

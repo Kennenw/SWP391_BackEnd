@@ -125,7 +125,7 @@ namespace BookingDemo.API.Controllers
 
         // Endpoint to verify OTP
         [HttpPost("VerifyOtp")]
-        public IActionResult VerifyOtp([FromBody] OtpDTO request)
+        public ActionResult VerifyOtp([FromBody] OtpDTO request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Otp))
             {
@@ -135,13 +135,20 @@ namespace BookingDemo.API.Controllers
             bool isValid = emailServices.VerifyOtp(request.Email, request.Otp);
             if (isValid)
             {
-                return Ok("OTP verified successfully.");
+                // Trả về thông tin email cùng với thông điệp xác minh thành công
+                var response = new
+                {
+                    Email = request.Email,
+                    Message = "OTP verified successfully."
+                };
+                return Ok(response);
             }
             else
             {
                 return BadRequest("Invalid OTP.");
             }
         }
+
 
 
 
@@ -157,7 +164,13 @@ namespace BookingDemo.API.Controllers
 
             return account;
         }
-       
+
+        [HttpPost]
+        public async Task<ActionResult<StaffManagerDTO>> PostAccount(StaffManagerDTO account)
+        {
+            accountServices.RegisterStaffManager(account);
+            return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);
+        }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterInformation info)
@@ -254,8 +267,6 @@ namespace BookingDemo.API.Controllers
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            if (!accountServices.IsAdmin(id))
-                return Ok(new SuccessObject<object> { Message = "Bạn không có quyền truy cập !" });
             accountServices.DeleteAccount(id);
             return Ok(new SuccessObject<object> { Message = "Xóa thành công" });                          
         }
