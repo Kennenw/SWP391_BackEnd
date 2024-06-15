@@ -69,7 +69,7 @@ namespace Services
         public void UpdateRole(int id, RoleDTO roleDTO)
         {
             var role = _unitOfWork.RoleRepo.GetById(id);
-            if (role != null || role.Status == true)
+            if (role != null)
             {
                 role.RoleName = roleDTO.RoleName;
                 role.Status = true;

@@ -50,9 +50,15 @@ namespace Repositories.API
             // Register services
             builder.Services.AddTransient<IEmailServices, EmailServices>();
             builder.Services.AddTransient<IAccountServices, AccountServices>();
+            builder.Services.AddTransient<ICourtServices, CourtServices>();
 
             // Register repositories
             builder.Services.AddScoped<AccountRepo>();
+            builder.Services.AddScoped<AccountRepo>();
+            builder.Services.AddScoped<CourtRepo>(); 
+            builder.Services.AddScoped<SubCourtRepo>();
+            builder.Services.AddScoped<AmenityCourtRepo>();
+            builder.Services.AddScoped<SlotTimeRepo>();
 
             // Register memory cache
             builder.Services.AddMemoryCache();

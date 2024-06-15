@@ -3,6 +3,7 @@ using Repositories;
 using Repositories.DTO;
 using Services;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,22 +61,9 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
-        // POST: api/Courts/CreateCourt
-        [HttpPost]
-        public async Task<IActionResult> CreateCourt([FromBody] CourtDTO CreateCourt)
-        {
-            if (CreateCourt == null)
-            {
-                return BadRequest("The courtDto field is required.");
-            }
-
-            var createdCourt = await _courtServices.CreateCourtAsync(CreateCourt);
-            return Ok(new SuccessObject<object> {Data = createdCourt, Message = "Tạo thành công" });
-        }
-
         // PUT: api/Courts/Update/{id}
         [HttpPut("Update/{id}")]
-        public ActionResult UpdateCourt(int id, [FromBody] CourtDTOs courtDTO)
+        public ActionResult UpdateCourt(int id, CourtDTOs courtDTO)
         {
             _courtServices.UpdateCourt(id, courtDTO);
             return Ok(new { message = "Court updated successfully" });
@@ -83,16 +71,35 @@ namespace BookingBad.API.Controllers
 
         // POST: api/Courts/UploadCourtImage/{courtId}
         [HttpPost("UploadCourtImage/{courtId}")]
-        public async Task<IActionResult> UploadCourtImage(int courtId, [FromBody] Base64ImageModel model)
+        public async Task<IActionResult> UploadCourtImage(int courtId, IFormFile file)
         {
-            if (string.IsNullOrEmpty(model.Base64Image))
+            if (file == null || file.Length == 0)
                 return BadRequest("No image uploaded.");
 
-            await _courtServices.UploadCourtImageAsync(courtId, model.Base64Image);
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                await _courtServices.UploadCourtImageAsync(courtId, memoryStream.ToArray());
+            }
 
             return Ok("Image uploaded successfully.");
         }
 
+        [HttpPost("CreateCourtWithImage")]
+        public async Task<IActionResult> CreateCourtWithImage([FromForm] CourtDTO courtCreationDTO)
+        {
+            if (courtCreationDTO.ImageFile == null || courtCreationDTO.ImageFile.Length == 0)
+                return BadRequest("No image uploaded.");
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await courtCreationDTO.ImageFile.CopyToAsync(memoryStream);
+                var imageBytes = memoryStream.ToArray();
+                await _courtServices.CreateCourtAsync(courtCreationDTO, imageBytes);
+            }
+
+            return Ok("Court and image created successfully.");
+        }
         // DELETE: api/Courts/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteCourt(int id)

@@ -22,6 +22,7 @@ namespace Repositories.DTO
         public string? Title { get; set; }
         public string? Address { get; set; }
         public double? TotalRate { get; set; }
+        public IFormFile ImageFile { get; set; }
         public List<SubCourtDTO> SubCourts { get; set; }
         public List<AmenityCourtDTO> Amenities { get; set; }
         public List<SlotTimeDTO> SlotTimes { get; set; }
