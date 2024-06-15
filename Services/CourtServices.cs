@@ -13,9 +13,9 @@ namespace Services
 {
     public interface ICourtServices
     {
-        public PagedResult<CourtDTOs> GetCourts(int managerId, int pageNumber, int pageSize);
+        public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize);
         CourtDTO GetCourtById(int id);
-        void UpdateCourt(int courtId,CourtDTO courtDTO);
+        void UpdateCourt(int courtId, CourtDTOs courtDTO);
         Task<Court> CreateCourtAsync(CourtDTO courtDTO);
         public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
@@ -30,28 +30,25 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
             _imageService = new ImageServices();
         }
-        public PagedResult<CourtDTOs> GetCourts(int managerId,int pageNumber, int pageSize)
-        {
+        public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize)
+        {          
             var courts = _unitOfWork.CourtRepo.GetAll();
-            if (managerId != null)
-            {
-                courts = courts.Where(c => c.ManagerId == managerId).ToList();
-            }           
             var totalItemCount = courts.Count;
             var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
             var courtDTOs = pagedCourts.Select(c => new CourtDTOs
             {
-                    CourtId = c.CourtId,
-                    AreaId = c.AreaId,
-                    CourtName = c.CourtName,
-                    OpenTime = c.OpenTime,
-                    CloseTime = c.CloseTime,
-                    ManagerId = c.ManagerId,
-                    Image = c.Image,
-                    Rules = c.Rules ,
-                    Status = c.Status,
+                CourtId = c.CourtId,
+                AreaId = c.AreaId,
+                CourtName = c.CourtName,
+                OpenTime = c.OpenTime,
+                CloseTime = c.CloseTime,
+                ManagerId = c.ManagerId,
+                Image = c.Image,
+                Rules = c.Rules,
+                Status = c.Status,
             }).ToList();
-            
+
             return new PagedResult<CourtDTOs>
             {
                 Items = courtDTOs,
@@ -60,6 +57,7 @@ namespace Services
                 PageSize = pageSize
             };
         }
+
 
         public CourtDTO? GetCourtById(int id)
         {
@@ -108,12 +106,14 @@ namespace Services
             };
         }
 
-        public void UpdateCourt(int id, CourtDTO courtDTO)
+        public void UpdateCourt(int id, CourtDTOs courtDTO)
         {
             var court = _unitOfWork.CourtRepo.GetById(id);
             if (court != null)
             {
                 court.AreaId = courtDTO.AreaId;
+                court.ManagerId = courtDTO.ManagerId;
+                court.Address = courtDTO.Address;
                 court.CourtName = courtDTO.CourtName;
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
@@ -166,7 +166,7 @@ namespace Services
                     EndTime = slot.EndTime,
                     WeekdayPrice = slot.WeekdayPrice,
                     WeekendPrice = slot.WeekendPrice,
-                    CourtId= court.CourtId,
+                    CourtId = court.CourtId,
                     ManagerId = courtDTO.ManagerId,
                     Status = true
                 };
@@ -178,7 +178,7 @@ namespace Services
         public bool DeleteCourt(int id)
         {
             var court = _unitOfWork.CourtRepo.GetById(id);
-            if(court == null)
+            if (court == null)
             {
                 return false;
             }
