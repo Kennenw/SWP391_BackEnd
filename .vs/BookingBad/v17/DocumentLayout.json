@@ -1,20 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\fpt\\se5\\prn212\\demo\\bookingbad\\bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\prn212\\demo\\bookingbad\\repositories\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\prn212\\demo\\bookingbad\\services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -22,34 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AccountsController.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\BookingBad.API\\Controllers\\AccountsController.cs",
-              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\AccountsController.cs",
-              "ToolTip": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\BookingBad.API\\Controllers\\AccountsController.cs",
-              "RelativeToolTip": "BookingBad.API\\Controllers\\AccountsController.cs",
-              "ViewState": "AQIAAJsAAAAAAAAAAAAmwKgAAAAuAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T06:52:13.262Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AccountDTO.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\DTO\\AccountDTO.cs",
-              "RelativeDocumentMoniker": "Repositories\\DTO\\AccountDTO.cs",
-              "ToolTip": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Repositories\\DTO\\AccountDTO.cs",
-              "RelativeToolTip": "Repositories\\DTO\\AccountDTO.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAA/wB0AAAAYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T06:49:54.485Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
@@ -77,19 +38,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AccountServices.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\AccountServices.cs",
-              "RelativeDocumentMoniker": "Services\\AccountServices.cs",
-              "ToolTip": "D:\\FPT\\SE5\\PRN212\\Demo\\BookingBad\\Services\\AccountServices.cs",
-              "RelativeToolTip": "Services\\AccountServices.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAYwBYAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T06:49:32.132Z",
-              "EditorCaption": ""
             }
           ]
         }
