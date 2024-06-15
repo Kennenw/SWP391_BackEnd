@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Repositories;
+using Repositories.DTO;
+using Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Repositories;
-using Repositories.DTO;
-using Repositories.Entities;
-using Services;
 
 namespace BookingBad.API.Controllers
 {
@@ -23,28 +19,27 @@ namespace BookingBad.API.Controllers
             _courtServices = new CourtServices();
         }
 
-        [HttpGet]       
-        public ActionResult<IEnumerable<CourtDTO>> GetCourt(
-            [FromQuery]int managerId,
-            [FromQuery] int pageNumber = 1, 
+        // GET: api/Courts
+        [HttpGet]
+        public ActionResult<IEnumerable<CourtDTOs>> GetCourt(
+            [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
- 
-            var result = _courtServices.GetCourts(managerId, pageNumber, pageSize);
-            if(result == null)
+            var result = _courtServices.GetCourts( pageNumber, pageSize);
+            if (result == null)
             {
                 return BadRequest(new { message = "No Court to find" });
-            }return Ok(result);
+            }
+            return Ok(result);
         }
 
-        // GET: api/Court/Search
+        // GET: api/Courts/Search
         [HttpGet("Search-Court")]
         public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
             [FromQuery] string searchTerm,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-
             var result = _courtServices.SearchCourts(searchTerm, pageNumber, pageSize);
             if (result == null || !result.Items.Any())
             {
@@ -53,6 +48,7 @@ namespace BookingBad.API.Controllers
             return Ok(result);
         }
 
+        // GET: api/Courts/{id}
         [HttpGet("{id}")]
         public ActionResult<CourtDTO> GetCourtById(int id)
         {
@@ -64,30 +60,28 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
-        // POST: api/Courts/Create
+        // POST: api/Courts/CreateCourt
         [HttpPost]
-        public async Task<ActionResult<CourtDTO>> CreateCourt(CourtDTO courtCreateDTO)
+        public async Task<IActionResult> CreateCourt([FromBody] CourtDTO CreateCourt)
         {
-            try
+            if (CreateCourt == null)
             {
-                await _courtServices.CreateCourtAsync(courtCreateDTO);
-                return CreatedAtAction("GetCourtById", new { id = courtCreateDTO.CourtId }, courtCreateDTO);
+                return BadRequest("The courtDto field is required.");
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            
+
+            var createdCourt = await _courtServices.CreateCourtAsync(CreateCourt);
+            return Ok(new SuccessObject<object> {Data = createdCourt, Message = "Tạo thành công" });
         }
 
         // PUT: api/Courts/Update/{id}
         [HttpPut("Update/{id}")]
-        public ActionResult UpdateCourt(int id, [FromBody] CourtDTO courtDTO)
+        public ActionResult UpdateCourt(int id, [FromBody] CourtDTOs courtDTO)
         {
             _courtServices.UpdateCourt(id, courtDTO);
             return Ok(new { message = "Court updated successfully" });
         }
 
+        // POST: api/Courts/UploadCourtImage/{courtId}
         [HttpPost("UploadCourtImage/{courtId}")]
         public async Task<IActionResult> UploadCourtImage(int courtId, [FromBody] Base64ImageModel model)
         {
@@ -99,7 +93,7 @@ namespace BookingBad.API.Controllers
             return Ok("Image uploaded successfully.");
         }
 
-        // DELETE: api/Courts/5
+        // DELETE: api/Courts/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteCourt(int id)
         {
