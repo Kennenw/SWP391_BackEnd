@@ -33,7 +33,8 @@ namespace Services
             {
                 StartTime = slotTimeDTO.StartTime,
                 EndTime = slotTimeDTO.EndTime,
-                Price = slotTimeDTO.Price,
+                WeekendPrice = slotTimeDTO.WeekendPrice,
+                WeekdayPrice = slotTimeDTO.WeekdayPrice,
                 Status = true,
             };
             _unitOfWork.SlotTimeRepo.Create(slot);
@@ -58,7 +59,8 @@ namespace Services
                 SlotId = slot.SlotId,
                 StartTime = slot.StartTime,
                 EndTime = slot.EndTime,
-                Price = slot.Price, 
+                WeekdayPrice= slot.WeekendPrice,
+                WeekendPrice = slot.WeekendPrice,   
                 Status = slot.Status,
             }).ToList();
         }
@@ -73,7 +75,8 @@ namespace Services
                     SlotId = slot.SlotId,
                     StartTime = slot.StartTime,
                     EndTime = slot.EndTime,
-                    Price = slot.Price,
+                    WeekdayPrice = slot.WeekdayPrice,
+                    WeekendPrice = slot.WeekendPrice,
                     Status = slot.Status,
                 };
             }return null;
@@ -86,7 +89,8 @@ namespace Services
             {
                 slot.StartTime = slotTimeDTO.StartTime;
                 slot.EndTime = slotTimeDTO.EndTime;
-                slot.Price = slotTimeDTO.Price;
+                slot.WeekendPrice = slotTimeDTO.WeekendPrice;
+                slot.WeekdayPrice = slotTimeDTO.WeekdayPrice;
                 slot.Status = slotTimeDTO.Status;
                 _unitOfWork.SlotTimeRepo.Update(slot);
                 _unitOfWork.SaveChanges();

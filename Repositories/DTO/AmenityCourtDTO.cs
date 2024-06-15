@@ -13,5 +13,6 @@ namespace Repositories.DTO
         public int? AmenityId { get; set; }
 
         public int? CourtId { get; set; }
+        public bool? Status { get; set; }
     }
 }

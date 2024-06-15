@@ -10,5 +10,10 @@ namespace Repositories.Repositories
     public class SlotTimeRepo : GenericRepository<SlotTime>
     {
         public SlotTimeRepo() { }
+
+        public List<SlotTime> GetSlotTimeByCourtId(int courtId)
+        {
+            return _dbSet.Where(sc => sc.CourtId == courtId).ToList();
+        }
     }
 }

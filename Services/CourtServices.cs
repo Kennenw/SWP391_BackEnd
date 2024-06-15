@@ -13,11 +13,11 @@ namespace Services
 {
     public interface ICourtServices
     {
-        public PagedResult<CourtDTO> GetCourts(int managerId, SortContent sortContent, int pageNumber, int pageSize);
+        public PagedResult<CourtDTOs> GetCourts(int managerId, int pageNumber, int pageSize);
         CourtDTO GetCourtById(int id);
         void UpdateCourt(int courtId,CourtDTO courtDTO);
         Task<Court> CreateCourtAsync(CourtDTO courtDTO);
-        public PagedResult<CourtDTO> SearchCourts(string searchTerm, SortContent sortContent, int pageNumber, int pageSize);
+        public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, string base64Image);
     }
@@ -30,34 +30,16 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
             _imageService = new ImageServices();
         }
-        public PagedResult<CourtDTO> GetCourts(int managerId, SortContent sortContent,int pageNumber, int pageSize)
+        public PagedResult<CourtDTOs> GetCourts(int managerId,int pageNumber, int pageSize)
         {
             var courts = _unitOfWork.CourtRepo.GetAll();
             if (managerId != null)
             {
                 courts = courts.Where(c => c.ManagerId == managerId).ToList();
-            }
-            switch (sortContent.sortCourtBy)
-            {
-                case SortCourtByEnum.CourtId:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.CourtId).ToList()
-                        : courts.OrderByDescending(c => c.CourtId).ToList();
-                    break;
-                case SortCourtByEnum.CourtName:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.CourtName).ToList()
-                        : courts.OrderByDescending(c => c.CourtName).ToList();
-                    break;
-                case SortCourtByEnum.ManagerId:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.ManagerId).ToList()
-                        : courts.OrderByDescending(c => c.ManagerId).ToList();
-                    break;
-            }
+            }           
             var totalItemCount = courts.Count;
             var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var courtDTOs = pagedCourts.Select(c => new CourtDTO
+            var courtDTOs = pagedCourts.Select(c => new CourtDTOs
             {
                     CourtId = c.CourtId,
                     AreaId = c.AreaId,
@@ -66,11 +48,11 @@ namespace Services
                     CloseTime = c.CloseTime,
                     ManagerId = c.ManagerId,
                     Image = c.Image,
-                    Rule = c.Rules ,
+                    Rules = c.Rules ,
                     Status = c.Status,
             }).ToList();
             
-            return new PagedResult<CourtDTO>
+            return new PagedResult<CourtDTOs>
             {
                 Items = courtDTOs,
                 TotalItem = totalItemCount,
@@ -86,32 +68,43 @@ namespace Services
             {
                 return null;
             }
-            var subCourts = _unitOfWork.SubCourtRepo.GetSubCourtByCourtId(court.CourtId);
-            var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId);
+
+            var subCourts = _unitOfWork.SubCourtRepo.GetSubCourtByCourtId(court.CourtId) ?? new List<SubCourt>();
+            var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId) ?? new List<AmenityCourt>();
+            var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(court.CourtId) ?? new List<SlotTime>();
+
             return new CourtDTO
             {
                 CourtId = court.CourtId,
-                AreaId = court.AreaId,
                 CourtName = court.CourtName,
                 OpenTime = court.OpenTime,
                 CloseTime = court.CloseTime,
                 ManagerId = court.ManagerId,
-                Rule = court.Rules,
+                Rules = court.Rules,
                 Image = court.Image,
                 Status = court.Status,
                 SubCourts = subCourts.Select(sc => new SubCourtDTO
                 {
                     SubCourtId = sc.SubCourtId,
-                    CourtId = sc.CourtId,
                     Number = sc.Number,
                     Status = sc.Status
                 }).ToList(),
-                AmenityCourts = amenityCourts.Select(ac => new AmenityCourtDTO
+                Amenities = amenityCourts.Select(ac => new AmenityCourtDTO
                 {
                     AmenityCourtId = ac.AmenityCourtId,
                     AmenityId = ac.AmenityId,
                     CourtId = ac.CourtId,
+                    Status = ac.Status
                 }).ToList(),
+                SlotTimes = slotTimes.Select(st => new SlotTimeDTO
+                {
+                    SlotId = st.SlotId,
+                    StartTime = st.StartTime,
+                    EndTime = st.EndTime,
+                    WeekdayPrice = st.WeekdayPrice,
+                    WeekendPrice = st.WeekendPrice,
+                    Status = st.Status
+                }).ToList()
             };
         }
 
@@ -124,7 +117,7 @@ namespace Services
                 court.CourtName = courtDTO.CourtName;
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
-                court.Rules = courtDTO.Rule;
+                court.Rules = courtDTO.Rules;
                 court.Status = courtDTO.Status;
                 _unitOfWork.CourtRepo.Update(court);
                 _unitOfWork.SaveChanges();
@@ -140,7 +133,7 @@ namespace Services
                 OpenTime = courtDTO.OpenTime,
                 CloseTime = courtDTO.CloseTime,
                 ManagerId = courtDTO.ManagerId,
-                Rules = courtDTO.Rule,
+                Rules = courtDTO.Rules,
                 Status = true,
             };
             _unitOfWork.CourtRepo.Create(court);
@@ -151,11 +144,11 @@ namespace Services
                 {
                     CourtId = court.CourtId,
                     Number = subCourt.Number,
-                    Status = subCourt.Status
+                    Status = true,
                 };
                 _unitOfWork.SubCourtRepo.Create(subCourts);
             }
-            foreach (var amenityCourt in courtDTO.AmenityCourts)
+            foreach (var amenityCourt in courtDTO.Amenities)
             {
                 var amenties = new AmenityCourt
                 {
@@ -165,14 +158,16 @@ namespace Services
                 };
                 _unitOfWork.AmenityCourtRepo.Create(amenties);
             }
-            foreach (var slot in courtDTO.SlotTime)
+            foreach (var slot in courtDTO.SlotTimes)
             {
                 var slotTime = new SlotTime
                 {
                     StartTime = slot.StartTime,
                     EndTime = slot.EndTime,
-                    Price = slot.Price,
-                    ManagerId = slot.ManagerId,
+                    WeekdayPrice = slot.WeekdayPrice,
+                    WeekendPrice = slot.WeekendPrice,
+                    CourtId= court.CourtId,
+                    ManagerId = courtDTO.ManagerId,
                     Status = true
                 };
                 _unitOfWork.SlotTimeRepo.Create(slotTime);
@@ -193,55 +188,34 @@ namespace Services
             return true;
         }
 
-        public PagedResult<CourtDTO> SearchCourts(string searchTerm, SortContent sortContent, int pageNumber, int pageSize)
+        public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize)
         {
             var courts = _unitOfWork.CourtRepo.GetAll();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
+                var lowerSearchTerm = searchTerm.ToLower();
                 courts = courts.Where(c =>
-                    c.CourtName.Contains(searchTerm) ||
-                    c.Area.Location.Contains(searchTerm)).ToList();
+                    c.CourtName.ToLower().Contains(lowerSearchTerm) ||
+                    (c.Area != null && c.Area.Location.ToLower().Contains(lowerSearchTerm))).ToList();
             }
-            switch (sortContent.sortCourtBy)
-            {
-                case SortCourtByEnum.CourtId:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.CourtId).ToList()
-                        : courts.OrderByDescending(c => c.CourtId).ToList();
-                    break;
-                case SortCourtByEnum.CourtName:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.CourtName).ToList()
-                        : courts.OrderByDescending(c => c.CourtName).ToList();
-                    break;
-                case SortCourtByEnum.AreaId:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.AreaId).ToList()
-                        : courts.OrderByDescending(c => c.AreaId).ToList();
-                    break;
-                case SortCourtByEnum.OpenTime:
-                    courts = sortContent.sortType == SortTypeEnum.Ascending
-                        ? courts.OrderBy(c => c.OpenTime).ToList()
-                        : courts.OrderByDescending(c => c.OpenTime).ToList();
-                    break;
-            }
+
             var totalItemCount = courts.Count;
             var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-            var courtDTOs = pagedCourts.Select(c => new CourtDTO
+            var courtDTOs = pagedCourts.Select(c => new CourtDTOs
             {
                 CourtId = c.CourtId,
                 AreaId = c.AreaId,
                 CourtName = c.CourtName,
                 OpenTime = c.OpenTime,
                 CloseTime = c.CloseTime,
-                Rule = c.Rules,
+                Rules = c.Rules,
                 Image = c.Image,
-                Status = c.Status
+                Status = c.Status,
             }).ToList();
 
-            return new PagedResult<CourtDTO>
+            return new PagedResult<CourtDTOs>
             {
                 Items = courtDTOs,
                 TotalItem = totalItemCount,

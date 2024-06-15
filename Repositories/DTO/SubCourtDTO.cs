@@ -9,11 +9,8 @@ namespace Repositories.DTO
     public class SubCourtDTO
     {
         public int SubCourtId { get; set; }
-
         public int? Number { get; set; }
-
-        public int? CourtId { get; set; }
-
         public bool? Status { get; set; }
+        public int? CourtId { get; set; }
     }
 }

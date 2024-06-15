@@ -26,17 +26,11 @@ namespace BookingBad.API.Controllers
         [HttpGet]       
         public ActionResult<IEnumerable<CourtDTO>> GetCourt(
             [FromQuery]int managerId,
-            [FromQuery]SortCourtByEnum sortCourtBy ,
-            [FromQuery]SortTypeEnum sortCourtType ,
             [FromQuery] int pageNumber = 1, 
             [FromQuery] int pageSize = 10)
         {
-            var sortContent = new SortContent
-            {
-                sortCourtBy = sortCourtBy,
-                sortType = sortCourtType,
-            };
-            var result = _courtServices.GetCourts(managerId, sortContent, pageNumber, pageSize);
+ 
+            var result = _courtServices.GetCourts(managerId, pageNumber, pageSize);
             if(result == null)
             {
                 return BadRequest(new { message = "No Court to find" });
@@ -47,18 +41,11 @@ namespace BookingBad.API.Controllers
         [HttpGet("Search-Court")]
         public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
             [FromQuery] string searchTerm,
-            [FromQuery] SortCourtByEnum sortCourtBy,
-            [FromQuery] SortTypeEnum sortCourtType,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var sortContent = new SortContent
-            {
-                sortCourtBy = sortCourtBy,
-                sortType = sortCourtType
-            };
 
-            var result = _courtServices.SearchCourts(searchTerm, sortContent, pageNumber, pageSize);
+            var result = _courtServices.SearchCourts(searchTerm, pageNumber, pageSize);
             if (result == null || !result.Items.Any())
             {
                 return BadRequest(new { message = "No Court to find" });
@@ -78,13 +65,13 @@ namespace BookingBad.API.Controllers
         }
 
         // POST: api/Courts/Create
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateCourt(CourtDTO courtCreateDTO)
+        [HttpPost]
+        public async Task<ActionResult<CourtDTO>> CreateCourt(CourtDTO courtCreateDTO)
         {
             try
             {
                 await _courtServices.CreateCourtAsync(courtCreateDTO);
-                return Ok(new { message = "Court created successfully" });
+                return CreatedAtAction("GetCourtById", new { id = courtCreateDTO.CourtId }, courtCreateDTO);
             }
             catch (Exception ex)
             {
