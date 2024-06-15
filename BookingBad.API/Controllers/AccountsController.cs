@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using NuGet.Protocol.Plugins;
 using Repositories;
 using Repositories.DTO;
@@ -27,6 +28,18 @@ namespace BookingDemo.API.Controllers
         {
             this.accountServices = accountServices;
             this.emailServices = emailServices;
+        }
+        // GET: api/AmenityCourts/Court/5
+
+        [HttpGet("{AccountId}")]
+        public ActionResult<IEnumerable<AccountDTO>> GetAccountById(int AccountId)
+        {
+            var account = accountServices.GetAccountById(AccountId);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return Ok(account);
         }
 
         // GET: api/Accounts
@@ -165,11 +178,11 @@ namespace BookingDemo.API.Controllers
             return Ok(account);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Creates>> PostAccount(Creates account)
+        [HttpPost("CreateAccount")]
+        public async Task<ActionResult<AccountDTO>> PostAccount(AccountDTO createAccount)
         {
-            accountServices.RegisterStaff(account);
-            return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);
+            accountServices.RegisterStaff(createAccount);
+            return CreatedAtAction(nameof(GetAccountById), new { accountId = createAccount.AccountId }, createAccount);
         }
 
 

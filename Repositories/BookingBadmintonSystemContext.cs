@@ -302,6 +302,8 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.Property(e => e.StartTime)
                 .HasMaxLength(20)
                 .IsFixedLength();
+            entity.Property(e => e.WeekdayPrice).HasColumnName("weekdayPrice");
+            entity.Property(e => e.WeekendPrice).HasColumnName("weekendPrice");
 
             entity.HasOne(d => d.Court).WithMany(p => p.SlotTimes)
                 .HasForeignKey(d => d.CourtId)
