@@ -16,10 +16,10 @@ namespace Services
         public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize);
         CourtDTO GetCourtById(int id);
         void UpdateCourt(int courtId, CourtDTOs courtDTO);
-        Task<Court> CreateCourtAsync(CourtDTO courtDTO);
+        Task<Court> CreateCourtAsync(CourtDTO courtDTO, byte[] imageBytes);
         public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
-        Task UploadCourtImageAsync(int courtId, string base64Image);
+        Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
     }
     public class CourtServices : ICourtServices
     {
@@ -47,6 +47,9 @@ namespace Services
                 Image = c.Image,
                 Rules = c.Rules,
                 Status = c.Status,
+                TotalRate = c.TotalRate,
+                Address = c.Address,
+                Title = c.Title
             }).ToList();
 
             return new PagedResult<CourtDTOs>
@@ -81,6 +84,10 @@ namespace Services
                 Rules = court.Rules,
                 Image = court.Image,
                 Status = court.Status,
+                Title = court.Title,
+                Address = court.Address,
+                TotalRate = court.TotalRate,
+                AreaId = court.AreaId,
                 SubCourts = subCourts.Select(sc => new SubCourtDTO
                 {
                     SubCourtId = sc.SubCourtId,
@@ -118,13 +125,13 @@ namespace Services
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
                 court.Rules = courtDTO.Rules;
-                court.Status = courtDTO.Status;
+                court.Status = courtDTO.Status;          
                 _unitOfWork.CourtRepo.Update(court);
                 _unitOfWork.SaveChanges();
             }
         }
 
-        public async Task<Court> CreateCourtAsync(CourtDTO courtDTO)
+        public async Task<Court> CreateCourtAsync(CourtDTO courtDTO, byte[] imageBytes)
         {
             var court = new Court
             {
@@ -135,8 +142,23 @@ namespace Services
                 ManagerId = courtDTO.ManagerId,
                 Rules = courtDTO.Rules,
                 Status = true,
+                Title = courtDTO.Title,
+                Address = courtDTO.Address,
+                TotalRate = courtDTO.TotalRate,               
             };
             _unitOfWork.CourtRepo.Create(court);
+            _unitOfWork.SaveChanges();
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(courtDTO.ImageFile.FileName);
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
+
+            var filePath = Path.Combine(uploadPath, fileName);
+            await File.WriteAllBytesAsync(filePath, imageBytes);
+
+            court.Image = fileName;
+            _unitOfWork.CourtRepo.Update(court);
             _unitOfWork.SaveChanges();
             foreach (var subCourt in courtDTO.SubCourts)
             {
@@ -213,6 +235,9 @@ namespace Services
                 Rules = c.Rules,
                 Image = c.Image,
                 Status = c.Status,
+                TotalRate = c.TotalRate,
+                Address = c.Address,
+                Title = c.Title,
             }).ToList();
 
             return new PagedResult<CourtDTOs>
@@ -224,29 +249,36 @@ namespace Services
             };
         }
 
-        public async Task UploadCourtImageAsync(int courtId, string base64Image)
+        public async Task UploadCourtImageAsync(int courtId, byte[] imageBytes)
         {
             var court = _unitOfWork.CourtRepo.GetById(courtId);
-            if (court == null) return;
+            if (court == null)
+            {
+                Console.WriteLine("Court not found.");
+                return;
+            }
 
-            // Giải mã chuỗi base64 về mảng byte
-            byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var fileName = Guid.NewGuid().ToString() + ".png"; 
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
             if (!Directory.Exists(uploadPath))
+            {
+                Console.WriteLine("Creating uploads directory.");
                 Directory.CreateDirectory(uploadPath);
+            }
 
             var filePath = Path.Combine(uploadPath, fileName);
 
             await File.WriteAllBytesAsync(filePath, imageBytes);
 
-            court.Image = fileName; // Lưu tên file vào cột Image
+            court.Image = fileName; 
 
             _unitOfWork.CourtRepo.Update(court);
             _unitOfWork.SaveChanges();
+
+            Console.WriteLine("Image saved successfully.");
         }
+
 
     }
 }
