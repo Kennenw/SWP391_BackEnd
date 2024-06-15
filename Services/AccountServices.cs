@@ -112,7 +112,7 @@ namespace Services
                     CourtName = c.CourtName,
                     OpenTime = c.OpenTime,
                     CloseTime = c.CloseTime,
-                    Rule = c.Rules,
+                    Rules = c.Rules,
                     Status = c.Status
                 }).ToList()
             };

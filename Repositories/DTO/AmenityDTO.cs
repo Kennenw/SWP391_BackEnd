@@ -8,10 +8,8 @@ namespace Repositories.DTO
 {
     public class AmenityDTO
     {
-        public int AmenityId { get; set; }
-
-        public string? Description { get; set; }
-
+        public int AmenityCourtId { get; set; }
+        public int? AmenityId { get; set; }
         public bool? Status { get; set; }
     }
 }

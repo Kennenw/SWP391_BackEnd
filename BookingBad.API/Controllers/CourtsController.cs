@@ -23,42 +23,29 @@ namespace BookingBad.API.Controllers
             _courtServices = new CourtServices();
         }
 
-        [HttpGet]       
+        // GET: api/Courts
+        [HttpGet]
         public ActionResult<IEnumerable<CourtDTO>> GetCourt(
-            [FromQuery]int managerId,
-            [FromQuery]SortCourtByEnum sortCourtBy ,
-            [FromQuery]SortTypeEnum sortCourtType ,
-            [FromQuery] int pageNumber = 1, 
-            [FromQuery] int pageSize = 10)
-        {
-            var sortContent = new SortContent
-            {
-                sortCourtBy = sortCourtBy,
-                sortType = sortCourtType,
-            };
-            var result = _courtServices.GetCourts(managerId, sortContent, pageNumber, pageSize);
-            if(result == null)
-            {
-                return BadRequest(new { message = "No Court to find" });
-            }return Ok(result);
-        }
-
-        // GET: api/Court/Search
-        [HttpGet("Search-Court")]
-        public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
-            [FromQuery] string searchTerm,
-            [FromQuery] SortCourtByEnum sortCourtBy,
-            [FromQuery] SortTypeEnum sortCourtType,
+            [FromQuery] int managerId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var sortContent = new SortContent
+            var result = _courtServices.GetCourts(managerId, pageNumber, pageSize);
+            if (result == null)
             {
-                sortCourtBy = sortCourtBy,
-                sortType = sortCourtType
-            };
+                return BadRequest(new { message = "No Court to find" });
+            }
+            return Ok(result);
+        }
 
-            var result = _courtServices.SearchCourts(searchTerm, sortContent, pageNumber, pageSize);
+        // GET: api/Courts/Search
+        [HttpGet("Search-Court")]
+        public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
+            [FromQuery] string searchTerm,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = _courtServices.SearchCourts(searchTerm, pageNumber, pageSize);
             if (result == null || !result.Items.Any())
             {
                 return BadRequest(new { message = "No Court to find" });
@@ -66,6 +53,7 @@ namespace BookingBad.API.Controllers
             return Ok(result);
         }
 
+        // GET: api/Courts/{id}
         [HttpGet("{id}")]
         public ActionResult<CourtDTO> GetCourtById(int id)
         {
@@ -77,20 +65,17 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
-        // POST: api/Courts/Create
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateCourt(CourtDTO courtCreateDTO)
+        // POST: api/Courts
+        [HttpPost]
+        public async Task<IActionResult> CreateCourt([FromBody] CourtDTO courtDto)
         {
-            try
+            if (courtDto == null)
             {
-                await _courtServices.CreateCourtAsync(courtCreateDTO);
-                return Ok(new { message = "Court created successfully" });
+                return BadRequest("The courtDto field is required.");
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            
+
+            var createdCourt = await _courtServices.CreateCourtAsync(courtDto);
+            return CreatedAtAction(nameof(GetCourtById), new { id = createdCourt.CourtId }, createdCourt);
         }
 
         // PUT: api/Courts/Update/{id}
@@ -101,6 +86,7 @@ namespace BookingBad.API.Controllers
             return Ok(new { message = "Court updated successfully" });
         }
 
+        // POST: api/Courts/UploadCourtImage/{courtId}
         [HttpPost("UploadCourtImage/{courtId}")]
         public async Task<IActionResult> UploadCourtImage(int courtId, [FromBody] Base64ImageModel model)
         {
@@ -112,7 +98,7 @@ namespace BookingBad.API.Controllers
             return Ok("Image uploaded successfully.");
         }
 
-        // DELETE: api/Courts/5
+        // DELETE: api/Courts/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteCourt(int id)
         {

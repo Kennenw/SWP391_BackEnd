@@ -27,65 +27,90 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public List<AmenityDTO> GetAmenities()
+        public void CreateAmenity(AmenityDTO amenity)
         {
-            return _unitOfWork.AmenityRepo.GetAll().
-                Where(ar => ar.Status == true)
-                .Select(amenity => new AmenityDTO
-                {
-                    AmenityId = amenity.AmenitiId,
-                    Description = amenity.Description,
-                    Status = amenity.Status,
-                }).ToList();
-        }
-
-        public AmenityDTO GetAmenityById(int id)
-        {
-            var amenity = _unitOfWork.AmenityRepo.GetById(id);
-            if (amenity == null || amenity.Status == false)
-            {
-                return null;
-            }
-            return new AmenityDTO
-            {
-                AmenityId = amenity.AmenitiId,
-                Description = amenity.Description,
-                Status = amenity.Status,
-            };
-        }
-
-        public void CreateAmenity(AmenityDTO amenityDTO)
-        {
-            var amenity = new Amenity
-            {
-                Description = amenityDTO.Description,
-                Status = true               
-            };
-            _unitOfWork.AmenityRepo.Create(amenity);
-            _unitOfWork.SaveChanges();
-        }
-
-        public void UpdateAmenity(int id, AmenityDTO amenityDTO)
-        {
-            var amenity = _unitOfWork.AmenityRepo.GetById(id);
-            if (amenity != null)
-            {
-                amenity.Description = amenityDTO.Description;
-                amenity.Status = amenityDTO.Status;
-                _unitOfWork.AmenityRepo.Update(amenity);
-                _unitOfWork.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
         public void DeleteAmenity(int id)
         {
-            var amenity = _unitOfWork.AmenityRepo.GetById(id);
-            if (amenity != null)
-            {
-                amenity.Status = false;
-                _unitOfWork.AmenityRepo.Update(amenity);
-                _unitOfWork.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
+
+        public List<AmenityDTO> GetAmenities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public AmenityDTO GetAmenityById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAmenity(int id, AmenityDTO amenity)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public List<AmenityDTO> GetAmenities()
+        //{
+        //    return _unitOfWork.AmenityRepo.GetAll().
+        //        Where(ar => ar.Status == true)
+        //        .Select(amenity => new AmenityDTO
+        //        {
+        //            AmenityId = amenity.AmenitiId,
+        //            Description = amenity.Description,
+        //            Status = amenity.Status,
+        //        }).ToList();
+        //}
+
+        //public AmenityDTO GetAmenityById(int id)
+        //{
+        //    var amenity = _unitOfWork.AmenityRepo.GetById(id);
+        //    if (amenity == null || amenity.Status == false)
+        //    {
+        //        return null;
+        //    }
+        //    return new AmenityDTO
+        //    {
+        //        AmenityId = amenity.AmenitiId,
+        //        Description = amenity.Description,
+        //        Status = amenity.Status,
+        //    };
+        //}
+
+        //public void CreateAmenity(AmenityDTO amenityDTO)
+        //{
+        //    var amenity = new Amenity
+        //    {
+        //        Description = amenityDTO.Description,
+        //        Status = true               
+        //    };
+        //    _unitOfWork.AmenityRepo.Create(amenity);
+        //    _unitOfWork.SaveChanges();
+        //}
+
+        //public void UpdateAmenity(int id, AmenityDTO amenityDTO)
+        //{
+        //    var amenity = _unitOfWork.AmenityRepo.GetById(id);
+        //    if (amenity != null)
+        //    {
+        //        amenity.Description = amenityDTO.Description;
+        //        amenity.Status = amenityDTO.Status;
+        //        _unitOfWork.AmenityRepo.Update(amenity);
+        //        _unitOfWork.SaveChanges();
+        //    }
+        //}
+
+        //public void DeleteAmenity(int id)
+        //{
+        //    var amenity = _unitOfWork.AmenityRepo.GetById(id);
+        //    if (amenity != null)
+        //    {
+        //        amenity.Status = false;
+        //        _unitOfWork.AmenityRepo.Update(amenity);
+        //        _unitOfWork.SaveChanges();
+        //    }
+        //}
     }
 }

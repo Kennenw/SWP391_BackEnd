@@ -23,47 +23,67 @@ namespace Services
         {
             _unitOfWork = new UnitOfWork();
         }
-        public  void createSubCourt(SubCourtDTO subCourtDTO)
+
+        public void createSubCourt(SubCourtDTO subCourtDTO)
         {
-            SubCourt subCourt = new SubCourt();
-            subCourt.SubCourtId = subCourtDTO.SubCourtId;
-            subCourt.Number = subCourtDTO.Number;
-            subCourt.CourtId = subCourtDTO.CourtId;
-            subCourt.Status = true; 
+            throw new NotImplementedException();
         }
 
         public void deleteSubCourt(int id)
         {
-            var item = _unitOfWork.SubCourtRepo.GetById(id);
-            if (item != null)
-            {
-                item.Status = false;
-                _unitOfWork.SubCourtRepo.Update(item);
-                _unitOfWork.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
         public SubCourtDTO getSubCourt(int id)
         {
-            var item = _unitOfWork.SubCourtRepo.GetById(id);
-            return new SubCourtDTO{ 
-                SubCourtId = item.SubCourtId,
-                Number = item.Number,
-                CourtId = item.CourtId,
-                Status = item.Status
-            };
+            throw new NotImplementedException();
         }
 
         public void updateSubCourt(int id, SubCourtDTO subCourtDTO)
         {
-            var item = _unitOfWork.SubCourtRepo.GetById(id);
-            if(item != null)
-            {
-                item.Number = subCourtDTO.Number;
-                item.Status = subCourtDTO.Status;
-                _unitOfWork.SubCourtRepo.Update(item);
-                _unitOfWork.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
+        //public  void createSubCourt(SubCourtDTO subCourtDTO)
+        //{
+        //    SubCourt subCourt = new SubCourt();
+        //    subCourt.SubCourtId = subCourtDTO.SubCourtId;
+        //    subCourt.Number = subCourtDTO.Number;
+        //    subCourt.CourtId = subCourtDTO.CourtId;
+        //    subCourt.Status = true; 
+        //}
+
+        //public void deleteSubCourt(int id)
+        //{
+        //    var item = _unitOfWork.SubCourtRepo.GetById(id);
+        //    if (item != null)
+        //    {
+        //        item.Status = false;
+        //        _unitOfWork.SubCourtRepo.Update(item);
+        //        _unitOfWork.SaveChanges();
+        //    }
+        //}
+
+        //public SubCourtDTO getSubCourt(int id)
+        //{
+        //    var item = _unitOfWork.SubCourtRepo.GetById(id);
+        //    return new SubCourtDTO{ 
+        //        SubCourtId = item.SubCourtId,
+        //        Number = item.Number,
+        //        CourtId = item.CourtId,
+        //        Status = item.Status
+        //    };
+        //}
+
+        //public void updateSubCourt(int id, SubCourtDTO subCourtDTO)
+        //{
+        //    var item = _unitOfWork.SubCourtRepo.GetById(id);
+        //    if(item != null)
+        //    {
+        //        item.Number = subCourtDTO.Number;
+        //        item.Status = subCourtDTO.Status;
+        //        _unitOfWork.SubCourtRepo.Update(item);
+        //        _unitOfWork.SaveChanges();
+        //    }
+        //}
     }
 }

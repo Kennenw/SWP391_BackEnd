@@ -112,7 +112,7 @@ namespace Services
                 CustomerId = bookingRequest.CustomerId,
                 BookingTypeId = bookingRequest.BookingTypeId,
                 PlayerQuantity = bookingRequest.PlayerQuantity,
-                TotalPrice = slotTime.Price.Value,
+                TotalPrice = slotTime.WeekdayPrice.Value,
                 Note = bookingRequest.Note,
                 Status = true
             };
