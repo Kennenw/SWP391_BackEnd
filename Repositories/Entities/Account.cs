@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repositories
-    .Entities;
+namespace Repositories.Entities;
 
 public partial class Account
 {

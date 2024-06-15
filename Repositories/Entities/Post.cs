@@ -11,7 +11,7 @@ public partial class Post
 
     public string? Context { get; set; }
 
-    public double? TotalRate { get; set; } = 0;
+    public double? TotalRate { get; set; }
 
     public bool? Status { get; set; }
 

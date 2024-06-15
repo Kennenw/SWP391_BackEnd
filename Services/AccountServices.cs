@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text;
 using Microsoft.Extensions.Caching.Memory;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Services
 {
@@ -20,7 +21,7 @@ namespace Services
         PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
         SelfProfile GetSelfProfile(int id);
         bool RegisterUser(RegisterInformation info);
-        void RegisterStaff(Creates info);
+        bool RegisterStaff(AccountDTO info);
         bool UpdatePassword(string email, UpdatePassword info);
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
@@ -105,16 +106,6 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
-                ManagedCourts = account.Courts.Where(ar => ar.Status == true).Select(c => new CourtDTO
-                {
-                    CourtId = c.CourtId,
-                    AreaId = c.AreaId,
-                    CourtName = c.CourtName,
-                    OpenTime = c.OpenTime,
-                    CloseTime = c.CloseTime,
-                    Rule = c.Rules,
-                    Status = c.Status
-                }).ToList()
             };
         }
 
@@ -269,7 +260,7 @@ namespace Services
             return false;
         }
 
-        public void RegisterStaff(Creates info)
+        public bool RegisterStaff(AccountDTO info)
         {
             var check = _unitOfWork.AccountRepo.GetAccountByEmail(info.Email);
             if (check == null)
@@ -286,7 +277,9 @@ namespace Services
                 };
                 _unitOfWork.AccountRepo.Create(user);
                 _unitOfWork.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         public bool UpdatePassword(string email, UpdatePassword info)

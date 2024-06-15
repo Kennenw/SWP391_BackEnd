@@ -11,7 +11,7 @@ public partial class SlotTime
 
     public string? EndTime { get; set; }
 
-    public double? Price { get; set; }
+    public double? WeekdayPrice { get; set; }
 
     public bool? Status { get; set; }
 
@@ -20,6 +20,8 @@ public partial class SlotTime
     public int? SubCourtId { get; set; }
 
     public int? CourtId { get; set; }
+
+    public double? WeekendPrice { get; set; }
 
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
