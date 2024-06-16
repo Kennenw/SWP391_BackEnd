@@ -13,8 +13,8 @@ namespace Services
     public interface ICommentServices
     {
         public List<CommentDTO> GetComment();
-        public CommentDTO GetCommentById(int id); 
-        public void CreateComment(int idUser,CommentDTO commentDTO);
+        public CommentDTO GetCommentById(int id);
+        public void CreateComment(CommentDTO commentDTO);
         public void UpdateComment(int id, CommentDTO commentDTO);
         public void DeleteComment(int id);
     }
@@ -27,10 +27,15 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public void CreateComment(int idUser,CommentDTO commentDTO)
+        public void CreateComment(CommentDTO commentDTO)
         {
-            var user = _unitOfWork.AccountRepo.GetById(idUser);
-            var comment = new Comment
+            var user = _unitOfWork.AccountRepo.GetById((int)commentDTO.UserId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            Comment comment = new Comment
             {
                 UserId = user.AccountId,
                 Title = commentDTO.Title,
@@ -38,14 +43,42 @@ namespace Services
                 Context = commentDTO.Context,
                 Status = true,
             };
-            _unitOfWork.CommentRepo.Create(comment);
+
+            if (commentDTO.PostId.HasValue && commentDTO.PostId.Value != 0)
+            {
+                var post = _unitOfWork.PostRepo.GetById((int)commentDTO.PostId);
+                if (post == null)
+                {
+                    throw new Exception("Post not found");
+                }
+                comment.PostId = post.PostId;
+            }
+            else if (commentDTO.CourtId.HasValue && commentDTO.CourtId.Value != 0)
+            {
+                var court = _unitOfWork.CourtRepo.GetById((int)commentDTO.CourtId);
+                if (court == null)
+                {
+                    throw new Exception("Court not found");
+                }
+                comment.CourtId = court.CourtId;
+            }
+            else
+            {
+                throw new Exception("Either PostId or CourtId must be provided");
+            }
+
+            _unitOfWork.CommentRepo.Create(comment); 
             _unitOfWork.SaveChanges();
         }
+
+
+
+
 
         public void DeleteComment(int id)
         {
             var comment = _unitOfWork.CommentRepo.GetById(id);
-            if(comment != null)
+            if (comment != null)
             {
                 comment.Status = false;
                 _unitOfWork.CommentRepo.Update(comment);
@@ -62,7 +95,9 @@ namespace Services
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
-                Status = comment.Status,    
+                PostId = comment.PostId,
+                CourtId = comment.CourtId,
+                Status = comment.Status,
             }).ToList();
         }
 
@@ -80,13 +115,15 @@ namespace Services
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
+                PostId = comment.PostId,    
+                CourtId = comment.CourtId,
             };
         }
 
         public void UpdateComment(int id, CommentDTO commentDTO)
         {
             var comment = _unitOfWork.CommentRepo.GetById(id);
-            if(comment != null)
+            if (comment != null)
             {
                 comment.Title = commentDTO.Title;
                 comment.Image = commentDTO.Image;

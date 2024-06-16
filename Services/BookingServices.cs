@@ -153,6 +153,9 @@ namespace Services
                 _unitOfWork.BookingDetailRepo.Create(bookedSlot);
             }
             await _unitOfWork.SaveAsync();
+            slot.Status = false;
+            _unitOfWork.SlotTimeRepo.Update(slot);
+            ScheduleSlotTimeUpdate(slot.SlotId, scheduleDTO.Date, DateTime.Parse(slot.EndTime));
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = DateTime.Now, SlotTimeId = slot.SlotId };
         }
 
@@ -189,17 +192,22 @@ namespace Services
             };
             _unitOfWork.BookingDetailRepo.Create(bookedSlot);
             await _unitOfWork.SaveAsync();
+            slot.Status = false;
+            _unitOfWork.SlotTimeRepo.Update(slot);
+            ScheduleSlotTimeUpdate(slot.SlotId, scheduleDTO.Date, DateTime.Parse(slot.EndTime));
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = scheduleDTO.Date, SlotTimeId = slot.SlotId };
         }
 
         public async Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO)
         {
+            var totalMinutes = scheduleDTO.TotalHours * 60;
             var booking = new Booking
             {
                 CustomerId = scheduleDTO.UserId,
+                CourtId = scheduleDTO.CourtId,  
                 BookingTypeId = 3, 
                 Status = true,
-                TotalHours = scheduleDTO.TotalHours,
+                TotalHours = totalMinutes,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -217,6 +225,8 @@ namespace Services
             }
 
             var slot = await _unitOfWork.SlotTimeRepo.GetByIdAsync(bookedSlotDTO.SlotTimeId);
+            var startTime = DateTime.Parse(slot.StartTime);
+            var endTime = DateTime.Parse(slot.EndTime);
             if (slot == null)
             {
                 throw new Exception("Slot time not found");
@@ -228,12 +238,41 @@ namespace Services
                 SlotId = slot.SlotId,
                 SubCourtId = slot.SubCourtId,
                 Date = bookedSlotDTO.Date,
+                TimeReducedInMinutes = (endTime - startTime).TotalMinutes,
                 Status = true
             };
             _unitOfWork.BookingDetailRepo.Create(bookedSlot);
-            booking.TotalHours -= (DateTime.Parse(slot.EndTime) - DateTime.Parse(slot.StartTime)).TotalHours;
+            booking.TotalHours -= (endTime - startTime).TotalMinutes;
+            if (booking.TotalHours < 0)
+            {
+                throw new Exception("Not enought time play");
+            }
+            else
+                _unitOfWork.BookingRepo.Update(booking);
             await _unitOfWork.SaveAsync();
+            slot.Status = false;
+            _unitOfWork.SlotTimeRepo.Update(slot);
+             ScheduleSlotTimeUpdate(slot.SlotId, bookedSlotDTO.Date, endTime);
             return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
+        }
+
+        private void ScheduleSlotTimeUpdate(int slotId, DateTime bookingDate, DateTime endTime)
+        {
+            var duration = (endTime - DateTime.Now).TotalMilliseconds;
+            if (duration < 0 || duration > int.MaxValue)
+            {
+                duration = int.MaxValue;
+            }
+            Task.Delay((int)duration).ContinueWith(_ =>
+            {
+                var slot = _unitOfWork.SlotTimeRepo.GetById(slotId);
+                if (slot != null)
+                {
+                    slot.Status = true;
+                    _unitOfWork.SlotTimeRepo.Update(slot);
+                    _unitOfWork.SaveChanges();
+                }
+            });
         }
     }
 }

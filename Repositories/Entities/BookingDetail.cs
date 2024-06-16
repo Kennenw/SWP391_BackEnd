@@ -19,7 +19,7 @@ public partial class BookingDetail
 
     public DateTime? CheckInTime { get; set; }
 
-    public int? TimeReducedInMinutes { get; set; }
+    public double? TimeReducedInMinutes { get; set; }
 
     public virtual Booking? Booking { get; set; }
 

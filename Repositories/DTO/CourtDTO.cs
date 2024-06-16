@@ -61,9 +61,4 @@ namespace Repositories.DTO
         public List<SlotTimeDTO> SlotTimes { get; set; }
     }
 
-
-    public class Base64ImageModel
-    {
-        public string Base64Image { get; set; }
-    }
 }

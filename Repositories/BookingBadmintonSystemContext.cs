@@ -328,6 +328,8 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.ToTable("SubCourt");
 
+            entity.Property(e => e.Number).HasMaxLength(50);
+
             entity.HasOne(d => d.Court).WithMany(p => p.SubCourts)
                 .HasForeignKey(d => d.CourtId)
                 .HasConstraintName("FK_SubCourt_Court");

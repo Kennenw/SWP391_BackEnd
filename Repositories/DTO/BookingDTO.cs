@@ -46,16 +46,15 @@ namespace Repositories.DTO
     public class FlexibleScheduleDTO
     {
         public int CourtId { get; set; }
-        public int SubCourtId { get; set; }
         public int UserId { get; set; }
-        public double TotalHours { get; set; } // Tổng số giờ chơi trong 1 tháng
+        public double TotalHours { get; set; } 
     }
 
     public class BookedSlotDTO
     {
         public int BookingId { get; set; }
         public DateTime Date { get; set; }
-        public int SlotTimeId { get; set; } // Tham chiếu đến SlotTime
+        public int SlotTimeId { get; set; } 
     }
 }
 

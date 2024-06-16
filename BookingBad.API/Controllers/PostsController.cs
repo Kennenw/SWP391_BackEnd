@@ -94,13 +94,18 @@ namespace BookingBad.API.Controllers
             return Ok();
         }
 
-        [HttpPost("UploadPostImage/{postId}")]
-        public async Task<IActionResult> UploadCourtImage(int postId, [FromBody] Base64ImageModel model)
+
+        [HttpPost("UploadPostImage/{PostId}")]
+        public async Task<IActionResult> UploadCourtImage(int PostId, IFormFile file)
         {
-            if (string.IsNullOrEmpty(model.Base64Image))
+            if (file == null || file.Length == 0)
                 return BadRequest("No image uploaded.");
 
-            await postServices.UploadPostImage(postId, model.Base64Image);
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                await postServices.UploadCourtImageAsync(PostId, memoryStream.ToArray());
+            }
 
             return Ok("Image uploaded successfully.");
         }

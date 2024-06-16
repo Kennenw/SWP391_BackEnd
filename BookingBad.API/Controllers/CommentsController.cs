@@ -56,9 +56,9 @@ namespace BookingBad.API.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CommentDTO>> PostComment(int iserId,CommentDTO comment)
+        public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO comment)
         {
-            commentServices.CreateComment(iserId, comment);
+            commentServices.CreateComment(comment);
             return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
         }
 

@@ -16,4 +16,8 @@ public partial class Comment
     public bool? Status { get; set; }
 
     public string? Image { get; set; }
+
+    public int? PostId { get; set; }
+
+    public int? CourtId { get; set; }
 }

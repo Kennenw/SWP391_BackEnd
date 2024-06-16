@@ -19,7 +19,7 @@ namespace Services
         public void CreatePost(PostDTO postDTO);
         public void UpdatePost(int id, PostDTO postDTO);
         public void DeletePost(int id);
-        Task UploadPostImage(int postId, string base64Image);
+        Task UploadCourtImageAsync(int accountId, byte[] imageBytes);
         public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize);
         void RatePost(int userId,int postId, double rating);
     }
@@ -113,28 +113,34 @@ namespace Services
                 _unitOfWork.SaveChanges();
             }
         }
-        public async Task UploadPostImage(int postId, string base64Image)
+        public async Task UploadCourtImageAsync(int postId, byte[] imageBytes)
         {
             var post = _unitOfWork.PostRepo.GetById(postId);
-            if (post == null || post.Status == false) return;
+            if (post == null)
+            {
+                Console.WriteLine("Post not found.");
+                return;
+            }
 
-            // Giải mã chuỗi base64 về mảng byte
-            byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var fileName = Guid.NewGuid().ToString() + ".png";
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
             if (!Directory.Exists(uploadPath))
+            {
+                Console.WriteLine("Creating uploads directory.");
                 Directory.CreateDirectory(uploadPath);
+            }
 
             var filePath = Path.Combine(uploadPath, fileName);
 
             await File.WriteAllBytesAsync(filePath, imageBytes);
 
-            post.Image = fileName; // Lưu tên file vào cột Image
+            post.Image = fileName;
 
             _unitOfWork.PostRepo.Update(post);
             _unitOfWork.SaveChanges();
+
+            Console.WriteLine("Image saved successfully.");
         }
 
         public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize)

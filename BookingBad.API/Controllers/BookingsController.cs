@@ -22,14 +22,20 @@ namespace Repositories.API.Controllers
         {
             _bookingService = bookingService;
         }
-        // GET: api/Bookings/5
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBooking()
+        {
+            return _bookingService.GetBooking();
+        }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<BookingDTO>> GetBooking(int id)
+        public async Task<ActionResult<BookingDTO>> GetBookingById(int id)
         {
             return _bookingService.GetBookingById(id);
         }
 
-        // POST: api/Schedules/Fixed
+
         [HttpPost("Fixed")]
         public async Task<IActionResult> BookFixedSchedule([FromBody] FixedScheduleDTO scheduleDTO)
         {
@@ -37,7 +43,7 @@ namespace Repositories.API.Controllers
             return Ok(result);
         }
 
-        // POST: api/Schedules/OneTime
+
         [HttpPost("OneTime")]
         public async Task<IActionResult> BookOneTimeSchedule([FromBody] OneTimeScheduleDTO scheduleDTO)
         {
@@ -45,7 +51,6 @@ namespace Repositories.API.Controllers
             return Ok(result);
         }
 
-        // POST: api/Schedules/Flexible
         [HttpPost("Flexible")]
         public async Task<IActionResult> BookFlexibleSchedule([FromBody] FlexibleScheduleDTO scheduleDTO)
         {
@@ -53,15 +58,21 @@ namespace Repositories.API.Controllers
             return Ok(result);
         }
 
-        // POST: api/Schedules/FlexibleSlot
+
         [HttpPost("FlexibleSlot")]
         public async Task<IActionResult> BookFlexibleSlot([FromBody] BookedSlotDTO bookedSlotDTO)
         {
-            var result = await _bookingService.BookFlexibleSlot(bookedSlotDTO);
-            return Ok(result);
+            try
+            {
+                var result = await _bookingService.BookFlexibleSlot(bookedSlotDTO);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Not enought time play" });
+            }
         }
 
-        // POST: api/Bookings/CheckIn/{bookingDetailId}
         [HttpPost("CheckIn/{bookingDetailId:int}")]
         public ActionResult CheckIn(int bookingDetailId)
         {
@@ -76,7 +87,6 @@ namespace Repositories.API.Controllers
             }
         }
 
-        // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(int id)
         {

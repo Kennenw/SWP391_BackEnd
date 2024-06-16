@@ -13,12 +13,12 @@ namespace Services
 {
     public interface IAccountServices
     {
-        PagedResult<AccountDTO> GetAccount(SortContent sortContent, int pageNumber, int pageSize);
+        PagedResult<AccountDTO> GetAccount( int pageNumber, int pageSize);
         AccountDTO GetAccountById(int id);
         AccountDTO GetAccountByName(string name);
         void DeleteAccount(int id);
         AccountDTO Login(string username, string password);
-        PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize);
+        PagedResult<AccountDTO> PagedResult(string query, int pageNumber, int pageSize);
         SelfProfile GetSelfProfile(int id);
         bool RegisterUser(RegisterInformation info);
         bool RegisterStaff(AccountDTO info);
@@ -29,44 +29,21 @@ namespace Services
         bool IsAdminAndStaff(int user_id);
         bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
-        Task UploadAccountImage(int accountId, string base64Image);
+        Task UploadCourtImageAsync(int accountId, byte[] imageBytes);
 
     }
     public class AccountServices : IAccountServices
     {
         private readonly UnitOfWork _unitOfWork;
-         
+        private string image = "clone-account.png";
         public AccountServices()
         {
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public PagedResult<AccountDTO> GetAccount(SortContent sortContent, int pageNumber, int pageSize)
+        public PagedResult<AccountDTO> GetAccount( int pageNumber, int pageSize)
         {
-            var account = _unitOfWork.AccountRepo.GetAll();
-            switch (sortContent.sortAccountBy)
-            {
-                case SortAccountByEnum.AccountId:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.AccountId).ToList()
-                    : account.OrderByDescending(a => a.AccountId).ToList();
-                    break;
-                case SortAccountByEnum.AccountName:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.AccountName).ToList()
-                    : account.OrderByDescending(a => a.AccountName).ToList();
-                    break;
-                case SortAccountByEnum.FullName:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.FullName).ToList()
-                    : account.OrderByDescending(a => a.FullName).ToList();
-                    break;
-                case SortAccountByEnum.RoleId:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.RoleId).ToList()
-                    : account.OrderByDescending(a => a.RoleId).ToList();
-                    break;
-            }
+            var account = _unitOfWork.AccountRepo.GetAll();          
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
@@ -78,6 +55,7 @@ namespace Services
                 Phone = a.Phone,
                 Email = a.Email,
                 RoleId = a.RoleId,
+                Image = a.Image,
                 Status = true
             }).ToList();
             return new PagedResult<AccountDTO>
@@ -106,6 +84,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
+                Image = account.Image,
             };
         }
 
@@ -126,6 +105,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
+                Image = account.Image,
             };
         }
 
@@ -163,36 +143,12 @@ namespace Services
             };
         }
 
-        public PagedResult<AccountDTO> PagedResult(string query, SortContent sortContent, int pageNumber, int pageSize)
+        public PagedResult<AccountDTO> PagedResult(string query,  int pageNumber, int pageSize)
         {
             var account = _unitOfWork.AccountRepo.GetAll();
             if (!string.IsNullOrEmpty(query))
             {
                 account = account.Where(a => a.AccountName.Contains(query) || a.FullName.Contains(query)).ToList();
-            }
-            switch (sortContent.sortAccountBy)
-            {
-                case SortAccountByEnum.AccountId:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.AccountId).ToList()
-                    : account.OrderByDescending(a => a.AccountId).ToList();
-                    break;
-
-                case SortAccountByEnum.AccountName:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.AccountName).ToList()
-                    : account.OrderByDescending(a => a.AccountName).ToList();
-                    break;
-                case SortAccountByEnum.FullName:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.FullName).ToList()
-                    : account.OrderByDescending(a => a.FullName).ToList();
-                    break;
-                case SortAccountByEnum.RoleId:
-                    account = sortContent.sortType == SortTypeEnum.Ascending
-                    ? account.OrderBy(a => a.RoleId).ToList()
-                    : account.OrderByDescending(a => a.Role).ToList();
-                    break;
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -250,6 +206,7 @@ namespace Services
                     Email = info.Email,
                     FullName = info.FullName,
                     Password = info.Password,
+                    Image = image,
                     RoleId = 2,
                     Status = true
                 };
@@ -273,6 +230,7 @@ namespace Services
                     FullName = info.FullName,
                     Password = info.Password,
                     RoleId = info.RoleId,
+                    Image = image,
                     Status = true
                 };
                 _unitOfWork.AccountRepo.Create(user);
@@ -307,10 +265,6 @@ namespace Services
             {
                 user.AccountName = param.UserName;
                 user.FullName = param.FullName;
-                //if (param.ImgUrl != user.Image)
-                //{
-
-                //}
                 user.Phone = param.PhoneNumber;
                 _unitOfWork.AccountRepo.Update(user);
                 _unitOfWork.SaveChanges();
@@ -368,28 +322,35 @@ namespace Services
             return true;
         }
 
-        public async Task UploadAccountImage(int accountId, string base64Image)
+        public async Task UploadCourtImageAsync(int accountId, byte[] imageBytes)
         {
-            var user = _unitOfWork.AccountRepo.GetById(accountId);
-            if (user == null) return;
+            var account = _unitOfWork.AccountRepo.GetById(accountId);
+            if (account == null)
+            {
+                Console.WriteLine("Account not found.");
+                return;
+            }
 
-            // Giải mã chuỗi base64 về mảng byte
-            byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var fileName = Guid.NewGuid().ToString() + ".png";
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
             if (!Directory.Exists(uploadPath))
+            {
+                Console.WriteLine("Creating uploads directory.");
                 Directory.CreateDirectory(uploadPath);
+            }
 
             var filePath = Path.Combine(uploadPath, fileName);
 
             await File.WriteAllBytesAsync(filePath, imageBytes);
 
-            user.Image = fileName; // Lưu tên file vào cột Image
+            account.Image = fileName;
 
-            _unitOfWork.AccountRepo.Update(user);
+            _unitOfWork.AccountRepo.Update(account);
             _unitOfWork.SaveChanges();
+
+            Console.WriteLine("Image saved successfully.");
         }
+
     }
 }
