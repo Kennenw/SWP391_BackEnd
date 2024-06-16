@@ -29,18 +29,36 @@ namespace Repositories.API.Controllers
             return _bookingService.GetBookingById(id);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBooking([FromBody] BookingRequestDTO bookingRequest)
+        // POST: api/Schedules/Fixed
+        [HttpPost("Fixed")]
+        public async Task<IActionResult> BookFixedSchedule([FromBody] FixedScheduleDTO scheduleDTO)
         {
-            try
-            {
-                _bookingService.CreateBooking(bookingRequest);
-                return Ok(new { message = "Booking created successfully" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var result = await _bookingService.BookFixedSchedule(scheduleDTO);
+            return Ok(result);
+        }
+
+        // POST: api/Schedules/OneTime
+        [HttpPost("OneTime")]
+        public async Task<IActionResult> BookOneTimeSchedule([FromBody] OneTimeScheduleDTO scheduleDTO)
+        {
+            var result = await _bookingService.BookOneTimeSchedule(scheduleDTO);
+            return Ok(result);
+        }
+
+        // POST: api/Schedules/Flexible
+        [HttpPost("Flexible")]
+        public async Task<IActionResult> BookFlexibleSchedule([FromBody] FlexibleScheduleDTO scheduleDTO)
+        {
+            var result = await _bookingService.BookFlexibleSchedule(scheduleDTO);
+            return Ok(result);
+        }
+
+        // POST: api/Schedules/FlexibleSlot
+        [HttpPost("FlexibleSlot")]
+        public async Task<IActionResult> BookFlexibleSlot([FromBody] BookedSlotDTO bookedSlotDTO)
+        {
+            var result = await _bookingService.BookFlexibleSlot(bookedSlotDTO);
+            return Ok(result);
         }
 
         // POST: api/Bookings/CheckIn/{bookingDetailId}

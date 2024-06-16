@@ -134,6 +134,10 @@ public partial class BookingBadmintonSystemContext : DbContext
                 .HasForeignKey(d => d.BookingTypeId)
                 .HasConstraintName("FK_Booking_BookingType1");
 
+            entity.HasOne(d => d.Court).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.CourtId)
+                .HasConstraintName("FK_Booking_Court");
+
             entity.HasOne(d => d.Customer).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Booking_Account");

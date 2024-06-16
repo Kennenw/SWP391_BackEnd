@@ -35,6 +35,8 @@ public partial class Court
 
     public virtual Area? Area { get; set; }
 
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
     public virtual Account? Manager { get; set; }
 
     public virtual ICollection<RatingCourt> RatingCourts { get; set; } = new List<RatingCourt>();

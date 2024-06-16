@@ -14,9 +14,9 @@ namespace Services
     public interface ICourtServices
     {
         public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize);
-        CourtDTO GetCourtById(int id);
+        CourtGET GetCourtById(int id);
         void UpdateCourt(int courtId, CourtDTOs courtDTO);
-        Task<Court> CreateCourtAsync(CourtDTO courtDTO, byte[] imageBytes);
+        Task<Court> CreateCourtAsync(CourtDTO courtDTO);
         public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
@@ -62,7 +62,7 @@ namespace Services
         }
 
 
-        public CourtDTO? GetCourtById(int id)
+        public CourtGET GetCourtById(int id)
         {
             var court = _unitOfWork.CourtRepo.GetById(id);
             if (court == null)
@@ -74,7 +74,23 @@ namespace Services
             var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId) ?? new List<AmenityCourt>();
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(court.CourtId) ?? new List<SlotTime>();
 
-            return new CourtDTO
+            var subCourtDTOs = subCourts.Select(sc => new SubCourtGet
+            {
+                SubCourtId = sc.SubCourtId,
+                Number = sc.Number,
+                Status = sc.Status,
+                SlotTimes = slotTimes.Where(st => st.SubCourtId == sc.SubCourtId).Select(st => new SlotTimeDTO
+                {
+                    SlotId = st.SlotId,
+                    StartTime = st.StartTime,
+                    EndTime = st.EndTime,
+                    WeekdayPrice = st.WeekdayPrice,
+                    WeekendPrice = st.WeekendPrice,
+                    Status = st.Status,
+                }).ToList()
+            }).ToList();
+
+            return new CourtGET
             {
                 CourtId = court.CourtId,
                 CourtName = court.CourtName,
@@ -88,27 +104,21 @@ namespace Services
                 Address = court.Address,
                 TotalRate = court.TotalRate,
                 AreaId = court.AreaId,
-                SubCourts = subCourts.Select(sc => new SubCourtDTO
-                {
-                    SubCourtId = sc.SubCourtId,
-                    Number = sc.Number,
-                    Status = sc.Status
-                }).ToList(),
+                SubCourts = subCourtDTOs,
                 Amenities = amenityCourts.Select(ac => new AmenityCourtDTO
                 {
                     AmenityCourtId = ac.AmenityCourtId,
                     AmenityId = ac.AmenityId,
-                    CourtId = ac.CourtId,
                     Status = ac.Status
                 }).ToList(),
-                SlotTimes = slotTimes.Select(st => new SlotTimeDTO
+                SlotTimes = slotTimes.Where(st => st.SubCourtId == 0).Select(st => new SlotTimeDTO
                 {
                     SlotId = st.SlotId,
                     StartTime = st.StartTime,
                     EndTime = st.EndTime,
                     WeekdayPrice = st.WeekdayPrice,
                     WeekendPrice = st.WeekendPrice,
-                    Status = st.Status
+                    Status = st.Status,
                 }).ToList()
             };
         }
@@ -131,7 +141,7 @@ namespace Services
             }
         }
 
-        public async Task<Court> CreateCourtAsync(CourtDTO courtDTO, byte[] imageBytes)
+        public async Task<Court> CreateCourtAsync(CourtDTO courtDTO)
         {
             var court = new Court
             {
@@ -144,56 +154,55 @@ namespace Services
                 Status = true,
                 Title = courtDTO.Title,
                 Address = courtDTO.Address,
-                TotalRate = courtDTO.TotalRate,               
+                TotalRate = courtDTO.TotalRate,
             };
             _unitOfWork.CourtRepo.Create(court);
             _unitOfWork.SaveChanges();
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(courtDTO.ImageFile.FileName);
-            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-            if (!Directory.Exists(uploadPath))
-                Directory.CreateDirectory(uploadPath);
+            var createdSubCourts = new List<SubCourt>();
 
-            var filePath = Path.Combine(uploadPath, fileName);
-            await File.WriteAllBytesAsync(filePath, imageBytes);
-
-            court.Image = fileName;
-            _unitOfWork.CourtRepo.Update(court);
-            _unitOfWork.SaveChanges();
             foreach (var subCourt in courtDTO.SubCourts)
             {
-                var subCourts = new SubCourt
+                var newSubCourt = new SubCourt
                 {
                     CourtId = court.CourtId,
                     Number = subCourt.Number,
                     Status = true,
                 };
-                _unitOfWork.SubCourtRepo.Create(subCourts);
+                _unitOfWork.SubCourtRepo.Create(newSubCourt);
+                createdSubCourts.Add(newSubCourt);
             }
+
             foreach (var amenityCourt in courtDTO.Amenities)
             {
-                var amenties = new AmenityCourt
+                var newAmenity = new AmenityCourt
                 {
                     CourtId = court.CourtId,
                     AmenityId = amenityCourt.AmenityId,
                     Status = true
                 };
-                _unitOfWork.AmenityCourtRepo.Create(amenties);
+                _unitOfWork.AmenityCourtRepo.Create(newAmenity);
             }
-            foreach (var slot in courtDTO.SlotTimes)
+
+            foreach (var subCourt in createdSubCourts)
             {
-                var slotTime = new SlotTime
+                foreach (var slot in courtDTO.SlotTimes)
                 {
-                    StartTime = slot.StartTime,
-                    EndTime = slot.EndTime,
-                    WeekdayPrice = slot.WeekdayPrice,
-                    WeekendPrice = slot.WeekendPrice,
-                    CourtId = court.CourtId,
-                    ManagerId = courtDTO.ManagerId,
-                    Status = true
-                };
-                _unitOfWork.SlotTimeRepo.Create(slotTime);
+                    var slotTime = new SlotTime
+                    {
+                        StartTime = slot.StartTime,
+                        EndTime = slot.EndTime,
+                        WeekdayPrice = slot.WeekdayPrice,
+                        WeekendPrice = slot.WeekendPrice,
+                        CourtId = court.CourtId,
+                        ManagerId = court.ManagerId,
+                        SubCourtId = subCourt.SubCourtId,
+                        Status = true
+                    };
+                    _unitOfWork.SlotTimeRepo.Create(slotTime);
+                }
             }
+            _unitOfWork.SaveChanges();
             return court;
         }
 
@@ -238,6 +247,7 @@ namespace Services
                 TotalRate = c.TotalRate,
                 Address = c.Address,
                 Title = c.Title,
+                ManagerId = c.ManagerId,
             }).ToList();
 
             return new PagedResult<CourtDTOs>

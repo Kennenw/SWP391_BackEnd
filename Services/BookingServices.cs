@@ -15,7 +15,10 @@ namespace Services
         public List<BookingDTO> GetBooking();
         public List<BookingDTO> GetBookingByUserId(int id);
         public BookingDTO GetBookingById(int id);
-        void CreateBooking(BookingRequestDTO bookingRequest);
+        Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO);
+        Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
+        Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
+        Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
         void CheckIn(int bookingDetailId);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
@@ -97,47 +100,7 @@ namespace Services
                 Status = booking.Status,
             };
         }
-        public void CreateBooking(BookingRequestDTO bookingRequest)
-        {
-            var bookingType = _unitOfWork.BookingTypeRepo.GetById(bookingRequest.BookingTypeId);
-            var courtNumber = _unitOfWork.SubCourtRepo.GetById(bookingRequest.SubCourtId);
-            var slotTime = _unitOfWork.SlotTimeRepo.GetById(bookingRequest.SlotId);
-            if (bookingType == null || courtNumber == null || slotTime == null)
-            {
-                throw new Exception("Invalid booking details.");
-            }
-           
-            var booking = new Booking
-            {
-                CustomerId = bookingRequest.CustomerId,
-                BookingTypeId = bookingRequest.BookingTypeId,
-                PlayerQuantity = bookingRequest.PlayerQuantity,
-                TotalPrice = slotTime.WeekdayPrice.Value,
-                Note = bookingRequest.Note,
-                Status = true
-            };
-            _unitOfWork.BookingRepo.Create(booking);
-            _unitOfWork.SaveChanges();
 
-            switch (bookingRequest.BookingTypeId)
-            {
-                case 1: 
-                    CreateFixedBooking(booking, bookingRequest);
-                    break;
-
-                case 2: 
-                    CreateSingleBooking(booking, bookingRequest);
-                    break;
-
-                case 3: 
-                    CreateFlexibleBooking(booking, bookingRequest);
-                    break;
-
-                default:
-                    throw new Exception("Unknown booking type");
-            }
-        }
-      
         public void CheckIn(int bookingDetailId)
         {
             var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
@@ -153,65 +116,124 @@ namespace Services
             }
         }
 
-        private void CreateFixedBooking(Booking booking, BookingRequestDTO bookingRequest)
+        public async Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO)
         {
-            var startDate = bookingRequest.Date.Date;
-            var endDate = startDate.AddMonths(bookingRequest.MonthsDuration); 
-
-            while (startDate <= endDate)
+            var slot = _unitOfWork.SlotTimeRepo.GetById(scheduleDTO.SlotTimeId);
+            if (slot == null)
             {
-                if (startDate.DayOfWeek == bookingRequest.Date.DayOfWeek)
-                {
-                    var bookingDetail = new BookingDetail
-                    {
-                        BookingId = booking.BookingId,
-                        SubCourtId = bookingRequest.SubCourtId,
-                        SlotId = bookingRequest.SlotId,
-                        Date = startDate,
-                        Status = true,
-                    };
-                    _unitOfWork.BookingDetailRepo.Create(bookingDetail);
-                }
-                startDate = startDate.AddDays(1);
+                throw new Exception("Slot time not found");
             }
-            _unitOfWork.SaveChanges();
-        }
-
-        private void CreateSingleBooking(Booking booking, BookingRequestDTO bookingRequest)
-        {
-            var bookingDetail = new BookingDetail
+            var bookingDate = scheduleDTO.Date;
+            bool isWeekend = (bookingDate.DayOfWeek == DayOfWeek.Saturday || bookingDate.DayOfWeek == DayOfWeek.Sunday);
+            
+            var booking = new Booking
             {
-                BookingId = booking.BookingId,
-                SubCourtId = bookingRequest.SubCourtId,
-                SlotId = bookingRequest.SlotId,
-                Date = bookingRequest.Date,
+                CustomerId = scheduleDTO.UserId,
+                CourtId = slot.CourtId,
+                BookingTypeId = 1, 
                 Status = true,
+                Note = scheduleDTO.Note,              
+                TotalPrice = isWeekend ? slot.WeekendPrice * 4 * scheduleDTO.Months : slot.WeekdayPrice * 4 * scheduleDTO.Months,
+                StartDate = scheduleDTO.Date,
+                EndDate = scheduleDTO.Date.AddMonths(scheduleDTO.Months)
             };
-            _unitOfWork.BookingDetailRepo.Create(bookingDetail);
-            _unitOfWork.SaveChanges();
-        }
+            _unitOfWork.BookingRepo.Create(booking);
+            await _unitOfWork.SaveAsync();
 
-        private void CreateFlexibleBooking(Booking booking, BookingRequestDTO bookingRequest)
-        {
-            var totalHours = bookingRequest.TotalHours;
-            booking.TotalHours = totalHours;
-
-            while (totalHours > 0)
+            for (int i = 0; i < scheduleDTO.Months * 4; i++)
             {
-                var bookingDetail = new BookingDetail
+                var bookedSlot = new BookingDetail
                 {
                     BookingId = booking.BookingId,
-                    SubCourtId = bookingRequest.SubCourtId,
-                    SlotId = bookingRequest.SlotId,
-                    Date = bookingRequest.Date,
+                    SlotId = slot.SlotId,
+                    SubCourtId = slot.SubCourtId,
+                    Date = scheduleDTO.Date.AddDays(i * 7).Date, 
                     Status = true
                 };
+                _unitOfWork.BookingDetailRepo.Create(bookedSlot);
+            }
+            await _unitOfWork.SaveAsync();
+            return new BookedSlotDTO { BookingId = booking.BookingId, Date = DateTime.Now, SlotTimeId = slot.SlotId };
+        }
 
-                _unitOfWork.BookingDetailRepo.Create(bookingDetail);
-                totalHours--;
+        public async Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO)
+        {
+            var slot = await _unitOfWork.SlotTimeRepo.GetByIdAsync(scheduleDTO.SlotTimeId);
+            if (slot == null)
+            {
+                throw new Exception("Slot time not found");
+            }
+            var bookingDate = scheduleDTO.Date;
+            bool isWeekend = (bookingDate.DayOfWeek == DayOfWeek.Saturday || bookingDate.DayOfWeek == DayOfWeek.Sunday);
+            var booking = new Booking
+            {
+                CustomerId = scheduleDTO.UserId,
+                CourtId = slot.CourtId,
+                BookingTypeId = 2,
+                Status = true,
+                PlayerQuantity = scheduleDTO.PlayerQuantity,
+                TotalPrice = isWeekend ? slot.WeekendPrice : slot.WeekdayPrice,
+                StartDate = scheduleDTO.Date,
+                EndDate = scheduleDTO.Date
+            };
+            _unitOfWork.BookingRepo.Create(booking);
+            await _unitOfWork.SaveAsync();
+
+            var bookedSlot = new BookingDetail
+            {
+                BookingId = booking.BookingId,
+                SlotId = slot.SlotId,
+                SubCourtId = slot.SubCourtId,
+                Date = scheduleDTO.Date,
+                Status = true
+            };
+            _unitOfWork.BookingDetailRepo.Create(bookedSlot);
+            await _unitOfWork.SaveAsync();
+            return new BookedSlotDTO { BookingId = booking.BookingId, Date = scheduleDTO.Date, SlotTimeId = slot.SlotId };
+        }
+
+        public async Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO)
+        {
+            var booking = new Booking
+            {
+                CustomerId = scheduleDTO.UserId,
+                BookingTypeId = 3, 
+                Status = true,
+                TotalHours = scheduleDTO.TotalHours,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
+            };
+            _unitOfWork.BookingRepo.Create(booking);
+            await _unitOfWork.SaveAsync();
+            return new BookedSlotDTO { BookingId = booking.BookingId, Date = DateTime.Now, SlotTimeId = 0 };
+        }
+
+        public async Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO)
+        {
+            var booking = await _unitOfWork.BookingRepo.GetByIdAsync(bookedSlotDTO.BookingId);
+            if (booking == null || booking.TotalHours <= 0)
+            {
+                throw new Exception("No remaining hours in flexible schedule");
             }
 
-           _unitOfWork.SaveChanges();
+            var slot = await _unitOfWork.SlotTimeRepo.GetByIdAsync(bookedSlotDTO.SlotTimeId);
+            if (slot == null)
+            {
+                throw new Exception("Slot time not found");
+            }
+
+            var bookedSlot = new BookingDetail
+            {
+                BookingId = bookedSlotDTO.BookingId,
+                SlotId = slot.SlotId,
+                SubCourtId = slot.SubCourtId,
+                Date = bookedSlotDTO.Date,
+                Status = true
+            };
+            _unitOfWork.BookingDetailRepo.Create(bookedSlot);
+            booking.TotalHours -= (DateTime.Parse(slot.EndTime) - DateTime.Parse(slot.StartTime)).TotalHours;
+            await _unitOfWork.SaveAsync();
+            return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
         }
     }
 }

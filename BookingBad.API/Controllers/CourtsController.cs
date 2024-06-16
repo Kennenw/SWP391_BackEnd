@@ -51,7 +51,7 @@ namespace BookingBad.API.Controllers
 
         // GET: api/Courts/{id}
         [HttpGet("{id}")]
-        public ActionResult<CourtDTO> GetCourtById(int id)
+        public ActionResult<CourtGET> GetCourtById(int id)
         {
             var court = _courtServices.GetCourtById(id);
             if (court == null)
@@ -85,20 +85,11 @@ namespace BookingBad.API.Controllers
             return Ok("Image uploaded successfully.");
         }
 
-        [HttpPost("CreateCourtWithImage")]
-        public async Task<IActionResult> CreateCourtWithImage([FromForm] CourtDTO courtCreationDTO)
+        [HttpPost]
+        public async Task<IActionResult> CreateCourtWithImage( CourtDTO courtCreationDTO)
         {
-            if (courtCreationDTO.ImageFile == null || courtCreationDTO.ImageFile.Length == 0)
-                return BadRequest("No image uploaded.");
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await courtCreationDTO.ImageFile.CopyToAsync(memoryStream);
-                var imageBytes = memoryStream.ToArray();
-                await _courtServices.CreateCourtAsync(courtCreationDTO, imageBytes);
-            }
-
-            return Ok("Court and image created successfully.");
+            await _courtServices.CreateCourtAsync(courtCreationDTO);
+            return Ok("Court created successfully.");
         }
         // DELETE: api/Courts/{id}
         [HttpDelete("{id}")]
