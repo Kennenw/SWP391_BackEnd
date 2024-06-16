@@ -51,7 +51,7 @@ namespace Repositories.API
             builder.Services.AddTransient<IEmailServices, EmailServices>();
             builder.Services.AddTransient<IAccountServices, AccountServices>();
             builder.Services.AddTransient<ICourtServices, CourtServices>();
-
+            builder.Services.AddTransient<IBookingSevices, BookingServices>();
             // Register repositories
             builder.Services.AddScoped<AccountRepo>();
             builder.Services.AddScoped<AccountRepo>();
@@ -59,6 +59,8 @@ namespace Repositories.API
             builder.Services.AddScoped<SubCourtRepo>();
             builder.Services.AddScoped<AmenityCourtRepo>();
             builder.Services.AddScoped<SlotTimeRepo>();
+            builder.Services.AddScoped<BookingRepo>();
+            builder.Services.AddScoped<BookingDetailsRepo>();
 
             // Register memory cache
             builder.Services.AddMemoryCache();

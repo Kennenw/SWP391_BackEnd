@@ -74,9 +74,14 @@ namespace Repositories
                 _context.SaveChanges();
             }
         }
+
         public async Task<double> SumAsync(Expression<Func<T, double?>> selector)
         {
             return (double)await _dbSet.SumAsync(selector);
+        }
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
         }
     }
     public class SuccessObject<T> where T : class
