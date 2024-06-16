@@ -12,5 +12,14 @@ namespace Repositories.DTO
         public int? Number { get; set; }
         public bool? Status { get; set; }
         public int? CourtId { get; set; }
+
     }
+    public class SubCourtGet
+    {
+        public int SubCourtId { get; set; }
+        public int? Number { get; set; }
+        public bool? Status { get; set; }
+        public List<SlotTimeDTO> SlotTimes { get; set; }
+    }
+
 }

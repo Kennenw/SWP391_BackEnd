@@ -22,17 +22,41 @@ namespace Repositories.DTO
 
         public bool? Status { get; set; }
     }
-    public class BookingRequestDTO
+    public class FixedScheduleDTO
     {
-        public int CustomerId { get; set; }
-        public int BookingTypeId { get; set; }
+        public int CourtId { get; set; }
         public int SubCourtId { get; set; }
-        public int SlotId { get; set; }
-        public DateTime Date { get; set; }
-        public int PlayerQuantity { get; set; }
-        public string Note { get; set; }
-        public int MonthsDuration { get; set; }
-        public int TotalHours { get; set; } 
-
+        public int UserId { get; set; }
+        public string DayOfWeek { get; set; } 
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+        public int Months { get; set; } 
     }
+
+    public class OneTimeScheduleDTO
+    {
+        public int CourtId { get; set; }
+        public int SubCourtId { get; set; }
+        public int UserId { get; set; }
+        public DateTime Date { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+    }
+
+    public class FlexibleScheduleDTO
+    {
+        public int CourtId { get; set; }
+        public int SubCourtId { get; set; }
+        public int UserId { get; set; }
+        public int TotalHours { get; set; } 
+    }
+
+    public class BookedSlotDTO
+    {
+        public int ScheduleId { get; set; }
+        public DateTime Date { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+    }
+
 }
