@@ -149,7 +149,6 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
-            entity.Property(e => e.CheckInTime).HasColumnType("datetime");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
             entity.Property(e => e.SubCourtId).HasColumnName("SubCourtID");
@@ -327,6 +326,8 @@ public partial class BookingBadmintonSystemContext : DbContext
             entity.HasKey(e => e.SubCourtId).HasName("PK_CourtNumber");
 
             entity.ToTable("SubCourt");
+
+            entity.Property(e => e.Number).HasMaxLength(50);
 
             entity.HasOne(d => d.Court).WithMany(p => p.SubCourts)
                 .HasForeignKey(d => d.CourtId)

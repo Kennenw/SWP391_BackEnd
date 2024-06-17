@@ -31,7 +31,7 @@ namespace BookingDemo.API.Controllers
         }
         // GET: api/AmenityCourts/Court/5
 
-        [HttpGet("{AccountId}")]
+        [HttpGet("{AccountId:int}")]
         public ActionResult<IEnumerable<AccountDTO>> GetAccountById(int AccountId)
         {
             var account = accountServices.GetAccountById(AccountId);
@@ -45,17 +45,11 @@ namespace BookingDemo.API.Controllers
         // GET: api/Accounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAccounts(
-            [FromQuery] SortAccountByEnum sortAccountBy,
-            [FromQuery] SortTypeEnum sortAccountType,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var sortContent = new SortContent
-            {
-                sortAccountBy = sortAccountBy,
-                sortType = sortAccountType,
-            };
-            var result = accountServices.GetAccount(sortContent, pageNumber, pageSize);
+
+            var result = accountServices.GetAccount( pageNumber, pageSize);
             if (result == null)
             {
                 return NotFound();
@@ -105,16 +99,11 @@ namespace BookingDemo.API.Controllers
         [HttpGet("Search-Account")]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> SearchAccount(
             [FromQuery] string searchTerm, 
-            [FromQuery] SortAccountByEnum sortAccountBy, 
-            [FromQuery] SortTypeEnum sortAccountType,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var sortContent = new SortContent{
-                sortAccountBy = sortAccountBy,
-                sortType = sortAccountType,
-            };
-            var result = accountServices.PagedResult(searchTerm ,sortContent ,pageNumber ,pageSize );
+ 
+            var result = accountServices.PagedResult(searchTerm,pageNumber, pageSize );
             if (result == null)
             {
                 return NotFound();
@@ -135,7 +124,7 @@ namespace BookingDemo.API.Controllers
             return account;
         }
 
-        [HttpGet("id")]
+        [HttpGet("Account/{id:int}")]
         public async Task<ActionResult<AccountDTO>> GetAccount(int id)
         {
             var account =  accountServices.GetAccountById(id);
@@ -163,7 +152,8 @@ namespace BookingDemo.API.Controllers
         }
        
 
-        [HttpPost("Register")]
+        [HttpPost]
+        [Route("Register")]
         public async Task<IActionResult> Register(RegisterInformation info)
         {
             if (info.Password != info.ReEnterPass)
@@ -273,13 +263,18 @@ namespace BookingDemo.API.Controllers
             return Ok(new SuccessObject<object> { Message = "Xóa thành công" });                          
         }
 
-        [HttpPost("UploadAccountImage/{accountId}")]
-        public async Task<IActionResult> UploadCourtImage(int accountId, [FromBody] Base64ImageModel model)
+
+        [HttpPost("UploadAccountImage/{AccountId}")]
+        public async Task<IActionResult> UploadCourtImage(int AccountId, IFormFile file)
         {
-            if (string.IsNullOrEmpty(model.Base64Image))
+            if (file == null || file.Length == 0)
                 return BadRequest("No image uploaded.");
 
-            await accountServices.UploadAccountImage(accountId, model.Base64Image);
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                await accountServices.UploadCourtImageAsync(AccountId, memoryStream.ToArray());
+            }
 
             return Ok("Image uploaded successfully.");
         }

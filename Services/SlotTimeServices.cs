@@ -34,7 +34,7 @@ namespace Services
                 StartTime = slotTimeDTO.StartTime,
                 EndTime = slotTimeDTO.EndTime,
                 WeekendPrice = slotTimeDTO.WeekendPrice,
-                WeekdayPrice = slotTimeDTO.WeekdayPrice,
+                WeekdayPrice = slotTimeDTO.WeekdayPrice,               
                 Status = true,
             };
             _unitOfWork.SlotTimeRepo.Create(slot);

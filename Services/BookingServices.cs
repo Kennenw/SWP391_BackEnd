@@ -19,7 +19,7 @@ namespace Services
         Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
-        void CheckIn(int bookingDetailId);
+        Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
     }
@@ -101,19 +101,19 @@ namespace Services
             };
         }
 
-        public void CheckIn(int bookingDetailId)
+        public async Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO)
         {
-            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
-            if (bookingDetail != null)
+            var checkIn = await _unitOfWork.CheckInRepo.GetByIdAsync(checkInDTO.BookingDetailId);
+            
+            if (checkIn == null)
             {
-                var checkIn = new CheckIn
-                {
-                    BookingDetail = bookingDetail,
-                    CheckInTime = DateTime.Now,
-                };
-                _unitOfWork.CheckInRepo.Create(checkIn);
-                _unitOfWork.SaveChanges();
+                throw new Exception("Booking detail not found");
             }
+            checkIn.BookingDetailId = checkInDTO.BookingDetailId;
+            checkIn.CheckInTime = checkInDTO.CheckInTime;
+            _unitOfWork.CheckInRepo.Create(checkIn);
+            await _unitOfWork.SaveAsync();
+            return checkInDTO;
         }
 
         public async Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO)
@@ -194,12 +194,16 @@ namespace Services
 
         public async Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO)
         {
+            var totalMinutes = scheduleDTO.TotalHours * 60;
+            var court = _unitOfWork.CourtRepo.GetById(scheduleDTO.CourtId);
             var booking = new Booking
             {
                 CustomerId = scheduleDTO.UserId,
+                CourtId = scheduleDTO.CourtId,  
                 BookingTypeId = 3, 
                 Status = true,
-                TotalHours = scheduleDTO.TotalHours,
+                TotalHours = totalMinutes,
+                TotalPrice = scheduleDTO.TotalHours * court.PricePerHour,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -217,23 +221,37 @@ namespace Services
             }
 
             var slot = await _unitOfWork.SlotTimeRepo.GetByIdAsync(bookedSlotDTO.SlotTimeId);
+            var courtId = slot.CourtId;
+            var startTime = DateTime.Parse(slot.StartTime);
+            var endTime = DateTime.Parse(slot.EndTime);
             if (slot == null)
             {
                 throw new Exception("Slot time not found");
             }
-
+            if (slot.CourtId != booking.CourtId)
+            {
+                throw new Exception("Slot time court ID does not match the booking court ID");
+            }
             var bookedSlot = new BookingDetail
             {
                 BookingId = bookedSlotDTO.BookingId,
                 SlotId = slot.SlotId,
                 SubCourtId = slot.SubCourtId,
                 Date = bookedSlotDTO.Date,
+                TimeReducedInMinutes = (endTime - startTime).TotalMinutes,
                 Status = true
             };
             _unitOfWork.BookingDetailRepo.Create(bookedSlot);
-            booking.TotalHours -= (DateTime.Parse(slot.EndTime) - DateTime.Parse(slot.StartTime)).TotalHours;
+            booking.TotalHours -= (endTime - startTime).TotalMinutes;
+            if (booking.TotalHours < 0)
+            {
+                throw new Exception("Not enought time play");
+            }
+            else
+                _unitOfWork.BookingRepo.Update(booking);
             await _unitOfWork.SaveAsync();
             return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
         }
+       
     }
 }

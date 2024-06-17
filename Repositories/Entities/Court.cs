@@ -31,6 +31,8 @@ public partial class Court
 
     public double? Rate { get; set; }
 
+    public double? PricePerHour { get; set; }
+
     public virtual ICollection<AmenityCourt> AmenityCourts { get; set; } = new List<AmenityCourt>();
 
     public virtual Area? Area { get; set; }

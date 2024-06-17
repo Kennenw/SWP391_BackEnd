@@ -7,7 +7,7 @@ public partial class SubCourt
 {
     public int SubCourtId { get; set; }
 
-    public int? Number { get; set; }
+    public string? Number { get; set; }
 
     public int? CourtId { get; set; }
 
