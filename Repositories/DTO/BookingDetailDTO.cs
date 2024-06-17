@@ -19,6 +19,12 @@ namespace Repositories.DTO
         public bool? Status { get; set; }
 
         public int? SubCourtId { get; set; }
+
         public int? TimeReducedInMinutes { get; set; }
+    }
+    public class CheckInDTO
+    {
+        public int BookingDetailId { get; set; }
+        public DateTime CheckInTime { get; set; }
     }
 }

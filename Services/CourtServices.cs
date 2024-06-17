@@ -49,7 +49,8 @@ namespace Services
                 Status = c.Status,
                 TotalRate = c.TotalRate,
                 Address = c.Address,
-                Title = c.Title
+                Title = c.Title,
+                PriceAvr = c.PricePerHour,
             }).ToList();
 
             return new PagedResult<CourtDTOs>
@@ -105,6 +106,7 @@ namespace Services
                 TotalRate = court.TotalRate,
                 AreaId = court.AreaId,
                 SubCourts = subCourtDTOs,
+                PriceAvr = court.PricePerHour,
                 Amenities = amenityCourts.Select(ac => new AmenityCourtDTO
                 {
                     AmenityCourtId = ac.AmenityCourtId,
@@ -135,7 +137,8 @@ namespace Services
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
                 court.Rules = courtDTO.Rules;
-                court.Status = courtDTO.Status;          
+                court.Status = courtDTO.Status;   
+                court.PricePerHour = courtDTO.PriceAvr;
                 _unitOfWork.CourtRepo.Update(court);
                 _unitOfWork.SaveChanges();
             }
@@ -155,6 +158,7 @@ namespace Services
                 Title = courtDTO.Title,
                 Address = courtDTO.Address,
                 TotalRate = courtDTO.TotalRate,
+                PricePerHour = courtDTO.PriceAvr 
             };
             _unitOfWork.CourtRepo.Create(court);
             _unitOfWork.SaveChanges();
@@ -248,6 +252,7 @@ namespace Services
                 Address = c.Address,
                 Title = c.Title,
                 ManagerId = c.ManagerId,
+                PriceAvr = c.PricePerHour
             }).ToList();
 
             return new PagedResult<CourtDTOs>

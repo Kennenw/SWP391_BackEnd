@@ -3,40 +3,48 @@
   "WorkspaceRootPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\postservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\postservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\slottimeservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\slottimeservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\commentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\commentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\subcourtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\subcourtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\courtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\courtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\bookingservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\bookingservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\bookingbadmintonsystemcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\bookingbadmintonsystemcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\dto\\subcourtdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\subcourtdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\dto\\postdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\postdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\entities\\court.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\entities\\court.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\dto\\courtdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\courtdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\dto\\bookingdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\bookingdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\dto\\bookingdetaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\bookingdetaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\bookingbadmintonsystemcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\bookingbadmintonsystemcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\bookingbad.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\repositories\\repositories\\slottimerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\slottimerepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -79,106 +87,63 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PostServices.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\PostServices.cs",
-              "RelativeDocumentMoniker": "Services\\PostServices.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\PostServices.cs",
-              "RelativeToolTip": "Services\\PostServices.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAA0wAAAAAAAAAAA",
+              "Title": "SlotTimeServices.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\SlotTimeServices.cs",
+              "RelativeDocumentMoniker": "Services\\SlotTimeServices.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\SlotTimeServices.cs",
+              "RelativeToolTip": "Services\\SlotTimeServices.cs",
+              "ViewState": "AQIAAEkAAAAAAAAAAAAcwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:43:19.046Z",
+              "WhenOpened": "2024-06-17T15:09:03.115Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CommentServices.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\CommentServices.cs",
-              "RelativeDocumentMoniker": "Services\\CommentServices.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\CommentServices.cs",
-              "RelativeToolTip": "Services\\CommentServices.cs",
+              "Title": "SubCourtServices.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\SubCourtServices.cs",
+              "RelativeDocumentMoniker": "Services\\SubCourtServices.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\SubCourtServices.cs",
+              "RelativeToolTip": "Services\\SubCourtServices.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:43:16.343Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-17T15:09:02.406Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "BookingServices.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\BookingServices.cs",
-              "RelativeDocumentMoniker": "Services\\BookingServices.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\BookingServices.cs",
-              "RelativeToolTip": "Services\\BookingServices.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAA7wAAAAAAAAAAA",
+              "Title": "CourtServices.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\CourtServices.cs",
+              "RelativeDocumentMoniker": "Services\\CourtServices.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\CourtServices.cs",
+              "RelativeToolTip": "Services\\CourtServices.cs",
+              "ViewState": "AQIAAF4AAAAAAAAAAAAcwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:43:14.611Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-17T15:08:59.111Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AccountServices.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\AccountServices.cs",
-              "RelativeDocumentMoniker": "Services\\AccountServices.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\AccountServices.cs",
-              "RelativeToolTip": "Services\\AccountServices.cs",
-              "ViewState": "AQIAACUAAAAAAAAAAAAQwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:43:10.838Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BookingDTO.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\BookingDTO.cs",
-              "RelativeDocumentMoniker": "Repositories\\DTO\\BookingDTO.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\BookingDTO.cs",
-              "RelativeToolTip": "Repositories\\DTO\\BookingDTO.cs",
-              "ViewState": "AQIAACMAAAAAAAAAAAAmwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:42:58.437Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "BookingBadmintonSystemContext.cs",
               "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\BookingBadmintonSystemContext.cs",
               "RelativeDocumentMoniker": "Repositories\\BookingBadmintonSystemContext.cs",
               "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\BookingBadmintonSystemContext.cs",
               "RelativeToolTip": "Repositories\\BookingBadmintonSystemContext.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAABwAAAAAAAAAAAAwwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:41:00.748Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SubCourtDTO.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\SubCourtDTO.cs",
-              "RelativeDocumentMoniker": "Repositories\\DTO\\SubCourtDTO.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\SubCourtDTO.cs",
-              "RelativeToolTip": "Repositories\\DTO\\SubCourtDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:40:57.024Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-17T15:08:54.112Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "PostDTO.cs",
-              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\PostDTO.cs",
-              "RelativeDocumentMoniker": "Repositories\\DTO\\PostDTO.cs",
-              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\PostDTO.cs",
-              "RelativeToolTip": "Repositories\\DTO\\PostDTO.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAA1wAAAAAAAAAAA",
+              "Title": "Court.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Entities\\Court.cs",
+              "RelativeDocumentMoniker": "Repositories\\Entities\\Court.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Entities\\Court.cs",
+              "RelativeToolTip": "Repositories\\Entities\\Court.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAIwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:40:54.046Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-17T15:08:49.998Z"
             },
             {
               "$type": "Document",
@@ -188,10 +153,69 @@
               "RelativeDocumentMoniker": "Repositories\\DTO\\CourtDTO.cs",
               "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\CourtDTO.cs",
               "RelativeToolTip": "Repositories\\DTO\\CourtDTO.cs",
-              "ViewState": "AQIAACgAAAAAAAAAAADwvwAAAAAAAAAA",
+              "ViewState": "AQIAABsAAAAAAAAAAAAuwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:40:52.947Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-17T15:08:44.749Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BookingDetailDTO.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\BookingDetailDTO.cs",
+              "RelativeDocumentMoniker": "Repositories\\DTO\\BookingDetailDTO.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\DTO\\BookingDetailDTO.cs",
+              "RelativeToolTip": "Repositories\\DTO\\BookingDetailDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T15:08:34.734Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BookingServices.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\BookingServices.cs",
+              "RelativeDocumentMoniker": "Services\\BookingServices.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\BookingServices.cs",
+              "RelativeToolTip": "Services\\BookingServices.cs",
+              "ViewState": "AQIAAM0AAAAAAAAAAAAuwOkAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T13:43:19.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SlotTimeRepo.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories\\SlotTimeRepo.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\SlotTimeRepo.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories\\SlotTimeRepo.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\SlotTimeRepo.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAhwBIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T14:21:32.335Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\BookingsController.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "BookingBad.API\\Controllers\\BookingsController.cs",
+              "ViewState": "AQIAABQAAAAAAAAAAAAAwEcAAAA8AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T13:43:42.09Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\AccountsController.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
+              "RelativeToolTip": "BookingBad.API\\Controllers\\AccountsController.cs",
+              "ViewState": "AQIAAJMAAAAAAAAAAAAIwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-17T13:43:33.121Z"
             }
           ]
         }

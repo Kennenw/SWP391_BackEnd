@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingBad.API", "BookingBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{F8AF2604-550F-423B-A9E9-EE8E410E5F20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{F4756342-5871-4C42-8C4C-E0A59EFDBD3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F8AF2604-550F-423B-A9E9-EE8E410E5F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8AF2604-550F-423B-A9E9-EE8E410E5F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8AF2604-550F-423B-A9E9-EE8E410E5F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4756342-5871-4C42-8C4C-E0A59EFDBD3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4756342-5871-4C42-8C4C-E0A59EFDBD3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4756342-5871-4C42-8C4C-E0A59EFDBD3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4756342-5871-4C42-8C4C-E0A59EFDBD3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,7 +21,8 @@ namespace Repositories.DTO
         public int? ManagerId { get; set; }
         public string? Title { get; set; }
         public string? Address { get; set; }
-        public double? TotalRate { get; set; }
+        public double? TotalRate { get; set; } = 0;
+        public double? PriceAvr { get; set; } = 0;
         public List<SubCourtDTO> SubCourts { get; set; }
         public List<AmenityCourtDTO> Amenities { get; set; }
         public List<SlotTimeDTO> SlotTimes { get; set; }
@@ -41,6 +42,7 @@ namespace Repositories.DTO
         public string? Title { get; set; }
         public string? Address { get; set; }
         public double? TotalRate { get; set; }
+        public double? PriceAvr { get; set; }
     }
     public class CourtGET
     {
@@ -56,6 +58,7 @@ namespace Repositories.DTO
         public string? Title { get; set; }
         public string? Address { get; set; }
         public double? TotalRate { get; set; }
+        public double? PriceAvr { get; set; }
         public List<SubCourtGet> SubCourts { get; set; }
         public List<AmenityCourtDTO> Amenities { get; set; }
         public List<SlotTimeDTO> SlotTimes { get; set; }

@@ -69,22 +69,15 @@ namespace Repositories.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Not enought time play" });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
-        [HttpPost("CheckIn/{bookingDetailId:int}")]
-        public ActionResult CheckIn(int bookingDetailId)
+        [HttpPost("CheckIn")]
+        public async Task<IActionResult> CheckIn([FromBody] CheckInDTO checkInDTO)
         {
-            try
-            {
-                _bookingService.CheckIn(bookingDetailId);
-                return Ok(new { message = "Check-in successful" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var result = await _bookingService.CheckIn(checkInDTO);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

@@ -31,7 +31,7 @@ namespace BookingDemo.API.Controllers
         }
         // GET: api/AmenityCourts/Court/5
 
-        [HttpGet("{AccountId}")]
+        [HttpGet("{AccountId:int}")]
         public ActionResult<IEnumerable<AccountDTO>> GetAccountById(int AccountId)
         {
             var account = accountServices.GetAccountById(AccountId);
@@ -124,7 +124,7 @@ namespace BookingDemo.API.Controllers
             return account;
         }
 
-        [HttpGet("id")]
+        [HttpGet("Account/{id:int}")]
         public async Task<ActionResult<AccountDTO>> GetAccount(int id)
         {
             var account =  accountServices.GetAccountById(id);
@@ -152,7 +152,8 @@ namespace BookingDemo.API.Controllers
         }
        
 
-        [HttpPost("Register")]
+        [HttpPost]
+        [Route("Register")]
         public async Task<IActionResult> Register(RegisterInformation info)
         {
             if (info.Password != info.ReEnterPass)

@@ -19,7 +19,7 @@ namespace Services
         Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
-        void CheckIn(int bookingDetailId);
+        Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
     }
@@ -101,19 +101,19 @@ namespace Services
             };
         }
 
-        public void CheckIn(int bookingDetailId)
+        public async Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO)
         {
-            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
-            if (bookingDetail != null)
+            var checkIn = await _unitOfWork.CheckInRepo.GetByIdAsync(checkInDTO.BookingDetailId);
+            
+            if (checkIn == null)
             {
-                var checkIn = new CheckIn
-                {
-                    BookingDetail = bookingDetail,
-                    CheckInTime = DateTime.Now,
-                };
-                _unitOfWork.CheckInRepo.Create(checkIn);
-                _unitOfWork.SaveChanges();
+                throw new Exception("Booking detail not found");
             }
+            checkIn.BookingDetailId = checkInDTO.BookingDetailId;
+            checkIn.CheckInTime = checkInDTO.CheckInTime;
+            _unitOfWork.CheckInRepo.Create(checkIn);
+            await _unitOfWork.SaveAsync();
+            return checkInDTO;
         }
 
         public async Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO)
@@ -153,9 +153,6 @@ namespace Services
                 _unitOfWork.BookingDetailRepo.Create(bookedSlot);
             }
             await _unitOfWork.SaveAsync();
-            slot.Status = false;
-            _unitOfWork.SlotTimeRepo.Update(slot);
-            ScheduleSlotTimeUpdate(slot.SlotId, scheduleDTO.Date, DateTime.Parse(slot.EndTime));
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = DateTime.Now, SlotTimeId = slot.SlotId };
         }
 
@@ -192,15 +189,13 @@ namespace Services
             };
             _unitOfWork.BookingDetailRepo.Create(bookedSlot);
             await _unitOfWork.SaveAsync();
-            slot.Status = false;
-            _unitOfWork.SlotTimeRepo.Update(slot);
-            ScheduleSlotTimeUpdate(slot.SlotId, scheduleDTO.Date, DateTime.Parse(slot.EndTime));
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = scheduleDTO.Date, SlotTimeId = slot.SlotId };
         }
 
         public async Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO)
         {
             var totalMinutes = scheduleDTO.TotalHours * 60;
+            var court = _unitOfWork.CourtRepo.GetById(scheduleDTO.CourtId);
             var booking = new Booking
             {
                 CustomerId = scheduleDTO.UserId,
@@ -208,6 +203,7 @@ namespace Services
                 BookingTypeId = 3, 
                 Status = true,
                 TotalHours = totalMinutes,
+                TotalPrice = scheduleDTO.TotalHours * court.PricePerHour,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -225,13 +221,17 @@ namespace Services
             }
 
             var slot = await _unitOfWork.SlotTimeRepo.GetByIdAsync(bookedSlotDTO.SlotTimeId);
+            var courtId = slot.CourtId;
             var startTime = DateTime.Parse(slot.StartTime);
             var endTime = DateTime.Parse(slot.EndTime);
             if (slot == null)
             {
                 throw new Exception("Slot time not found");
             }
-
+            if (slot.CourtId != booking.CourtId)
+            {
+                throw new Exception("Slot time court ID does not match the booking court ID");
+            }
             var bookedSlot = new BookingDetail
             {
                 BookingId = bookedSlotDTO.BookingId,
@@ -250,29 +250,8 @@ namespace Services
             else
                 _unitOfWork.BookingRepo.Update(booking);
             await _unitOfWork.SaveAsync();
-            slot.Status = false;
-            _unitOfWork.SlotTimeRepo.Update(slot);
-             ScheduleSlotTimeUpdate(slot.SlotId, bookedSlotDTO.Date, endTime);
             return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
         }
-
-        private void ScheduleSlotTimeUpdate(int slotId, DateTime bookingDate, DateTime endTime)
-        {
-            var duration = (endTime - DateTime.Now).TotalMilliseconds;
-            if (duration < 0 || duration > int.MaxValue)
-            {
-                duration = int.MaxValue;
-            }
-            Task.Delay((int)duration).ContinueWith(_ =>
-            {
-                var slot = _unitOfWork.SlotTimeRepo.GetById(slotId);
-                if (slot != null)
-                {
-                    slot.Status = true;
-                    _unitOfWork.SlotTimeRepo.Update(slot);
-                    _unitOfWork.SaveChanges();
-                }
-            });
-        }
+       
     }
 }

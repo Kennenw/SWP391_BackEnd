@@ -14,6 +14,8 @@ namespace Repositories.Repositories
         public List<SlotTime> GetSlotTimeByCourtId(int courtId)
         {
             return _dbSet.Where(sc => sc.CourtId == courtId).ToList();
-        }
+        } 
+
+
     }
 }

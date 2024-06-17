@@ -149,7 +149,6 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
-            entity.Property(e => e.CheckInTime).HasColumnType("datetime");
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.SlotId).HasColumnName("SlotID");
             entity.Property(e => e.SubCourtId).HasColumnName("SubCourtID");
