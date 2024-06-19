@@ -74,10 +74,24 @@ namespace Repositories.API.Controllers
         }
 
         [HttpPost("CheckIn")]
-        public async Task<IActionResult> CheckIn([FromBody] CheckInDTO checkInDTO)
+        public async Task<IActionResult> CheckIn([FromBody] CheckInDTO request)
         {
-            var result = await _bookingService.CheckIn(checkInDTO);
-            return Ok(result);
+            try
+            {
+                var result = await _bookingService.CheckIn(request.SubCourtId, request.BookingDetailId);
+                if (result)
+                {
+                    return Ok(new { message = "Check-in successful" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Invalid court ID or booking detail ID" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]

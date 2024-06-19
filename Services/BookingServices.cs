@@ -19,7 +19,7 @@ namespace Services
         Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
-        Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO);
+        Task<bool> CheckIn(int subCourtId, int bookingDetailId);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
     }
@@ -99,21 +99,6 @@ namespace Services
                 Note = booking.Note,
                 Status = booking.Status,
             };
-        }
-
-        public async Task<CheckInDTO> CheckIn(CheckInDTO checkInDTO)
-        {
-            var checkIn = await _unitOfWork.CheckInRepo.GetByIdAsync(checkInDTO.BookingDetailId);
-            
-            if (checkIn == null)
-            {
-                throw new Exception("Booking detail not found");
-            }
-            checkIn.BookingDetailId = checkInDTO.BookingDetailId;
-            checkIn.CheckInTime = checkInDTO.CheckInTime;
-            _unitOfWork.CheckInRepo.Create(checkIn);
-            await _unitOfWork.SaveAsync();
-            return checkInDTO;
         }
 
         public async Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO)
@@ -252,6 +237,28 @@ namespace Services
             await _unitOfWork.SaveAsync();
             return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
         }
-       
+
+
+        public async Task<bool> CheckIn(int subCourtId, int bookingDetailId)
+        {
+            var court = _unitOfWork.SubCourtRepo.GetById(subCourtId);
+            if (court == null) return false;
+
+            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
+            if (bookingDetail == null || bookingDetail.Status == false) return false;
+
+            bookingDetail.Status = false;
+            _unitOfWork.BookingDetailRepo.Update(bookingDetail);
+
+            var checkIn = new CheckIn
+            {
+                BookingDetailId = bookingDetailId,
+                CheckInTime = DateTime.Now
+            };
+            _unitOfWork.CheckInRepo.Create(checkIn);
+
+            await _unitOfWork.SaveAsync();
+            return true;
+        }
     }
 }
