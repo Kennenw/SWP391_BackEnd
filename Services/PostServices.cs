@@ -188,11 +188,12 @@ namespace Services
                     RatingValue = rating
                 };
                 _unitOfWork.RatingPostRepo.Create(ratingPost);
-            }  
-            var countRatings = post.RatingPosts.Count();
-            var totalRatings = post.RatingPosts.Sum(rp => rp.RatingValue);
+            }
 
-            post.TotalRate = totalRatings > 0 ? (double)totalRatings/countRatings : 0;
+            var countRatings = _unitOfWork.RatingPostRepo.GetAll().Count(rp => rp.PostId == postId);
+            var totalRatings = _unitOfWork.RatingPostRepo.GetAll().Where(rp => rp.PostId == postId).Sum(rp => rp.RatingValue);
+
+            post.TotalRate = totalRatings > 0 ? (double)totalRatings / countRatings : 0;
             _unitOfWork.PostRepo.Update(post);
             _unitOfWork.SaveChanges();
         }

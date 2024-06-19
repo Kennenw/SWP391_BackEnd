@@ -21,6 +21,8 @@ public partial class BookingDetail
 
     public virtual Booking? Booking { get; set; }
 
+    public virtual ICollection<CheckIn> CheckIns { get; set; } = new List<CheckIn>();
+
     public virtual SlotTime? Slot { get; set; }
 
     public virtual SubCourt? SubCourt { get; set; }

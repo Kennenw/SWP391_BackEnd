@@ -176,15 +176,11 @@ public partial class BookingBadmintonSystemContext : DbContext
 
         modelBuilder.Entity<CheckIn>(entity =>
         {
-            entity.HasNoKey();
-
+            entity.Property(e => e.CheckInId).HasColumnName("CheckInID");
             entity.Property(e => e.BookingDetailId).HasColumnName("BookingDetailID");
-            entity.Property(e => e.CheckInId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("CheckInID");
             entity.Property(e => e.CheckInTime).HasColumnType("datetime");
 
-            entity.HasOne(d => d.BookingDetail).WithMany()
+            entity.HasOne(d => d.BookingDetail).WithMany(p => p.CheckIns)
                 .HasForeignKey(d => d.BookingDetailId)
                 .HasConstraintName("FK_CheckIns_BookingDetail");
         });

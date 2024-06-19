@@ -86,17 +86,29 @@ namespace BookingBad.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCourtWithImage( CourtDTO courtCreationDTO)
+        public async Task<IActionResult> CreateCourtWithImage(CourtDTO courtCreationDTO)
         {
             await _courtServices.CreateCourtAsync(courtCreationDTO);
             return Ok("Court created successfully.");
         }
+
         // DELETE: api/Courts/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteCourt(int id)
         {
             _courtServices.DeleteCourt(id);
             return Ok(new { message = "Court deleted successfully" });
+        }
+
+        [HttpPost("RateCourt/{courtId}")]
+        public IActionResult RateCourt(int courtId, [FromBody] RatingCourtDTO model)
+        {
+            if (model.RatingValue == null || model.RatingValue <= 0)
+                return BadRequest("Invalid rating.");
+
+            _courtServices.RateCourt(courtId, model.UserId, model.RatingValue);
+
+            return Ok("Rating added successfully.");
         }
     }
 }

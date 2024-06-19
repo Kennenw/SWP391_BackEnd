@@ -64,4 +64,9 @@ namespace Repositories.DTO
         public List<SlotTimeDTO> SlotTimes { get; set; }
     }
 
+    public class RatingCourtDTO
+    {
+        public int UserId { get; set; }
+        public double RatingValue { get; set; }
+    }
 }

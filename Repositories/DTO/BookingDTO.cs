@@ -56,6 +56,12 @@ namespace Repositories.DTO
         public DateTime Date { get; set; }
         public int SlotTimeId { get; set; } 
     }
+
+    public class CheckInDTO
+    {
+        public int SubCourtId { get; set; }
+        public int BookingDetailId { get; set; }
+    }
 }
 
 

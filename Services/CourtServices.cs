@@ -20,6 +20,7 @@ namespace Services
         public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
+        void RateCourt(int courtId, int userId, double rating);
     }
     public class CourtServices : ICourtServices
     {
@@ -30,8 +31,8 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
             _imageService = new ImageServices();
         }
-        public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize)
-        {          
+        public PagedResult<CourtDTOs> GetCourts(int pageNumber, int pageSize)
+        {
             var courts = _unitOfWork.CourtRepo.GetAll();
             var totalItemCount = courts.Count;
             var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -137,7 +138,7 @@ namespace Services
                 court.OpenTime = courtDTO.OpenTime;
                 court.CloseTime = courtDTO.CloseTime;
                 court.Rules = courtDTO.Rules;
-                court.Status = courtDTO.Status;   
+                court.Status = courtDTO.Status;
                 court.PricePerHour = courtDTO.PriceAvr;
                 _unitOfWork.CourtRepo.Update(court);
                 _unitOfWork.SaveChanges();
@@ -158,7 +159,7 @@ namespace Services
                 Title = courtDTO.Title,
                 Address = courtDTO.Address,
                 TotalRate = courtDTO.TotalRate,
-                PricePerHour = courtDTO.PriceAvr 
+                PricePerHour = courtDTO.PriceAvr
             };
             _unitOfWork.CourtRepo.Create(court);
             _unitOfWork.SaveChanges();
@@ -174,6 +175,7 @@ namespace Services
                     Status = true,
                 };
                 _unitOfWork.SubCourtRepo.Create(newSubCourt);
+                _unitOfWork.SaveChanges();
                 createdSubCourts.Add(newSubCourt);
             }
 
@@ -204,7 +206,24 @@ namespace Services
                         Status = true
                     };
                     _unitOfWork.SlotTimeRepo.Create(slotTime);
+                    _unitOfWork.SaveChanges();
                 }
+            }
+            if (!string.IsNullOrEmpty(courtDTO.Image))
+            {
+                var base64Data = courtDTO.Image.Split(',')[1];
+                var imageBytes = Convert.FromBase64String(base64Data);
+                var fileName = Guid.NewGuid().ToString() + ".png";
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+                if (!Directory.Exists(uploadPath))
+                    Directory.CreateDirectory(uploadPath);
+
+                var filePath = Path.Combine(uploadPath, fileName);
+                await File.WriteAllBytesAsync(filePath, imageBytes);
+
+                court.Image = fileName;
+                _unitOfWork.CourtRepo.Update(court);
             }
             _unitOfWork.SaveChanges();
             return court;
@@ -273,7 +292,7 @@ namespace Services
                 return;
             }
 
-            var fileName = Guid.NewGuid().ToString() + ".png"; 
+            var fileName = Guid.NewGuid().ToString() + ".png";
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
             if (!Directory.Exists(uploadPath))
@@ -286,7 +305,7 @@ namespace Services
 
             await File.WriteAllBytesAsync(filePath, imageBytes);
 
-            court.Image = fileName; 
+            court.Image = fileName;
 
             _unitOfWork.CourtRepo.Update(court);
             _unitOfWork.SaveChanges();
@@ -294,6 +313,38 @@ namespace Services
             Console.WriteLine("Image saved successfully.");
         }
 
+
+        public void RateCourt(int courtId, int userId, double rating)
+        {
+            var court = _unitOfWork.CourtRepo.GetById(courtId);
+            if (court == null || court.Status == false) return;
+
+            var existingRating = _unitOfWork.RatingCourtRepo.GetAll()
+                .FirstOrDefault(rc => rc.CourtId == courtId && rc.UserId == userId);
+
+            if (existingRating != null)
+            {
+                existingRating.RatingValue = rating;
+                _unitOfWork.RatingCourtRepo.Update(existingRating);
+            }
+            else
+            {
+                var ratingcourt = new RatingCourt
+                {
+                    CourtId = courtId,
+                    UserId = userId,
+                    RatingValue = rating
+                };
+                _unitOfWork.RatingCourtRepo.Create(ratingcourt);
+            }
+
+            var countRatings = _unitOfWork.RatingCourtRepo.GetAll().Count(rc => rc.CourtId == courtId);
+            var totalRatings = _unitOfWork.RatingCourtRepo.GetAll().Where(rc => rc.CourtId == courtId).Sum(rc => rc.RatingValue);
+
+            court.TotalRate = totalRatings > 0 ? (double)totalRatings / countRatings : 0;
+            _unitOfWork.CourtRepo.Update(court);
+            _unitOfWork.SaveChanges();
+        }
 
     }
 }
