@@ -8799,19 +8799,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Asus\\.nuget\\packages\\": {}
+    "C:\\Users\\LENOVO\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
+      "projectUniqueName": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
       "projectName": "BookingBad.API",
-      "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
-      "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\obj\\",
+      "projectPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
+      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+      "outputPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8825,8 +8825,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj": {
-              "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj"
+            "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj": {
+              "projectPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj"
             }
           }
         }
