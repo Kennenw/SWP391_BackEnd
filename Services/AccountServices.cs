@@ -46,7 +46,7 @@ namespace Services
             var account = _unitOfWork.AccountRepo.GetAll();          
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -56,7 +56,7 @@ namespace Services
                 Email = a.Email,
                 RoleId = a.RoleId,
                 Image = a.Image,
-                Status = true
+                Status = a.Status,
             }).ToList();
             return new PagedResult<AccountDTO>
             {
@@ -70,7 +70,7 @@ namespace Services
         public AccountDTO GetAccountById(int id)
         {
             var account = _unitOfWork.AccountRepo.GetById(id);
-            if(account == null || account.Status == false)
+            if(account == null)
             {
                 return null;
             }
@@ -91,7 +91,7 @@ namespace Services
         public AccountDTO GetAccountByName(string name)
         {
             var account = _unitOfWork.AccountRepo.GetByName(name);
-            if (account == null || account.Status == false)
+            if (account == null)
             {
                 return null;
             }
@@ -152,7 +152,7 @@ namespace Services
             }
             var totalItemAccount = account.Count;
             var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new AccountDTO
+            var accountDTOs = pagedAccount.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
