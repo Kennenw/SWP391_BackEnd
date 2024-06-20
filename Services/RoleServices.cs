@@ -52,7 +52,8 @@ namespace Services
             return new RoleDTO
                 {
                     RoleId = check.RoleId,
-                    RoleName = check.RoleName
+                    RoleName = check.RoleName,
+                    Status = check.Status
                 };
         }
 
@@ -62,7 +63,8 @@ namespace Services
                     .Select(role => new RoleDTO
                     {
                         RoleId = role.RoleId,
-                        RoleName = role.RoleName
+                        RoleName = role.RoleName,
+                        Status = role.Status
                     }).ToList();
         }
 
