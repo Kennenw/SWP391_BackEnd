@@ -13,13 +13,13 @@ namespace Services
     public interface IBookingSevices
     {
         public List<BookingDTO> GetBooking();
-        public List<BookingDTO> GetBookingByUserId(int id);
+        List<BookingDTO> GetBookingsByCustomerId(int customerId);
         public BookingDTO GetBookingById(int id);
         Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
-        Task<bool> CheckIn(int subCourtId, int bookingDetailId);
+        Task<CheckInResponse> CheckIn(int subCourtId, int bookingDetailId);
         public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
     }
@@ -56,10 +56,11 @@ namespace Services
             }).ToList();
         }
 
-        public List<BookingDTO> GetBookingByUserId(int id)
+        public List<BookingDTO> GetBookingsByCustomerId(int customerId)
         {
-            return _unitOfWork.BookingRepo.GetBookingByUser(id).
-                Select(booking => new BookingDTO
+            return _unitOfWork.BookingRepo.GetAll()
+                .Where(booking => booking.CustomerId == customerId)
+                .Select(booking => new BookingDTO
                 {
                     BookingId = booking.BookingId,
                     CustomerId = booking.CustomerId,
@@ -110,14 +111,14 @@ namespace Services
             }
             var bookingDate = scheduleDTO.Date;
             bool isWeekend = (bookingDate.DayOfWeek == DayOfWeek.Saturday || bookingDate.DayOfWeek == DayOfWeek.Sunday);
-            
+
             var booking = new Booking
             {
                 CustomerId = scheduleDTO.UserId,
                 CourtId = slot.CourtId,
-                BookingTypeId = 1, 
+                BookingTypeId = 1,
                 Status = true,
-                Note = scheduleDTO.Note,              
+                Note = scheduleDTO.Note,
                 TotalPrice = isWeekend ? slot.WeekendPrice * 4 * scheduleDTO.Months : slot.WeekdayPrice * 4 * scheduleDTO.Months,
                 StartDate = scheduleDTO.Date,
                 EndDate = scheduleDTO.Date.AddMonths(scheduleDTO.Months)
@@ -132,12 +133,17 @@ namespace Services
                     BookingId = booking.BookingId,
                     SlotId = slot.SlotId,
                     SubCourtId = slot.SubCourtId,
-                    Date = scheduleDTO.Date.AddDays(i * 7).Date, 
+                    Date = scheduleDTO.Date.AddDays(i * 7).Date,
                     Status = true
                 };
                 _unitOfWork.BookingDetailRepo.Create(bookedSlot);
+                var checkIn = new CheckIn
+                {
+                    BookingDetailId = bookedSlot.BookingDetailId,
+                };
+                _unitOfWork.CheckInRepo.Create(checkIn);
+                await _unitOfWork.SaveAsync();
             }
-            await _unitOfWork.SaveAsync();
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = DateTime.Now, SlotTimeId = slot.SlotId };
         }
 
@@ -174,6 +180,12 @@ namespace Services
             };
             _unitOfWork.BookingDetailRepo.Create(bookedSlot);
             await _unitOfWork.SaveAsync();
+            var checkIn = new CheckIn
+            {
+                BookingDetailId = bookedSlot.BookingDetailId,
+            };
+            _unitOfWork.CheckInRepo.Create(checkIn);
+            await _unitOfWork.SaveAsync();
             return new BookedSlotDTO { BookingId = booking.BookingId, Date = scheduleDTO.Date, SlotTimeId = slot.SlotId };
         }
 
@@ -184,8 +196,8 @@ namespace Services
             var booking = new Booking
             {
                 CustomerId = scheduleDTO.UserId,
-                CourtId = scheduleDTO.CourtId,  
-                BookingTypeId = 3, 
+                CourtId = scheduleDTO.CourtId,
+                BookingTypeId = 3,
                 Status = true,
                 TotalHours = totalMinutes,
                 TotalPrice = scheduleDTO.TotalHours * court.PricePerHour,
@@ -233,32 +245,54 @@ namespace Services
                 throw new Exception("Not enought time play");
             }
             else
+            {
                 _unitOfWork.BookingRepo.Update(booking);
+                await _unitOfWork.SaveAsync();
+            }
+            var checkIn = new CheckIn
+            {
+                BookingDetailId = bookedSlot.BookingDetailId,
+            };
+            _unitOfWork.CheckInRepo.Create(checkIn);
             await _unitOfWork.SaveAsync();
             return new BookedSlotDTO { BookingId = bookedSlotDTO.BookingId, Date = bookedSlotDTO.Date, SlotTimeId = slot.SlotId };
         }
 
 
-        public async Task<bool> CheckIn(int subCourtId, int bookingDetailId)
+        public async Task<CheckInResponse> CheckIn(int subCourtId, int bookingDetailId)
         {
-            var court = _unitOfWork.SubCourtRepo.GetById(subCourtId);
-            if (court == null) return false;
+            var subCourt = _unitOfWork.SubCourtRepo.GetById(subCourtId);
+            if (subCourt == null) return null;
 
             var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
-            if (bookingDetail == null || bookingDetail.Status == false) return false;
+            if (bookingDetail == null || bookingDetail.Status == false) return null;
+
+            var slotId = _unitOfWork.BookingDetailRepo.GetSlotIdByBookingDetailId(bookingDetailId);
+            var slotTime = _unitOfWork.SlotTimeRepo.GetById(slotId.Value);
+
+            var courtId = _unitOfWork.SubCourtRepo.GetCourtIdBySubCourt(subCourtId);
+            var court = _unitOfWork.CourtRepo.GetById(courtId.Value);
 
             bookingDetail.Status = false;
             _unitOfWork.BookingDetailRepo.Update(bookingDetail);
 
-            var checkIn = new CheckIn
+            var checkIn = _unitOfWork.CheckInRepo.GetAll()
+                .FirstOrDefault(ci => ci.BookingDetailId == bookingDetailId);
+            if (checkIn != null)
             {
-                BookingDetailId = bookingDetailId,
-                CheckInTime = DateTime.Now
-            };
-            _unitOfWork.CheckInRepo.Create(checkIn);
+                checkIn.CheckInTime = DateTime.Now;
+                _unitOfWork.CheckInRepo.Update(checkIn);
+            }
 
             await _unitOfWork.SaveAsync();
-            return true;
+            return new CheckInResponse
+            {
+                CourtName = court.CourtName,
+                SubCourtName = subCourt.Number,
+                SlotTimeStart = slotTime.StartTime,
+                SlotTimeEnd = slotTime?.EndTime
+            };
         }
+
     }
 }
