@@ -1,4 +1,5 @@
 
+using Microsoft.Extensions.FileProviders;
 using NETCore.MailKit.Extensions;
 using Repositories.DTO;
 using Repositories.Repositories;
@@ -76,6 +77,19 @@ namespace Repositories.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(); 
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            if (!Directory.Exists(uploadsPath))
+            {
+                Directory.CreateDirectory(uploadsPath);
+            }
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(uploadsPath),
+                RequestPath = "/uploads"
+            });
 
             app.UseRouting();
 

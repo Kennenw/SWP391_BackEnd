@@ -110,5 +110,24 @@ namespace BookingBad.API.Controllers
 
             return Ok("Rating added successfully.");
         }
+
+        [HttpGet("{courtId}/Image")]
+        public IActionResult GetCourtImage(int courtId)
+        {
+            try
+            {
+                var imagePath = _courtServices.GetCourtImagePath(courtId);
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    return NotFound(new { message = "Image not found" });
+                }
+                var image = System.IO.File.ReadAllBytes(imagePath);
+                return File(image, "image/png"); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

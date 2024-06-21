@@ -21,6 +21,7 @@ namespace Services
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
+        public string GetCourtImagePath(int courtId);
     }
     public class CourtServices : ICourtServices
     {
@@ -166,64 +167,93 @@ namespace Services
 
             var createdSubCourts = new List<SubCourt>();
 
-            foreach (var subCourt in courtDTO.SubCourts)
+            if (courtDTO.SubCourts != null && courtDTO.SubCourts.Any())
             {
-                var newSubCourt = new SubCourt
+                foreach (var subCourt in courtDTO.SubCourts)
                 {
-                    CourtId = court.CourtId,
-                    Number = subCourt.Number,
-                    Status = true,
-                };
-                _unitOfWork.SubCourtRepo.Create(newSubCourt);
-                _unitOfWork.SaveChanges();
-                createdSubCourts.Add(newSubCourt);
-            }
-
-            foreach (var amenityCourt in courtDTO.Amenities)
-            {
-                var newAmenity = new AmenityCourt
-                {
-                    CourtId = court.CourtId,
-                    AmenityId = amenityCourt.AmenityId,
-                    Status = true
-                };
-                _unitOfWork.AmenityCourtRepo.Create(newAmenity);
-            }
-
-            foreach (var subCourt in createdSubCourts)
-            {
-                foreach (var slot in courtDTO.SlotTimes)
-                {
-                    var slotTime = new SlotTime
+                    var newSubCourt = new SubCourt
                     {
-                        StartTime = slot.StartTime,
-                        EndTime = slot.EndTime,
-                        WeekdayPrice = slot.WeekdayPrice,
-                        WeekendPrice = slot.WeekendPrice,
                         CourtId = court.CourtId,
-                        ManagerId = court.ManagerId,
-                        SubCourtId = subCourt.SubCourtId,
-                        Status = true
+                        Number = subCourt.Number,
+                        Status = true,
                     };
-                    _unitOfWork.SlotTimeRepo.Create(slotTime);
+                    _unitOfWork.SubCourtRepo.Create(newSubCourt);
                     _unitOfWork.SaveChanges();
+                    createdSubCourts.Add(newSubCourt);
                 }
             }
-            if (!string.IsNullOrEmpty(courtDTO.Image))
+
+            if (courtDTO.Amenities != null && courtDTO.Amenities.Any())
             {
-                var base64Data = courtDTO.Image.Split(',')[1];
-                var imageBytes = Convert.FromBase64String(base64Data);
-                var fileName = Guid.NewGuid().ToString() + ".png";
-                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                foreach (var amenityCourt in courtDTO.Amenities)
+                {
+                    if (amenityCourt != null)
+                    {
+                        var newAmenity = new AmenityCourt
+                        {
+                            CourtId = court.CourtId,
+                            AmenityId = amenityCourt.AmenityId,
+                            Status = true
+                        };
+                        _unitOfWork.AmenityCourtRepo.Create(newAmenity);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+            }
 
-                if (!Directory.Exists(uploadPath))
-                    Directory.CreateDirectory(uploadPath);
+            if (courtDTO.SlotTimes != null && courtDTO.SlotTimes.Any())
+            {
+                foreach (var subCourt in createdSubCourts)
+                {
+                    foreach (var slot in courtDTO.SlotTimes)
+                    {
+                        var slotTime = new SlotTime
+                        {
+                            StartTime = slot.StartTime,
+                            EndTime = slot.EndTime,
+                            WeekdayPrice = slot.WeekdayPrice,
+                            WeekendPrice = slot.WeekendPrice,
+                            CourtId = court.CourtId,
+                            ManagerId = court.ManagerId,
+                            SubCourtId = subCourt.SubCourtId,
+                            Status = true
+                        };
+                        _unitOfWork.SlotTimeRepo.Create(slotTime);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+            }
 
-                var filePath = Path.Combine(uploadPath, fileName);
-                await File.WriteAllBytesAsync(filePath, imageBytes);
+            if (!string.IsNullOrEmpty(courtDTO.Image) && courtDTO.Image != "string")
+            {
+                try
+                {
+                    var base64Parts = courtDTO.Image.Split(',');
+                    if (base64Parts.Length == 2)
+                    {
+                        var base64Data = base64Parts[1];
+                        var imageBytes = Convert.FromBase64String(base64Data);
+                        var fileName = Guid.NewGuid().ToString() + ".png";
+                        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-                court.Image = fileName;
-                _unitOfWork.CourtRepo.Update(court);
+                        if (!Directory.Exists(uploadPath))
+                            Directory.CreateDirectory(uploadPath);
+
+                        var filePath = Path.Combine(uploadPath, fileName);
+                        await File.WriteAllBytesAsync(filePath, imageBytes);
+
+                        court.Image = fileName;
+                        _unitOfWork.CourtRepo.Update(court);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Base64 image format.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    throw new Exception("Invalid Base64 image format.");
+                }
             }
             _unitOfWork.SaveChanges();
             return court;
@@ -344,6 +374,25 @@ namespace Services
             court.TotalRate = totalRatings > 0 ? (double)totalRatings / countRatings : 0;
             _unitOfWork.CourtRepo.Update(court);
             _unitOfWork.SaveChanges();
+        }
+
+        public string GetCourtImagePath(int courtId)
+        {
+            var court = _unitOfWork.CourtRepo.GetById(courtId);
+            if (court == null)
+            {
+                throw new Exception("Court not found.");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            var imagePath = Path.Combine(uploadPath, court.Image);
+
+            if (!System.IO.File.Exists(imagePath))
+            {
+                throw new Exception("Image file not found.");
+            }
+
+            return imagePath;
         }
 
     }
