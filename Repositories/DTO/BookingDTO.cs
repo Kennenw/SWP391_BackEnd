@@ -27,8 +27,8 @@ namespace Repositories.DTO
     {
         public int UserId { get; set; }
         public int SlotTimeId { get; set; }
-        public int Months { get; set; } 
-        public string Note {  get; set; }
+        public int Months { get; set; }
+        public string Note { get; set; }
         public DateTime Date { get; set; }
 
     }
@@ -47,21 +47,29 @@ namespace Repositories.DTO
     {
         public int CourtId { get; set; }
         public int UserId { get; set; }
-        public double TotalHours { get; set; } 
+        public double TotalHours { get; set; }
     }
 
     public class BookedSlotDTO
     {
         public int BookingId { get; set; }
         public DateTime Date { get; set; }
-        public int SlotTimeId { get; set; } 
+        public int SlotTimeId { get; set; }
     }
 
     public class CheckInDTO
     {
-        public int SubCourtId { get; set; }
         public int BookingDetailId { get; set; }
+        public int SubCourtId { get; set; }
+
+    }
+
+    public class CheckInResponse
+    {
+        public string CourtName { get; set; }
+        public string SubCourtName { get; set; }
+        public string SlotTimeStart { get; set; }
+        public string SlotTimeEnd { get; set; }
     }
 }
-
 

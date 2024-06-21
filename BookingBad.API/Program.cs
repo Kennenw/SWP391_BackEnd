@@ -52,6 +52,7 @@ namespace Repositories.API
             builder.Services.AddTransient<IAccountServices, AccountServices>();
             builder.Services.AddTransient<ICourtServices, CourtServices>();
             builder.Services.AddTransient<IBookingSevices, BookingServices>();
+            builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
             // Register repositories
             builder.Services.AddScoped<AccountRepo>();
             builder.Services.AddScoped<AccountRepo>();
