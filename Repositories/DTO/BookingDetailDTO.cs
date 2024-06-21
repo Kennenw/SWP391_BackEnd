@@ -20,7 +20,7 @@ namespace Repositories.DTO
 
         public int? SubCourtId { get; set; }
 
-        public int? TimeReducedInMinutes { get; set; }
+        public double? TimeReducedInMinutes { get; set; }
     }
     
 }

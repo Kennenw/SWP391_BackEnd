@@ -1,4 +1,5 @@
 ﻿using Repositories;
+using Repositories.DTO;
 using Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,8 @@ namespace Services
 {
     public interface IBookingDetailsServices
     {
-        public List<BookingDetail> GetBookingDetails();
-        public BookingDetail GetBookingDetailsById(int id);     
-        public void CreateBookingDetails(BookingDetail bookingDetail);
-        public void UpdateBookingDetails(int id, BookingDetail bookingDetail);
-        public void DeleteBookingDetails(int id);
+        public List<BookingDetailDTO> GetBookingDetails();
+        List<BookingDetailDTO> GetBookingDetailsByBookingId(int bookingId); 
     }
     public class BookingDetailsServices : IBookingDetailsServices
     {
@@ -23,67 +21,38 @@ namespace Services
         public BookingDetailsServices()
         {
             _unitOfWork ??= new UnitOfWork();
-        }
-        public void CreateBookingDetails(BookingDetail bookingDetail)
-        {
-            _unitOfWork.BookingDetailRepo.Create(bookingDetail);
-            _unitOfWork.SaveChanges();
-        }
+        }     
 
-        public void DeleteBookingDetails(int id)
+        public List<BookingDetailDTO> GetBookingDetails()
         {
-            var items = _unitOfWork.BookingDetailRepo.GetById(id);
-            if(items != null)
+            return _unitOfWork.BookingDetailRepo.GetAll().
+                Select(details => new BookingDetailDTO
             {
-                _unitOfWork.BookingDetailRepo.Remove(items);
-                _unitOfWork.SaveChanges();
-            }
+                    BookingDetailId = details.BookingDetailId,
+                    BookingId = details.BookingId,
+                    Date = details.Date,
+                    SlotId = details.SlotId,
+                    Status = details.Status,
+                    SubCourtId = details.SubCourtId,
+                    TimeReducedInMinutes = details.TimeReducedInMinutes,
+            }).ToList();
         }
 
-        public List<BookingDetail> GetBookingDetails()
+        public List<BookingDetailDTO> GetBookingDetailsByBookingId(int bookingId)
         {
-            return _unitOfWork.BookingDetailRepo.GetAll();
-        }
-
-        public BookingDetail GetBookingDetailsById(int id)
-        {
-            return _unitOfWork.BookingDetailRepo.GetById(id);
-        }
-
-        public void UpdateBookingDetails(int id, BookingDetail bookingDetail)
-        {
-            _unitOfWork.BookingDetailRepo.Update(id, bookingDetail);
-            _unitOfWork.SaveChanges();
-        }
-        public void CheckIns(int bookingDetailId, int timeReducedInMinutes)
-        {
-            var bookingDetail = _unitOfWork.BookingDetailRepo.GetById(bookingDetailId);
-            if (bookingDetail != null)
-            {
-                var checkIn = new CheckIn
+            return _unitOfWork.BookingDetailRepo.GetAll()
+                .Where(details => details.BookingId == bookingId)
+                .Select(details => new BookingDetailDTO
                 {
-                    BookingDetailId = bookingDetailId,
-                    CheckInTime = DateTime.Now,
-                };
+                    BookingDetailId = details.BookingDetailId,
+                    BookingId = details.BookingId,
+                    Date = details.Date,
+                    SlotId = details.SlotId,
+                    Status = details.Status,
+                    SubCourtId = details.SubCourtId,
+                    TimeReducedInMinutes = details.TimeReducedInMinutes,
+                }).ToList();
 
-                _unitOfWork.CheckInRepo.Create(checkIn);
-                _unitOfWork.SaveChanges();
-
-                //bookingDetail.CheckInTime = DateTime.Now;
-                //bookingDetail.TimeReducedInMinutes = timeReducedInMinutes;
-
-                var booking = _unitOfWork.BookingRepo.GetById(bookingDetail.BookingId.Value);
-                if (booking != null && booking.TotalHours.HasValue)
-                {
-                    var totalHoursReduced = timeReducedInMinutes / 60.0;
-                    booking.TotalHours -= (int)totalHoursReduced;
-                    _unitOfWork.BookingRepo.Update(booking);
-                }
-
-                _unitOfWork.BookingDetailRepo.Update(bookingDetail);
-                _unitOfWork.SaveChanges();
-            }
         }
-
     }
 }

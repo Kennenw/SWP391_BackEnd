@@ -15,5 +15,11 @@ namespace Repositories.Repositories
         {
             return _dbSet.Where(sc => sc.CourtId == courtId).ToList();
         }
+
+        public int? GetCourtIdBySubCourt(int subCourtId)
+        {
+            var court = _dbSet.FirstOrDefault(sc => sc.SubCourtId == subCourtId);
+            return court?.CourtId;
+        }
     }
 }

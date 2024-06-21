@@ -59,8 +59,17 @@ namespace Repositories.DTO
 
     public class CheckInDTO
     {
-        public int SubCourtId { get; set; }
         public int BookingDetailId { get; set; }
+        public int SubCourtId { get; set; }
+        
+    }
+
+    public class CheckInResponse
+    {
+        public string CourtName { get; set; }
+        public string SubCourtName { get; set; }
+        public string SlotTimeStart { get; set; }
+        public string SlotTimeEnd { get; set; }
     }
 }
 

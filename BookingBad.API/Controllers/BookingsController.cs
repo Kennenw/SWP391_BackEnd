@@ -35,6 +35,24 @@ namespace Repositories.API.Controllers
             return _bookingService.GetBookingById(id);
         }
 
+        [HttpGet("ByCustomer/{customerId}")]
+        public IActionResult GetBookingsByCustomerId(int customerId)
+        {
+            try
+            {
+                var bookings = _bookingService.GetBookingsByCustomerId(customerId);
+                if (bookings == null || bookings.Count == 0)
+                {
+                    return NotFound(new { message = "No bookings found for the given customer ID" });
+                }
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
 
         [HttpPost("Fixed")]
         public async Task<IActionResult> BookFixedSchedule([FromBody] FixedScheduleDTO scheduleDTO)
@@ -78,10 +96,10 @@ namespace Repositories.API.Controllers
         {
             try
             {
-                var result = await _bookingService.CheckIn(request.SubCourtId, request.BookingDetailId);
-                if (result)
+                var response = await _bookingService.CheckIn(request.SubCourtId, request.BookingDetailId);
+                if (response != null)
                 {
-                    return Ok(new { message = "Check-in successful" });
+                    return Ok(response);
                 }
                 else
                 {
