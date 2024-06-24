@@ -257,10 +257,14 @@ namespace BookingDemo.API.Controllers
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            if (!accountServices.IsAdmin(id))
-                return Ok(new SuccessObject<object> { Message = "Bạn không có quyền truy cập !" });
+            var item = accountServices.GetAccountById(id);
+            if (item == null)
+            {
+                return Ok(new SuccessObject<object> { Message = "Fail to delete!" });
+            }
             accountServices.DeleteAccount(id);
-            return Ok(new SuccessObject<object> { Message = "Xóa thành công" });                          
+            return Ok(new SuccessObject<object> { Message = "Delete Successfully !" });
+                      
         }
 
 
