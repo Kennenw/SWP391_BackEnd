@@ -61,7 +61,7 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
-        [HttpGet("{courtId}")]
+        [HttpGet("GetCourts/{courtId}")]
         public IActionResult GetCourtByIds(int courtId)
         {
             var court = _courtServices.GetCourtById(courtId);
