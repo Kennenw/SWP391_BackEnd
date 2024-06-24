@@ -1,4 +1,3 @@
-
 using Microsoft.Extensions.FileProviders;
 using NETCore.MailKit.Extensions;
 using Repositories.DTO;
@@ -15,7 +14,6 @@ namespace Repositories.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -54,10 +52,16 @@ namespace Repositories.API
             builder.Services.AddTransient<ICourtServices, CourtServices>();
             builder.Services.AddTransient<IBookingSevices, BookingServices>();
             builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
+
+            // Register the missing PaymentServices
+            builder.Services.AddTransient<IPaymentServices, PaymentServices>();
+
+            // Register UnitOfWork
+            builder.Services.AddTransient<UnitOfWork>();
+
             // Register repositories
             builder.Services.AddScoped<AccountRepo>();
-            builder.Services.AddScoped<AccountRepo>();
-            builder.Services.AddScoped<CourtRepo>(); 
+            builder.Services.AddScoped<CourtRepo>();
             builder.Services.AddScoped<SubCourtRepo>();
             builder.Services.AddScoped<AmenityCourtRepo>();
             builder.Services.AddScoped<SlotTimeRepo>();
