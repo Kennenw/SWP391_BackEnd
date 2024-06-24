@@ -1,33 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\",
+  "WorkspaceRootPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\accountservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\repositories\\accountrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\accountrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\services\\courtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\courtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\fpt\\se5\\swp391\\project\\swp391_backend\\bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -38,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,106 +42,19 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AccountRepo.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories\\AccountRepo.cs",
-              "RelativeDocumentMoniker": "Repositories\\Repositories\\AccountRepo.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories\\AccountRepo.cs",
-              "RelativeToolTip": "Repositories\\Repositories\\AccountRepo.cs",
-              "ViewState": "AQIAABkAAAAAAAAAAAAAACwAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-24T05:38:55.814Z",
-              "EditorCaption": ""
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AccountsController.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
-              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\AccountsController.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\AccountsController.cs",
-              "RelativeToolTip": "BookingBad.API\\Controllers\\AccountsController.cs",
-              "ViewState": "AQIAAPUAAAAAAAAAAAAAAAsBAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T16:37:45.742Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AccountServices.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\AccountServices.cs",
-              "RelativeDocumentMoniker": "Services\\AccountServices.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\AccountServices.cs",
-              "RelativeToolTip": "Services\\AccountServices.cs",
-              "ViewState": "AQIAAGoAAAAAAAAAAAAAAHYAAAAkAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T16:37:31.828Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
-              "RelativeDocumentMoniker": "BookingBad.API\\appsettings.json",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
-              "RelativeToolTip": "BookingBad.API\\appsettings.json",
-              "ViewState": "AQIAABsAAAAAAAAAAAAAABkAAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-06-21T16:06:15.028Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "DocumentMoniker": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
               "RelativeDocumentMoniker": "BookingBad.API\\Program.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
+              "ToolTip": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\Program.cs",
               "RelativeToolTip": "BookingBad.API\\Program.cs",
-              "ViewState": "AQIAAEMAAAAAAAAAAAAAwFQAAAAbAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T07:23:39.85Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CourtServices.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\CourtServices.cs",
-              "RelativeDocumentMoniker": "Services\\CourtServices.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\CourtServices.cs",
-              "RelativeToolTip": "Services\\CourtServices.cs",
-              "ViewState": "AQIAAGoBAAAAAAAAAAAwwOEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T07:23:19.079Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CourtsController.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\CourtsController.cs",
-              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\CourtsController.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\CourtsController.cs",
-              "RelativeToolTip": "BookingBad.API\\Controllers\\CourtsController.cs",
-              "ViewState": "AQIAAG4AAAAAAAAAAAAAwHwAAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T07:23:33.338Z",
+              "WhenOpened": "2024-06-24T07:03:00.664Z",
               "EditorCaption": ""
             }
           ]

@@ -78,7 +78,6 @@ namespace Repositories.API
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles(); 
             var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
             if (!Directory.Exists(uploadsPath))
             {
