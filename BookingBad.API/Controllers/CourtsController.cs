@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using Repositories.DTO;
+using Repositories.Entities;
 using Services;
 using System.Collections.Generic;
 using System.IO;
@@ -88,8 +89,15 @@ namespace BookingBad.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCourtWithImage(CourtDTO courtCreationDTO)
         {
-            await _courtServices.CreateCourtAsync(courtCreationDTO);
-            return Ok("Court created successfully.");
+            try
+            {
+                var createdCourt = await _courtServices.CreateCourtAsync(courtCreationDTO);
+                return Ok( createdCourt);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // DELETE: api/Courts/{id}

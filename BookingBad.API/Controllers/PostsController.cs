@@ -96,7 +96,7 @@ namespace BookingBad.API.Controllers
 
 
         [HttpPost("UploadPostImage/{PostId}")]
-        public async Task<IActionResult> UploadCourtImage(int PostId, IFormFile file)
+        public async Task<IActionResult> UploadPostImage(int PostId, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No image uploaded.");
@@ -104,7 +104,7 @@ namespace BookingBad.API.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
-                await postServices.UploadCourtImageAsync(PostId, memoryStream.ToArray());
+                await postServices.UploadPostImageAsync(PostId, memoryStream.ToArray());
             }
 
             return Ok("Image uploaded successfully.");

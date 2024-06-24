@@ -54,10 +54,6 @@ namespace Repositories
             return _dbSet.Find(id);
         }
 
-        public T GetByName(string code)
-        {
-            return _dbSet.Find(code);
-        } 
         public void Update(T entity)
         {
             var tracker = _context.Attach(entity);

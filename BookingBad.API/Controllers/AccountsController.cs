@@ -203,7 +203,7 @@ namespace BookingDemo.API.Controllers
             }
             catch
             {
-                return Ok(new SuccessObject<object> { Message = "Invalid base 64 string" });
+                return Ok(new SuccessObject<object> { Message = "Invalid  string" });
             }
         }
 
@@ -265,7 +265,7 @@ namespace BookingDemo.API.Controllers
 
 
         [HttpPost("UploadAccountImage/{AccountId}")]
-        public async Task<IActionResult> UploadCourtImage(int AccountId, IFormFile file)
+        public async Task<IActionResult> UploadAccountImage(int AccountId, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No image uploaded.");
@@ -273,10 +273,29 @@ namespace BookingDemo.API.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
-                await accountServices.UploadCourtImageAsync(AccountId, memoryStream.ToArray());
+                await accountServices.UploadAccountImageAsync(AccountId, memoryStream.ToArray());
             }
 
             return Ok("Image uploaded successfully.");
+        }
+
+        [HttpGet("{AccountId}/Image")]
+        public IActionResult GetAccountImage(int AccountId)
+        {
+            try
+            {
+                var imagePath = accountServices.GetAccountImagePath(AccountId);
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    return NotFound(new { message = "Image not found" });
+                }
+                var image = System.IO.File.ReadAllBytes(imagePath);
+                return File(image, "image/png");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

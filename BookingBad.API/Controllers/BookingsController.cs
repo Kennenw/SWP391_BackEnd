@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
@@ -24,10 +26,17 @@ namespace Repositories.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBooking()
+        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBooking(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            return _bookingService.GetBooking();
-        }
+            var result = _bookingService.GetBooking(pageNumber, pageSize);
+            if (result == null)
+            {
+                return NotFound();
+    }
+            return Ok(result);
+}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingDTO>> GetBookingById(int id)
@@ -35,13 +44,16 @@ namespace Repositories.API.Controllers
             return _bookingService.GetBookingById(id);
         }
 
-        [HttpGet("ByCustomer/{customerId}")]
-        public IActionResult GetBookingsByCustomerId(int customerId)
+        [HttpGet("ByCustomer")]
+        public async Task<ActionResult<BookingDTO>> GetBookingsByCustomerId(
+            [FromQuery] int customerId,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                var bookings = _bookingService.GetBookingsByCustomerId(customerId);
-                if (bookings == null || bookings.Count == 0)
+                var bookings = _bookingService.GetBookingsByCustomerId(customerId, pageNumber, pageSize);
+                if (bookings == null)
                 {
                     return NotFound(new { message = "No bookings found for the given customer ID" });
                 }

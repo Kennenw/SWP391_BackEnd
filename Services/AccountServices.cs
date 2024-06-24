@@ -15,7 +15,6 @@ namespace Services
     {
         PagedResult<AccountDTO> GetAccount( int pageNumber, int pageSize);
         AccountDTO GetAccountById(int id);
-        AccountDTO GetAccountByName(string name);
         void DeleteAccount(int id);
         AccountDTO Login(string username, string password);
         PagedResult<AccountDTO> PagedResult(string query, int pageNumber, int pageSize);
@@ -25,11 +24,11 @@ namespace Services
         bool UpdatePassword(string email, UpdatePassword info);
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
-        bool IsUserExist(string? email);
-        bool IsAdminAndStaff(int user_id);
+        bool IsUserExist(string? email); 
         bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
-        Task UploadCourtImageAsync(int accountId, byte[] imageBytes);
+        Task UploadAccountImageAsync(int accountId, byte[] imageBytes);
+        string GetAccountImagePath(int accountId);
 
     }
     public class AccountServices : IAccountServices
@@ -87,28 +86,6 @@ namespace Services
                 Image = account.Image,
             };
         }
-
-        public AccountDTO GetAccountByName(string name)
-        {
-            var account = _unitOfWork.AccountRepo.GetByName(name);
-            if (account == null)
-            {
-                return null;
-            }
-            return new AccountDTO
-            {
-                AccountId = account.AccountId,
-                AccountName = account.AccountName,
-                Password = account.Password,
-                FullName = account.FullName,
-                Phone = account.Phone,
-                Email = account.Email,
-                RoleId = account.RoleId,
-                Status = account.Status,
-                Image = account.Image,
-            };
-        }
-
 
         public void DeleteAccount(int id)
         {
@@ -300,11 +277,6 @@ namespace Services
             return _unitOfWork.AccountRepo.IsAdmin(user_id);
         }
 
-        public bool IsAdminAndStaff(int user_id)
-        {
-            return _unitOfWork.AccountRepo.IsAdminAndStaff(user_id);
-        }
-
         public bool UpdateRoleUser(int user_id, Role role_id)
         {
             var user = _unitOfWork.AccountRepo.GetById(user_id);
@@ -322,7 +294,7 @@ namespace Services
             return true;
         }
 
-        public async Task UploadCourtImageAsync(int accountId, byte[] imageBytes)
+        public async Task UploadAccountImageAsync(int accountId, byte[] imageBytes)
         {
             var account = _unitOfWork.AccountRepo.GetById(accountId);
             if (account == null)
@@ -351,6 +323,26 @@ namespace Services
 
             Console.WriteLine("Image saved successfully.");
         }
+
+        public string GetAccountImagePath(int accountId)
+        {
+            var user = _unitOfWork.AccountRepo.GetById(accountId);
+            if (user == null)
+            {
+                throw new Exception("Account not found.");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            var imagePath = Path.Combine(uploadPath, user.Image);
+
+            if (!System.IO.File.Exists(imagePath))
+            {
+                throw new Exception("Image file not found.");
+            }
+
+            return imagePath;
+        }
+
 
     }
 }

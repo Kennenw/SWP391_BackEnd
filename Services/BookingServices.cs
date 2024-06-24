@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Services
 {
     public interface IBookingSevices
     {
-        public List<BookingDTO> GetBooking();
-        List<BookingDTO> GetBookingsByCustomerId(int customerId);
+        public PagedResult<BookingDTO> GetBooking(int pageNumber, int pageSize);
+        PagedResult<BookingDTO> GetBookingsByCustomerId(int customerId, int pageNumber, int pageSize);
         public BookingDTO GetBookingById(int id);
         Task<BookedSlotDTO> BookFixedSchedule(FixedScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookOneTimeSchedule(OneTimeScheduleDTO scheduleDTO);
@@ -43,9 +44,12 @@ namespace Services
             }
         }
 
-        public List<BookingDTO> GetBooking()
+        public PagedResult<BookingDTO> GetBooking(int pageNumber, int pageSize)
         {
-            return _unitOfWork.BookingRepo.GetAll().Select(booking => new BookingDTO
+            var items = _unitOfWork.BookingRepo.GetAll();
+            var totalItemBooking = items.Count;
+            var pagedBooking = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var BookingDTOs = pagedBooking.Select(booking => new BookingDTO
             {
                 BookingId = booking.BookingId,
                 CustomerId = booking.CustomerId,
@@ -54,22 +58,36 @@ namespace Services
                 TotalPrice = booking.TotalPrice,
                 Note = booking.Note,
             }).ToList();
+            return new PagedResult<BookingDTO>
+            {
+                Items = BookingDTOs,
+                TotalItem = totalItemBooking,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+            };
         }
 
-        public List<BookingDTO> GetBookingsByCustomerId(int customerId)
+        public PagedResult<BookingDTO> GetBookingsByCustomerId(int customerId, int pageNumber, int pageSize)
         {
-            return _unitOfWork.BookingRepo.GetAll()
-                .Where(booking => booking.CustomerId == customerId)
-                .Select(booking => new BookingDTO
-                {
-                    BookingId = booking.BookingId,
-                    CustomerId = booking.CustomerId,
-                    BookingTypeId = booking.BookingTypeId,
-                    PlayerQuantity = booking.PlayerQuantity,
-                    TotalPrice = booking.TotalPrice,
-                    Note = booking.Note,
-                    Status = booking.Status,
-                }).ToList();
+            var items = _unitOfWork.BookingRepo.GetBookingByUser(customerId);
+            var totalItemBooking = items.Count;
+            var pagedBooking = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var BookingDTOs = pagedBooking.Select(booking => new BookingDTO
+            {
+                BookingId = booking.BookingId,
+                CustomerId = booking.CustomerId,
+                BookingTypeId = booking.BookingTypeId,
+                PlayerQuantity = booking.PlayerQuantity,
+                TotalPrice = booking.TotalPrice,
+                Note = booking.Note,
+            }).ToList();
+            return new PagedResult<BookingDTO>
+            {
+                Items = BookingDTOs,
+                TotalItem = totalItemBooking,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+            };
         }
 
         public void UpdateBooking(int id, BookingDTO bookingDTO)
