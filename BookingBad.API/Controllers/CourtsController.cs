@@ -61,6 +61,17 @@ namespace BookingBad.API.Controllers
             return Ok(court);
         }
 
+        [HttpGet("{courtId}")]
+        public IActionResult GetCourtByIds(int courtId)
+        {
+            var court = _courtServices.GetCourtById(courtId);
+            if (court == null)
+            {
+                return NotFound();
+            }
+            return Ok(court);
+        }
+
         // PUT: api/Courts/Update/{id}
         [HttpPut("Update/{id}")]
         public ActionResult UpdateCourt(int id, CourtDTOs courtDTO)
@@ -89,7 +100,7 @@ namespace BookingBad.API.Controllers
         public async Task<IActionResult> CreateCourtWithImage(CourtDTO courtCreationDTO)
         {
             await _courtServices.CreateCourtAsync(courtCreationDTO);
-            return Ok("Court created successfully.");
+            return CreatedAtAction("GetCourtByIds", new { courtId = courtCreationDTO.CourtId }, courtCreationDTO);
         }
 
         // DELETE: api/Courts/{id}
