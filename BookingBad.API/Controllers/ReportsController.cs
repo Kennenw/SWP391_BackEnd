@@ -34,10 +34,17 @@ namespace BookingBad.API.Controllers
         }
 
         [HttpGet("Monthly-Revenue")]
-        public async Task<IActionResult> GetMonthlyRevenue(int year, int month)
+        public async Task<IActionResult> GetMonthlyRevenue(int year, int month, int day)
         {
-            var monthlyRevenue = await reportServices.GetMonthlyRevenueAsync(year, month);
-            return Ok(monthlyRevenue);
+            try
+            {
+                var revenue = await reportServices.GetRevenueAsync(year, month, day);
+                return Ok(new { Year = year, Month = month, Day = day, Revenue = revenue });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("Total-Post")]

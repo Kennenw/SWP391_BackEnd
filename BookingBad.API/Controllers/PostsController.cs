@@ -104,7 +104,7 @@ namespace BookingBad.API.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
-                await postServices.UploadCourtImageAsync(PostId, memoryStream.ToArray());
+                await postServices.UploadPostImageAsync(PostId, memoryStream.ToArray());
             }
 
             return Ok("Image uploaded successfully.");

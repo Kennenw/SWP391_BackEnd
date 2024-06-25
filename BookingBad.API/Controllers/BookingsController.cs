@@ -31,8 +31,13 @@ namespace Repositories.API.Controllers
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingDTO>> GetBookingById(int id)
-        {
-            return _bookingService.GetBookingById(id);
+        { 
+            var item = _bookingService.GetBookingById(id);
+            if(item == null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
         }
 
         [HttpGet("ByCustomer/{customerId}")]

@@ -11,15 +11,16 @@ namespace Repositories.Repositories
     public class BookingRepo : GenericRepository<Booking>
     {
         public BookingRepo() { }
-        public List<Booking> GetBookingByUser(int id)
+
+        public async Task<double> GetRevenueAsync(int year, int month, int day)
         {
-            return _dbSet.Where(c => c.CustomerId == id).ToList();
-        }
-        public async Task<double> GetMonthlyRevenueAsync(int year, int month)
-        {
-            return await _dbSet.
-                Where(b => b.StartDate.HasValue && b.StartDate.Value.Year == year && b.StartDate.Value.Month == month || b.Status == true).
-                SumAsync(b => b.TotalPrice ?? 0);               
+            return await _dbSet
+                .Where(b => b.Status == true && 
+                b.StartDate.HasValue && 
+                b.StartDate.Value.Year == year && 
+                b.StartDate.Value.Month == month && 
+                b.StartDate.Value.Day == day)
+                .SumAsync(b => b.TotalPrice ?? 0);
         }
     }
 }
