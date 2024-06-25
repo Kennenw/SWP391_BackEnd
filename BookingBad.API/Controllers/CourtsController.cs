@@ -22,11 +22,9 @@ namespace BookingBad.API.Controllers
 
         // GET: api/Courts
         [HttpGet]
-        public ActionResult<IEnumerable<CourtDTOs>> GetCourt(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        public ActionResult<IEnumerable<CourtDTOs>> GetCourt()
         {
-            var result = _courtServices.GetCourts( pageNumber, pageSize);
+            var result = _courtServices.GetCourts();
             if (result == null)
             {
                 return BadRequest(new { message = "No Court to find" });
@@ -36,13 +34,11 @@ namespace BookingBad.API.Controllers
 
         // GET: api/Courts/Search
         [HttpGet("Search-Court")]
-        public async Task<ActionResult<PagedResult<CourtDTO>>> SearchCourts(
-            [FromQuery] string searchTerm,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<CourtDTO>>> SearchCourts(
+            [FromQuery] string searchTerm)
         {
-            var result = _courtServices.SearchCourts(searchTerm, pageNumber, pageSize);
-            if (result == null || !result.Items.Any())
+            var result = _courtServices.SearchCourts(searchTerm);
+            if (result == null || !result.Any())
             {
                 return BadRequest(new { message = "No Court to find" });
             }

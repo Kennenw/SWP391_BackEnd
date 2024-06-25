@@ -44,12 +44,10 @@ namespace BookingDemo.API.Controllers
 
         // GET: api/Accounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAccounts(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAccounts()
         {
 
-            var result = accountServices.GetAccount( pageNumber, pageSize);
+            var result = accountServices.GetAccount();
             if (result == null)
             {
                 return NotFound();
@@ -98,12 +96,10 @@ namespace BookingDemo.API.Controllers
 
         [HttpGet("Search-Account")]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> SearchAccount(
-            [FromQuery] string searchTerm, 
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] string searchTerm)
         {
  
-            var result = accountServices.PagedResult(searchTerm,pageNumber, pageSize );
+            var result = accountServices.Search(searchTerm);
             if (result == null)
             {
                 return NotFound();
