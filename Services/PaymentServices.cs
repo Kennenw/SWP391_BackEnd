@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
+using Repositories.DTO;
 
 namespace Services
 {
@@ -25,7 +26,24 @@ namespace Services
         public PaymentServices(UnitOfWork unitOfWork, IOptions<VNPayOptions> vnPayOptions)
         {
             _unitOfWork = unitOfWork;
-            _vnPayOptions = vnPayOptions.Value;
+            _vnPayOptions = vnPayOptions?.Value ?? throw new ArgumentNullException(nameof(vnPayOptions));
+
+            if (string.IsNullOrEmpty(_vnPayOptions.Version))
+                throw new ArgumentNullException(nameof(_vnPayOptions.Version));
+            if (string.IsNullOrEmpty(_vnPayOptions.TmnCode))
+                throw new ArgumentNullException(nameof(_vnPayOptions.TmnCode));
+            if (string.IsNullOrEmpty(_vnPayOptions.HashSecret))
+                throw new ArgumentNullException(nameof(_vnPayOptions.HashSecret));
+            if (string.IsNullOrEmpty(_vnPayOptions.BaseUrl))
+                throw new ArgumentNullException(nameof(_vnPayOptions.BaseUrl));
+            if (string.IsNullOrEmpty(_vnPayOptions.Command))
+                throw new ArgumentNullException(nameof(_vnPayOptions.Command));
+            if (string.IsNullOrEmpty(_vnPayOptions.CurrCode))
+                throw new ArgumentNullException(nameof(_vnPayOptions.CurrCode));
+            if (string.IsNullOrEmpty(_vnPayOptions.Locale))
+                throw new ArgumentNullException(nameof(_vnPayOptions.Locale));
+            if (string.IsNullOrEmpty(_vnPayOptions.FEUrlCallback))
+                throw new ArgumentNullException(nameof(_vnPayOptions.FEUrlCallback));
         }
 
         public async Task<string> CreatePaymentUrl(int bookingId)
@@ -60,7 +78,6 @@ namespace Services
                 {"vnp_TxnRef", payment.PaymentId.ToString() }
             };
 
-            string queryString = BuildQueryString(queryParams);
             string secureHash = CreateSignature(queryParams);
             queryParams.Add("vnp_SecureHash", secureHash);
 
@@ -78,12 +95,13 @@ namespace Services
         private string BuildQueryString(Dictionary<string, string> queryParams)
         {
             var sortedParams = queryParams.OrderBy(kvp => kvp.Key);
-            return string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            return string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
         }
 
         private string CreateSignature(Dictionary<string, string> queryParams)
         {
-            string rawData = BuildQueryString(queryParams);
+            var sortedParams = queryParams.OrderBy(kvp => kvp.Key);
+            string rawData = string.Join("&", sortedParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
             return ComputeHmacSha512(rawData, _vnPayOptions.HashSecret);
         }
 

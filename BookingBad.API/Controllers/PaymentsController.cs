@@ -37,17 +37,22 @@ namespace BookingBad.API.Controllers
             if (queryParams == null || !queryParams.Any())
                 return BadRequest("Invalid parameters");
 
-            var signature = queryParams["vnp_SecureHash"];
+            if (!queryParams.TryGetValue("vnp_SecureHash", out var signature))
+                return BadRequest("Missing vnp_SecureHash parameter");
+
             queryParams.Remove("vnp_SecureHash");
 
             bool isValid = _paymentService.ValidateSignature(queryParams, signature);
-            if (!isValid)
+
+            if (isValid)
+            {
+                // Handle successful payment return logic here
+                return Ok("Payment successful");
+            }
+            else
             {
                 return BadRequest("Invalid signature");
             }
-
-            // Handle the return logic here
-            return Ok("Payment successful");
         }
 
         [HttpPost("notify")]
@@ -56,17 +61,21 @@ namespace BookingBad.API.Controllers
             if (queryParams == null || !queryParams.Any())
                 return BadRequest("Invalid parameters");
 
-            var signature = queryParams["vnp_SecureHash"];
+            if (!queryParams.TryGetValue("vnp_SecureHash", out var signature))
+                return BadRequest("Missing vnp_SecureHash parameter");
+
             queryParams.Remove("vnp_SecureHash");
 
             bool isValid = _paymentService.ValidateSignature(queryParams, signature);
-            if (!isValid)
+            if (isValid)
+            {
+                // Handle notification logic here
+                return Ok("Notification received");
+            }
+            else
             {
                 return BadRequest("Invalid signature");
             }
-
-            // Handle the notification logic here
-            return Ok("Notification received");
         }
     }
 }
