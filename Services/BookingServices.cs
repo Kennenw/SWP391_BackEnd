@@ -20,7 +20,6 @@ namespace Services
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
         Task<CheckInResponse> CheckIn(int subCourtId, int bookingDetailId);
-        public void UpdateBooking(int id, BookingDTO bookingDTO);
         public void DeleteBooking(int id);
     }
     public class BookingServices : IBookingSevices
@@ -72,21 +71,6 @@ namespace Services
                 }).ToList();
         }
 
-        public void UpdateBooking(int id, BookingDTO bookingDTO)
-        {
-            var booking = _unitOfWork.BookingRepo.GetById(id);
-            if (booking != null)
-            {
-                booking.BookingId = bookingDTO.BookingId;
-                booking.CustomerId = bookingDTO.CustomerId;
-                booking.BookingTypeId = bookingDTO.BookingTypeId;
-                booking.PlayerQuantity = bookingDTO.PlayerQuantity;
-                booking.TotalPrice = bookingDTO.TotalPrice;
-                booking.Note = bookingDTO.Note;
-                _unitOfWork.BookingRepo.Update(booking);
-                _unitOfWork.SaveChanges();
-            }
-        }
         public BookingDTO GetBookingById(int id)
         {
             var booking = _unitOfWork.BookingRepo.GetById(id);

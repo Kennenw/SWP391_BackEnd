@@ -19,7 +19,7 @@ namespace Services
         public void CreatePost(PostDTO postDTO);
         public void UpdatePost(int id, PostDTO postDTO);
         public void DeletePost(int id);
-        Task UploadCourtImageAsync(int accountId, byte[] imageBytes);
+        Task UploadPostImageAsync(int postId, byte[] imageBytes);
         public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize);
         void RatePost(int userId,int postId, double rating);
     }
@@ -113,7 +113,7 @@ namespace Services
                 _unitOfWork.SaveChanges();
             }
         }
-        public async Task UploadCourtImageAsync(int postId, byte[] imageBytes)
+        public async Task UploadPostImageAsync(int postId, byte[] imageBytes)
         {
             var post = _unitOfWork.PostRepo.GetById(postId);
             if (post == null)

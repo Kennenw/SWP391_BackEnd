@@ -50,11 +50,19 @@ namespace BookingDemo.API.Controllers
         }
 
 
-        [HttpPut("id")]
-        public async Task<IActionResult> UpdateRole( int role_id, RoleDTO roleDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateRole( int id, RoleDTO roleDTO)
         {
-            roleSrvices.UpdateRole(role_id, roleDTO);  
-            return Ok();
+            var item = roleSrvices.GetRoleById(id);
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                roleSrvices.UpdateRole(id, roleDTO);
+                return Ok();
+            }
         }
 
         // POST: api/Roles

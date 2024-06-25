@@ -26,11 +26,9 @@ namespace Services
     public class CourtServices : ICourtServices
     {
         private readonly UnitOfWork _unitOfWork;
-        private readonly ImageServices _imageService;
         public CourtServices()
         {
             _unitOfWork ??= new UnitOfWork();
-            _imageService = new ImageServices();
         }
         public PagedResult<CourtDTOs> GetCourts(int pageNumber, int pageSize)
         {

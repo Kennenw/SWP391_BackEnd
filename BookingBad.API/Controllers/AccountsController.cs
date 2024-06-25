@@ -158,11 +158,11 @@ namespace BookingDemo.API.Controllers
         {
             if (info.Password != info.ReEnterPass)
             {
-                return Ok(new SuccessObject<object> { Message = "Mật khẩu không trùng khớp" });
+                return Ok(new SuccessObject<object> { Message = "Passwords are not duplicates" });
             }
             if (!accountServices.IsUserExist(info.Email))
             {
-                return Ok(new SuccessObject<object> { Message = "Email này đã tồn tại" });
+                return Ok(new SuccessObject<object> { Message = "Email already exists" });
             }
             var account = accountServices.RegisterUser(info);
             return Ok(account);
@@ -182,12 +182,12 @@ namespace BookingDemo.API.Controllers
         {
             if (!accountServices.IsUserExist(email))
             {
-                return Ok(new SuccessObject<object> { Message = "Không tìm thấy người dùng !" });
+                return Ok(new SuccessObject<object> { Message = "User not found!" });
             }
 
             if (info.NewPassword != info.ReEnterPassword)
             {
-                return Ok(new SuccessObject<object> { Message = "Xác minh mật khẩu không khớp !" });
+                return Ok(new SuccessObject<object> { Message = "Verify passwords do not match!" });
             }
             var account = accountServices.UpdatePassword(email, info);
             return Ok(account);
@@ -213,23 +213,23 @@ namespace BookingDemo.API.Controllers
             var res = await accountServices.SettingPassword(user_id, info);
             if (res == 1)
             {
-                return Ok(new SuccessObject<object?> { Data = true, Message = $"Cập nhật thành công!" });
+                return Ok(new SuccessObject<object?> { Data = true, Message = $"Update successful!" });
             }
             else if (res == 0)
             {
-                return Ok(new SuccessObject<object?> { Message = "Mật khẩu cũ không hợp lệ !" });
+                return Ok(new SuccessObject<object?> { Message = "Old password is invalid!" });
             }
             else if (res == -1)
             {
-                return Ok(new SuccessObject<object?> { Message = "Nhập lại mật khẩu sai !" });
+                return Ok(new SuccessObject<object?> { Message = "Re-enter wrong password!" });
             }
             else if (res == -2)
             {
-                return Ok(new SuccessObject<object?> { Message = "Người dùng không tồn tại !" });
+                return Ok(new SuccessObject<object?> { Message = "User does not exist !" });
             }
             else
             {
-                return Ok(new SuccessObject<object?> { Message = "Cập nhật thất bại" });
+                return Ok(new SuccessObject<object?> { Message = "Update failed" });
             }
         }
 
@@ -239,13 +239,13 @@ namespace BookingDemo.API.Controllers
             try
             {
                 if (!accountServices.IsAdmin(admin_id))
-                    throw new Exception("Bạn không có quyền truy cập !");
+                    throw new Exception("You do not have access !");
 
                 if (accountServices.UpdateRoleUser(user_id, role_id))
-                    return Ok(new SuccessObject<object> { Data = true, Message = "Cập nhật thành công" });
+                    return Ok(new SuccessObject<object> { Data = true, Message = "Update successful" });
                 else
                 {
-                    throw new Exception("Cập nhật thất bại !");
+                    throw new Exception("Update failed !");
                 }
             }
             catch (Exception ex)
@@ -277,7 +277,7 @@ namespace BookingDemo.API.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
-                await accountServices.UploadCourtImageAsync(AccountId, memoryStream.ToArray());
+                await accountServices.UploadAccountImageAsync(AccountId, memoryStream.ToArray());
             }
 
             return Ok("Image uploaded successfully.");

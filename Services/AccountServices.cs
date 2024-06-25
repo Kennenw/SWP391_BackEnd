@@ -26,10 +26,9 @@ namespace Services
         bool UpdateProfile(int user_id, UpdateProfileUser param);
         Task<int> SettingPassword(int user_id, SettingPasswordRequest info);
         bool IsUserExist(string? email);
-        bool IsAdminAndStaff(int user_id);
         bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
-        Task UploadCourtImageAsync(int accountId, byte[] imageBytes);
+        Task UploadAccountImageAsync(int accountId, byte[] imageBytes);
 
     }
     public class AccountServices : IAccountServices
@@ -300,10 +299,6 @@ namespace Services
             return _unitOfWork.AccountRepo.IsAdmin(user_id);
         }
 
-        public bool IsAdminAndStaff(int user_id)
-        {
-            return _unitOfWork.AccountRepo.IsAdminAndStaff(user_id);
-        }
 
         public bool UpdateRoleUser(int user_id, Role role_id)
         {
@@ -322,7 +317,7 @@ namespace Services
             return true;
         }
 
-        public async Task UploadCourtImageAsync(int accountId, byte[] imageBytes)
+        public async Task UploadAccountImageAsync(int accountId, byte[] imageBytes)
         {
             var account = _unitOfWork.AccountRepo.GetById(accountId);
             if (account == null)

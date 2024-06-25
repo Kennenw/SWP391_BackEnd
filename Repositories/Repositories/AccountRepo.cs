@@ -12,8 +12,6 @@ namespace Repositories.Repositories
     public enum UserRole
     {
         Admin = 1,
-        User = 2,
-        Staff = 3
     }
     public class AccountRepo : GenericRepository<Account>
     {
@@ -43,17 +41,7 @@ namespace Repositories.Repositories
             return res;
         }
 
-        public bool IsAdminAndStaff(int user_id)
-        {
-            var res = false;
-            var user = _dbSet.FirstOrDefault(x => x.AccountId == user_id);
-            if (user != null && user.RoleId != null)
-            {
-                res = user.RoleId == (int)UserRole.Admin || user.RoleId == (int)UserRole.Staff;
-            }
-            return res;
-        }
-
+       
         public async Task<int> CountAsync()
         {
             return await _dbSet.Where(ar => ar.Status == true).CountAsync();
