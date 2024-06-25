@@ -13,11 +13,11 @@ namespace Services
 {
     public interface ICourtServices
     {
-        public PagedResult<CourtDTOs> GetCourts( int pageNumber, int pageSize);
+        public List<CourtDTOs> GetCourts();
         CourtGET GetCourtById(int id);
         void UpdateCourt(int courtId, CourtDTOs courtDTO);
         Task<Court> CreateCourtAsync(CourtDTO courtDTO);
-        public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize);
+        public List<CourtDTOs> SearchCourts(string searchTerm);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
@@ -30,13 +30,10 @@ namespace Services
         {
             _unitOfWork ??= new UnitOfWork();
         }
-        public PagedResult<CourtDTOs> GetCourts(int pageNumber, int pageSize)
+        public List<CourtDTOs> GetCourts()
         {
             var courts = _unitOfWork.CourtRepo.GetAll();
-            var totalItemCount = courts.Count;
-            var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            var courtDTOs = pagedCourts.Select(c => new CourtDTOs
+            var courtDTOs = courts.Select(c => new CourtDTOs
             {
                 CourtId = c.CourtId,
                 AreaId = c.AreaId,
@@ -53,13 +50,7 @@ namespace Services
                 PriceAvr = c.PricePerHour,
             }).ToList();
 
-            return new PagedResult<CourtDTOs>
-            {
-                Items = courtDTOs,
-                TotalItem = totalItemCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
+            return courtDTOs;
         }
 
 
@@ -270,7 +261,7 @@ namespace Services
             return true;
         }
 
-        public PagedResult<CourtDTOs> SearchCourts(string searchTerm, int pageNumber, int pageSize)
+        public List<CourtDTOs> SearchCourts(string searchTerm)
         {
             var courts = _unitOfWork.CourtRepo.GetAll();
 
@@ -281,11 +272,7 @@ namespace Services
                     c.CourtName.ToLower().Contains(lowerSearchTerm) ||
                     (c.Area != null && c.Area.Location.ToLower().Contains(lowerSearchTerm))).ToList();
             }
-
-            var totalItemCount = courts.Count;
-            var pagedCourts = courts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            var courtDTOs = pagedCourts.Select(c => new CourtDTOs
+            var courtDTOs = courts.Select(c => new CourtDTOs
             {
                 CourtId = c.CourtId,
                 AreaId = c.AreaId,
@@ -302,13 +289,7 @@ namespace Services
                 PriceAvr = c.PricePerHour
             }).ToList();
 
-            return new PagedResult<CourtDTOs>
-            {
-                Items = courtDTOs,
-                TotalItem = totalItemCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
+            return courtDTOs;
         }
 
         public async Task UploadCourtImageAsync(int courtId, byte[] imageBytes)

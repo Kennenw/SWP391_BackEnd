@@ -13,12 +13,12 @@ namespace Services
 {
     public interface IAccountServices
     {
-        PagedResult<AccountDTO> GetAccount( int pageNumber, int pageSize);
+        List<AccountDTO> GetAccount();
         AccountDTO GetAccountById(int id);
         AccountDTO GetAccountByName(string name);
         void DeleteAccount(int id);
         AccountDTO Login(string username, string password);
-        PagedResult<AccountDTO> PagedResult(string query, int pageNumber, int pageSize);
+        List<AccountDTO> Search(string query);
         SelfProfile GetSelfProfile(int id);
         bool RegisterUser(RegisterInformation info);
         bool RegisterStaff(AccountDTO info);
@@ -40,12 +40,9 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public PagedResult<AccountDTO> GetAccount( int pageNumber, int pageSize)
-        {
-            var account = _unitOfWork.AccountRepo.GetAll();          
-            var totalItemAccount = account.Count;
-            var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Select(a => new AccountDTO
+        public List<AccountDTO> GetAccount()
+        {   
+            return _unitOfWork.AccountRepo.GetAll().Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -57,14 +54,6 @@ namespace Services
                 Image = a.Image,
                 Status = a.Status,
             }).ToList();
-            return new PagedResult<AccountDTO>
-            {
-                Items = accountDTOs,
-                TotalItem = totalItemAccount,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-            };
-
         }
         public AccountDTO GetAccountById(int id)
         {
@@ -142,16 +131,14 @@ namespace Services
             };
         }
 
-        public PagedResult<AccountDTO> PagedResult(string query,  int pageNumber, int pageSize)
+        public List<AccountDTO> Search(string query)
         {
             var account = _unitOfWork.AccountRepo.GetAll();
             if (!string.IsNullOrEmpty(query))
             {
                 account = account.Where(a => a.AccountName.Contains(query) || a.FullName.Contains(query)).ToList();
             }
-            var totalItemAccount = account.Count;
-            var pagedAccount = account.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var accountDTOs = pagedAccount.Select(a => new AccountDTO
+            var accountDTOs = account.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
                 AccountName = a.AccountName,
@@ -163,13 +150,7 @@ namespace Services
                 RoleId = a.RoleId,
                 Status = a.Status
             }).ToList();
-            return new PagedResult<AccountDTO>
-            {
-                Items = accountDTOs,
-                TotalItem = totalItemAccount,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-            };
+            return accountDTOs;
         }
 
         public SelfProfile GetSelfProfile(int id)

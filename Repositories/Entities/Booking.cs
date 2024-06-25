@@ -11,21 +11,19 @@ public partial class Booking
 
     public int? BookingTypeId { get; set; }
 
-    public int? PlayerQuantity { get; set; }
+    public int? PlayerQuantity { get; set; } = 1;
 
     public double? TotalPrice { get; set; }
 
-    public string? Note { get; set; }
+    public string? Note { get; set; } = string.Empty;
 
     public bool? Status { get; set; }
 
-    public double? TotalHours { get; set; }
+    public double? TotalHours { get; set; } = 0;
 
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }
-
-    public int? MonthsDuration { get; set; }
 
     public int? CourtId { get; set; }
 

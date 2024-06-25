@@ -14,13 +14,13 @@ namespace Services
 {
     public interface IPostServices
     {
-        public PagedResult<PostDTO> PostPagedResult(string query, int pageNumber, int pageSize);
+        public List<PostDTO> PostSearch(string query);
         public PostDTO GetPostById(int id);
         public void CreatePost(PostDTO postDTO);
         public void UpdatePost(int id, PostDTO postDTO);
         public void DeletePost(int id);
         Task UploadPostImageAsync(int postId, byte[] imageBytes);
-        public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize);
+        public List<PostDTO> GetPost();
         void RatePost(int userId,int postId, double rating);
     }
     public class PostServices : IPostServices
@@ -56,16 +56,14 @@ namespace Services
                 _unitOfWork.SaveChanges();
             }
         }
-        public PagedResult<PostDTO> PostPagedResult(string query, int pageNumber, int pageSize)
+        public List<PostDTO> PostSearch(string query)
         {
             var post = _unitOfWork.PostRepo.GetAll();
             if (!string.IsNullOrEmpty(query))
             {
                 post = post.Where(a => a.Title.Contains(query)).ToList();
             }       
-            var totalItemAccount = post.Count;
-            var pagedAccount = post.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var postDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new PostDTO
+            var postDTOs = post.Where(a => a.Status == true).Select(a => new PostDTO
             {
                 PostId = a.PostId,
                 AccountId = a.AccountId,
@@ -74,13 +72,7 @@ namespace Services
                 TotalRate = a.TotalRate,
                 Title = a.Title,
             }).ToList();
-            return new PagedResult<PostDTO>
-            {
-                Items = postDTOs,
-                TotalItem = totalItemAccount,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-            };
+            return postDTOs;
         }
 
         public PostDTO GetPostById(int id)
@@ -143,12 +135,10 @@ namespace Services
             Console.WriteLine("Image saved successfully.");
         }
 
-        public PagedResult<PostDTO> GetPost(int pageNumber, int pageSize)
+        public List<PostDTO> GetPost()
         {
             var post = _unitOfWork.PostRepo.GetAll();          
-            var totalItemAccount = post.Count;
-            var pagedAccount = post.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-            var postDTOs = pagedAccount.Where(a => a.Status == true).Select(a => new PostDTO
+            var postDTOs = post.Where(a => a.Status == true).Select(a => new PostDTO
             {
                 PostId = a.PostId,
                 AccountId = a.AccountId,
@@ -157,13 +147,7 @@ namespace Services
                 TotalRate = a.TotalRate,
                 Title = a.Title,
             }).ToList();
-            return new PagedResult<PostDTO>
-            {
-                Items = postDTOs,
-                TotalItem = totalItemAccount,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-            };
+            return postDTOs;
         }
 
         public void RatePost(int postId, int userId, double rating)

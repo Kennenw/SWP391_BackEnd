@@ -24,11 +24,9 @@ namespace BookingBad.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPost(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPost()
         {
-            var result = postServices.GetPost(pageNumber, pageSize);
+            var result = postServices.GetPost();
             if (result == null)
             {
                 return NotFound();
@@ -38,11 +36,9 @@ namespace BookingBad.API.Controllers
 
         [HttpGet("Search-Post")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> SearchPost(
-            [FromQuery] string searchTerm,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] string searchTerm)
         {
-            var result = postServices.PostPagedResult(searchTerm, pageNumber, pageSize);
+            var result = postServices.PostSearch(searchTerm);
             if (result == null)
             {
                 return NotFound();
