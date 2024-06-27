@@ -36,7 +36,7 @@ public partial class BookingBadmintonSystemContext : DbContext
 
     public virtual DbSet<Court> Courts { get; set; }
 
-    public virtual DbSet<Payment> Payments { get; set; }
+    public virtual DbSet<Payments> Payments { get; set; }
 
     public virtual DbSet<Post> Posts { get; set; }
 
@@ -51,7 +51,6 @@ public partial class BookingBadmintonSystemContext : DbContext
     public virtual DbSet<SubCourt> SubCourts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=(local);Database=BookingBadmintonSystem;UID=sa;PWD=123456;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -218,9 +217,11 @@ public partial class BookingBadmintonSystemContext : DbContext
                 .HasConstraintName("FK_Court_Account");
         });
 
-        modelBuilder.Entity<Payment>(entity =>
+        modelBuilder.Entity<Payments>(entity =>
         {
-            entity.ToTable("Payment");
+            entity.ToTable("Payments");
+
+            entity.HasKey(e => e.PaymentId).HasName("PK_Payments");
 
             entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
             entity.Property(e => e.BookingId).HasColumnName("BookingID");
@@ -228,8 +229,9 @@ public partial class BookingBadmintonSystemContext : DbContext
 
             entity.HasOne(d => d.Booking).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.BookingId)
-                .HasConstraintName("FK_Payment_Booking");
+                .HasConstraintName("FK_Payments_Booking");
         });
+
 
         modelBuilder.Entity<Post>(entity =>
         {
