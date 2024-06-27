@@ -1,8 +1,10 @@
 using Microsoft.Extensions.FileProviders;
 using NETCore.MailKit.Extensions;
 using Repositories.DTO;
+using Repositories.Payment;
 using Repositories.Repositories;
 using Services;
+using Services.Implements;
 using static Services.EmailServices;
 
 namespace Repositories.API
@@ -53,8 +55,10 @@ namespace Repositories.API
             builder.Services.AddTransient<IBookingSevices, BookingServices>();
             builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
 
-            // Register the missing PaymentServices
-            builder.Services.AddTransient<IPaymentServices, PaymentServices>();
+            // Register VNPayOptions
+            builder.Services.Configure<VnPayOption>(builder.Configuration.GetSection("PaymentConfig:VnPay"));
+            builder.Services.AddScoped<IVNPayService, VNPayService>();
+
 
             // Register UnitOfWork
             builder.Services.AddTransient<UnitOfWork>();

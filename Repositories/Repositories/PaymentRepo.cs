@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
-    public class PaymentRepo : GenericRepository<Payment>
+    public class PaymentRepo : GenericRepository<Payments>
     {
         public PaymentRepo() { }
     }

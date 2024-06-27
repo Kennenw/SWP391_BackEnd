@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj": {}
+    "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj": {}
   },
   "projects": {
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
+    "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
+        "projectUniqueName": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
         "projectName": "Repositories",
-        "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
-        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\obj\\",
+        "projectPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
+        "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+        "outputPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -90,17 +94,17 @@
         }
       }
     },
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj": {
+    "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj",
+        "projectUniqueName": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj",
-        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\obj\\",
+        "projectPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\Services.csproj",
+        "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+        "outputPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -114,8 +118,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
-                "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj"
+              "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
+                "projectPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories.csproj"
               }
             }
           }
