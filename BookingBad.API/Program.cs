@@ -53,6 +53,9 @@ namespace Repositories.API
             builder.Services.AddTransient<IBookingSevices, BookingServices>();
             builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
 
+            // Register VNPayOptions
+            builder.Services.Configure<VNPayOptions>(builder.Configuration.GetSection("VNPayOptions"));
+
             // Register the missing PaymentServices
             builder.Services.AddTransient<IPaymentServices, PaymentServices>();
 
