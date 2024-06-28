@@ -1,8 +1,10 @@
 using Microsoft.Extensions.FileProviders;
 using NETCore.MailKit.Extensions;
 using Repositories.DTO;
+using Repositories.Payment;
 using Repositories.Repositories;
 using Services;
+using Services.Implements;
 using static Services.EmailServices;
 
 namespace Repositories.API
@@ -52,12 +54,13 @@ namespace Repositories.API
             builder.Services.AddTransient<ICourtServices, CourtServices>();
             builder.Services.AddTransient<IBookingSevices, BookingServices>();
             builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
+            builder.Services.AddTransient<IPostServices, PostServices>();
+            builder.Services.AddTransient<ICourtServices, CourtServices>();
 
             // Register VNPayOptions
-            builder.Services.Configure<VNPayOptions>(builder.Configuration.GetSection("VNPayOptions"));
+            builder.Services.Configure<VnPayOption>(builder.Configuration.GetSection("PaymentConfig:VnPay"));
+            builder.Services.AddScoped<IVNPayService, VNPayService>();
 
-            // Register the missing PaymentServices
-            builder.Services.AddTransient<IPaymentServices, PaymentServices>();
 
             // Register UnitOfWork
             builder.Services.AddTransient<UnitOfWork>();
@@ -70,7 +73,8 @@ namespace Repositories.API
             builder.Services.AddScoped<SlotTimeRepo>();
             builder.Services.AddScoped<BookingRepo>();
             builder.Services.AddScoped<BookingDetailsRepo>();
-
+            builder.Services.AddScoped<PostServices>();
+            builder.Services.AddScoped<CourtServices>();
             // Register memory cache
             builder.Services.AddMemoryCache();
 

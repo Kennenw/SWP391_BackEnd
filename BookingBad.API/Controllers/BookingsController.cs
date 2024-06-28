@@ -58,29 +58,26 @@ namespace Repositories.API.Controllers
             }
         }
 
-
         [HttpPost("Fixed")]
         public async Task<IActionResult> BookFixedSchedule([FromBody] FixedScheduleDTO scheduleDTO)
         {
             var result = await _bookingService.BookFixedSchedule(scheduleDTO);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetBookingById), new { id = result.BookingId }, result);
         }
-
 
         [HttpPost("OneTime")]
         public async Task<IActionResult> BookOneTimeSchedule([FromBody] OneTimeScheduleDTO scheduleDTO)
         {
             var result = await _bookingService.BookOneTimeSchedule(scheduleDTO);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetBookingById), new { id = result.BookingId }, result);
         }
 
         [HttpPost("Flexible")]
         public async Task<IActionResult> BookFlexibleSchedule([FromBody] FlexibleScheduleDTO scheduleDTO)
         {
             var result = await _bookingService.BookFlexibleSchedule(scheduleDTO);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetBookingById), new { id = result.BookingId }, result);
         }
-
 
         [HttpPost("FlexibleSlot")]
         public async Task<IActionResult> BookFlexibleSlot([FromBody] BookedSlotDTO bookedSlotDTO)
@@ -88,7 +85,7 @@ namespace Repositories.API.Controllers
             try
             {
                 var result = await _bookingService.BookFlexibleSlot(bookedSlotDTO);
-                return Ok(result);
+                return CreatedAtAction(nameof(GetBookingById), new { id = result.BookingId }, result);
             }
             catch (Exception ex)
             {
@@ -116,6 +113,7 @@ namespace Repositories.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(int id)

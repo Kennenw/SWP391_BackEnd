@@ -35,5 +35,5 @@ public partial class Booking
 
     public virtual Account? Customer { get; set; }
 
-    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public virtual ICollection<Payments> Payments { get; set; } = new List<Payments>();
 }

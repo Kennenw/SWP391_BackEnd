@@ -52,6 +52,7 @@ namespace Services
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
                 Note = booking.Note,
+                Status = booking.Status,
             }).ToList();
         }
 

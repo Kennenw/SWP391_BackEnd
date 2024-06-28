@@ -60,8 +60,7 @@ namespace Repositories.DTO
         public double? TotalRate { get; set; }
         public double? PriceAvr { get; set; }
         public List<SubCourtGet> SubCourts { get; set; }
-        public List<AmenityCourtDTO> Amenities { get; set; }
-        public List<SlotTimeDTO> SlotTimes { get; set; }
+        public List<AmenityCourtDTO> Amenities { get; set; }  
     }
 
     public class RatingCourtDTO

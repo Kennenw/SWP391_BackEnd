@@ -22,6 +22,8 @@ namespace Services
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
         public string GetCourtImagePath(int courtId);
+        Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId);
+
     }
     public class CourtServices : ICourtServices
     {
@@ -65,7 +67,7 @@ namespace Services
             var subCourts = _unitOfWork.SubCourtRepo.GetSubCourtByCourtId(court.CourtId) ?? new List<SubCourt>();
             var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId) ?? new List<AmenityCourt>();
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(court.CourtId) ?? new List<SlotTime>();
-
+            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll();
             var subCourtDTOs = subCourts.Select(sc => new SubCourtGet
             {
                 SubCourtId = sc.SubCourtId,
@@ -79,6 +81,7 @@ namespace Services
                     WeekdayPrice = st.WeekdayPrice,
                     WeekendPrice = st.WeekendPrice,
                     Status = st.Status,
+                    IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date == DateTime.Today && bd.SubCourtId == st.SubCourtId)
                 }).ToList()
             }).ToList();
 
@@ -103,16 +106,7 @@ namespace Services
                     AmenityCourtId = ac.AmenityCourtId,
                     AmenityId = ac.AmenityId,
                     Status = ac.Status
-                }).ToList(),
-                SlotTimes = slotTimes.Where(st => st.SubCourtId == 0).Select(st => new SlotTimeDTO
-                {
-                    SlotId = st.SlotId,
-                    StartTime = st.StartTime,
-                    EndTime = st.EndTime,
-                    WeekdayPrice = st.WeekdayPrice,
-                    WeekendPrice = st.WeekendPrice,
-                    Status = st.Status,
-                }).ToList()
+                }).ToList(),          
             };
         }
 
@@ -373,7 +367,27 @@ namespace Services
 
             return imagePath;
         }
+        public async Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId)
+        {
+            var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(courtId);
+            if (slotTimes == null)
+            {
+                return null;
+            }
 
+            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll();
+
+            return slotTimes.Where(st => st.SubCourtId == subCourtId).Select(st => new SlotTimeDTO
+            {
+                SlotId = st.SlotId,
+                StartTime = st.StartTime,
+                EndTime = st.EndTime,
+                WeekdayPrice = st.WeekdayPrice,
+                WeekendPrice = st.WeekendPrice,
+                Status = st.Status,
+                IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Date && bd.SubCourtId == subCourtId)
+            }).ToList();
+        }
     }
 }
 
