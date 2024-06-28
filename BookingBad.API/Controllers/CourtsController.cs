@@ -15,9 +15,9 @@ namespace BookingBad.API.Controllers
     {
         private readonly ICourtServices _courtServices;
 
-        public CourtsController()
+        public CourtsController(ICourtServices courtServices)
         {
-            _courtServices = new CourtServices();
+            _courtServices = courtServices;
         }
 
         // GET: api/Courts
@@ -77,7 +77,7 @@ namespace BookingBad.API.Controllers
         }
 
         // POST: api/Courts/UploadCourtImage/{courtId}
-        [HttpPost("UploadCourtImage/{courtId}")]
+        [HttpPut("UploadCourtImage/{courtId}")]
         public async Task<IActionResult> UploadCourtImage(int courtId, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -110,12 +110,8 @@ namespace BookingBad.API.Controllers
         [HttpPost("RateCourt/{courtId}")]
         public IActionResult RateCourt(int courtId, [FromBody] RatingCourtDTO model)
         {
-            if (model.RatingValue == null || model.RatingValue <= 0)
-                return BadRequest("Invalid rating.");
-
             _courtServices.RateCourt(courtId, model.UserId, model.RatingValue);
-
-            return Ok("Rating added successfully.");
+            return CreatedAtAction("GetCourtByIds", new { courtId = courtId }, courtId);
         }
 
         [HttpGet("{courtId}/Image")]
@@ -135,6 +131,18 @@ namespace BookingBad.API.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        // GET: api/Courts/{id}/SlotTimes
+        [HttpGet("{courtId}/SlotTimes")]
+        public async Task<ActionResult<IEnumerable<SlotTimeDTO>>> GetSlotTimesByDate(int courtId, [FromQuery] DateTime date, [FromQuery] int subCourtId)
+        {
+            var slotTimes = await _courtServices.GetSlotTimesByDate(courtId, date, subCourtId);
+            if (slotTimes == null || !slotTimes.Any())
+            {
+                return NotFound(new { message = "No slot times found for the selected date and subcourt" });
+            }
+            return Ok(slotTimes);
         }
     }
 }

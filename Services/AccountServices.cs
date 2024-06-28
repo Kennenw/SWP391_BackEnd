@@ -29,7 +29,7 @@ namespace Services
         bool IsAdmin(int user_id);
         bool UpdateRoleUser(int user_id, Role role_id);
         Task UploadAccountImageAsync(int accountId, byte[] imageBytes);
-
+        string GetAccountImagePath(int accountId);
     }
     public class AccountServices : IAccountServices
     {
@@ -326,6 +326,24 @@ namespace Services
             _unitOfWork.SaveChanges();
 
             Console.WriteLine("Image saved successfully.");
+        }
+        public string GetAccountImagePath(int accountId)
+        {
+            var account = _unitOfWork.AccountRepo.GetById(accountId);
+            if (account == null)
+            {
+                throw new Exception("Account not found.");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            var imagePath = Path.Combine(uploadPath, account.Image);
+
+            if (!System.IO.File.Exists(imagePath))
+            {
+                throw new Exception("Image file not found.");
+            }
+
+            return imagePath;
         }
 
     }

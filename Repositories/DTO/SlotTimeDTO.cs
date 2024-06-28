@@ -14,5 +14,6 @@ namespace Repositories.DTO
         public double? WeekdayPrice { get; set; }
         public double? WeekendPrice { get; set; }
         public bool? Status { get; set; }
+        public bool IsBooked { get; set; } = false;
     }
 }
