@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Repositories;
 using Repositories.DTO;
 using Repositories.Entities;
@@ -18,9 +19,9 @@ namespace BookingBad.API.Controllers
     {
         private readonly IPostServices postServices;
 
-        public PostsController()
+        public PostsController(IPostServices IpostServices)
         {
-            postServices = new PostServices();
+            postServices = IpostServices;
         }
 
         [HttpGet]
@@ -91,7 +92,7 @@ namespace BookingBad.API.Controllers
         }
 
 
-        [HttpPost("UploadPostImage/{PostId}")]
+        [HttpPut("UploadPostImage/{PostId}")]
         public async Task<IActionResult> UploadCourtImage(int PostId, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -109,12 +110,8 @@ namespace BookingBad.API.Controllers
         [HttpPost("RatePost/{postId}")]
         public IActionResult RatePost(int postId, [FromBody] RatingPostDTO model)
         {
-            if (model.RatingValue == null || model.RatingValue <= 0)
-                return BadRequest("Invalid rating.");
-
             postServices.RatePost(postId, model.UserId, model.RatingValue);
-
-            return Ok("Rating added successfully.");
+            return CreatedAtAction("GetPost", new { idPost = postId }, postId);
         }
     }
 }

@@ -61,7 +61,6 @@ namespace Repositories.DTO
         public double? PriceAvr { get; set; }
         public List<SubCourtGet> SubCourts { get; set; }
         public List<AmenityCourtDTO> Amenities { get; set; }
-        public List<SlotTimeDTO> SlotTimes { get; set; }
     }
 
     public class RatingCourtDTO

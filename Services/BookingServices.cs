@@ -52,6 +52,7 @@ namespace Services
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
                 Note = booking.Note,
+                Status = booking.Status,
             }).ToList();
         }
 
@@ -149,7 +150,7 @@ namespace Services
                 PlayerQuantity = scheduleDTO.PlayerQuantity,
                 TotalPrice = isWeekend ? slot.WeekendPrice : slot.WeekdayPrice,
                 StartDate = scheduleDTO.Date,
-                EndDate = scheduleDTO.Date
+                EndDate = scheduleDTO.Date, 
             };
             _unitOfWork.BookingRepo.Create(booking);
             await _unitOfWork.SaveAsync();

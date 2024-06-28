@@ -264,7 +264,7 @@ namespace BookingDemo.API.Controllers
         }
 
 
-        [HttpPost("UploadAccountImage/{AccountId}")]
+        [HttpPut("UploadAccountImage/{AccountId}")]
         public async Task<IActionResult> UploadCourtImage(int AccountId, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -277,6 +277,25 @@ namespace BookingDemo.API.Controllers
             }
 
             return Ok("Image uploaded successfully.");
+        }
+
+        [HttpGet("{accountId}/Image")]
+        public IActionResult GetCourtImage(int accountId)
+        {
+            try
+            {
+                var imagePath = accountServices.GetAccountImagePath(accountId);
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    return NotFound(new { message = "Image not found" });
+                }
+                var image = System.IO.File.ReadAllBytes(imagePath);
+                return File(image, "image/png");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
