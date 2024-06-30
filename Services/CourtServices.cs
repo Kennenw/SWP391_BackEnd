@@ -17,7 +17,7 @@ namespace Services
         CourtGET GetCourtById(int id);
         void UpdateCourt(int courtId, CourtDTOs courtDTO);
         Task<Court> CreateCourtAsync(CourtDTO courtDTO);
-        public List<CourtDTOs> SearchCourts(string searchTerm);
+        public List<CourtDTOs> SearchCourts(string? searchTerm, int? areaId);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
@@ -255,18 +255,22 @@ namespace Services
             return true;
         }
 
-        public List<CourtDTOs> SearchCourts(string searchTerm)
+        public List<CourtDTOs> SearchCourts(string? searchTerm, int? areaId)
         {
-            var courts = _unitOfWork.CourtRepo.GetAll();
+            var courts = _unitOfWork.CourtRepo.GetAll().AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 var lowerSearchTerm = searchTerm.ToLower();
-                courts = courts.Where(c =>
-                    c.CourtName.ToLower().Contains(lowerSearchTerm) ||
-                    (c.Area != null && c.Area.Location.ToLower().Contains(lowerSearchTerm))).ToList();
+                courts = courts.Where(c => c.CourtName.ToLower().Contains(lowerSearchTerm));
             }
-            var courtDTOs = courts.Select(c => new CourtDTOs
+
+            if (areaId.HasValue)
+            {
+                courts = courts.Where(c => c.AreaId == areaId.Value);
+            }
+            var courtList = courts.ToList();
+            var courtDTOs = courtList.Select(c => new CourtDTOs
             {
                 CourtId = c.CourtId,
                 AreaId = c.AreaId,

@@ -34,10 +34,9 @@ namespace BookingBad.API.Controllers
 
         // GET: api/Courts/Search
         [HttpGet("Search-Court")]
-        public async Task<ActionResult<IEnumerable<CourtDTO>>> SearchCourts(
-            [FromQuery] string searchTerm)
+        public async Task<ActionResult<IEnumerable<CourtDTO>>> SearchCourts(string? searchTerm, int? areaId)
         {
-            var result = _courtServices.SearchCourts(searchTerm);
+            var result = _courtServices.SearchCourts(searchTerm, areaId);
             if (result == null || !result.Any())
             {
                 return BadRequest(new { message = "No Court to find" });
