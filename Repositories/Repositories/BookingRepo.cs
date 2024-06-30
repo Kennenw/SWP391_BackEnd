@@ -12,15 +12,25 @@ namespace Repositories.Repositories
     {
         public BookingRepo() { }
 
-        public async Task<double> GetRevenueAsync(int year, int month, int day)
+        public async Task<int> GetRevenueTotalBook(int? year, int? month, int? day)
         {
-            return await _dbSet
-                .Where(b => b.Status == true && 
-                b.StartDate.HasValue && 
-                b.StartDate.Value.Year == year && 
-                b.StartDate.Value.Month == month && 
-                b.StartDate.Value.Day == day)
-                .SumAsync(b => b.TotalPrice ?? 0);
+            var query = _dbSet.Where(b => b.Status == true && b.StartDate.HasValue);
+
+            if (year.HasValue)
+            {
+                query = query.Where(b => b.StartDate.Value.Year == year.Value);
+                if (month.HasValue && month.Value > 0)
+                {
+                    query = query.Where(b => b.StartDate.Value.Month == month.Value);
+                    if (day.HasValue && day.Value > 0)
+                    {
+                        query = query.Where(b => b.StartDate.Value.Day == day.Value);
+                    }
+                }
+            }
+
+            return await query.CountAsync();
         }
+
     }
 }
