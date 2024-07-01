@@ -17,7 +17,7 @@ public partial class BookingDetail
 
     public int? SubCourtId { get; set; }
 
-    public double? TimeReducedInMinutes { get; set; }
+    public double? TimeReducedInMinutes { get; set; } = 0;
 
     public virtual Booking? Booking { get; set; }
 

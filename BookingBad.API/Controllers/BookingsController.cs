@@ -93,7 +93,7 @@ namespace Repositories.API.Controllers
             }
         }
 
-        [HttpPost("CheckIn")]
+        [HttpPut("CheckIn")]
         public async Task<IActionResult> CheckIn([FromBody] CheckInDTO request)
         {
             try
