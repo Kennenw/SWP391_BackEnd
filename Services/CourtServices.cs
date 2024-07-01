@@ -146,7 +146,7 @@ namespace Services
                 PricePerHour = courtDTO.PriceAvr
             };
             _unitOfWork.CourtRepo.Create(court);
-            _unitOfWork.SaveChanges();
+            await  _unitOfWork.SaveAsync();
 
             var createdSubCourts = new List<SubCourt>();
 
@@ -161,7 +161,7 @@ namespace Services
                         Status = true,
                     };
                     _unitOfWork.SubCourtRepo.Create(newSubCourt);
-                    _unitOfWork.SaveChanges();
+                    await _unitOfWork.SaveAsync();
                     createdSubCourts.Add(newSubCourt);
                 }
             }
@@ -179,7 +179,7 @@ namespace Services
                             Status = true
                         };
                         _unitOfWork.AmenityCourtRepo.Create(newAmenity);
-                        _unitOfWork.SaveChanges();
+                        await _unitOfWork.SaveAsync();
                     }
                 }
             }
@@ -202,7 +202,7 @@ namespace Services
                             Status = true
                         };
                         _unitOfWork.SlotTimeRepo.Create(slotTime);
-                        _unitOfWork.SaveChanges();
+                        await _unitOfWork.SaveAsync();
                     }
                 }
             }
@@ -238,7 +238,7 @@ namespace Services
                     throw new Exception("Invalid Base64 image format.");
                 }
             }
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveAsync();
             return court;
         }
 
