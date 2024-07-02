@@ -22,7 +22,7 @@ namespace Services
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
         public string GetCourtImagePath(int courtId);
-        Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId);
+        Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime? date, int subCourtId);
 
     }
     public class CourtServices : ICourtServices
@@ -105,6 +105,7 @@ namespace Services
                 {
                     AmenityCourtId = ac.AmenityCourtId,
                     AmenityId = ac.AmenityId,
+                    CourtId = ac.CourtId,
                     Status = ac.Status
                 }).ToList(),          
             };
@@ -146,7 +147,7 @@ namespace Services
                 PricePerHour = courtDTO.PriceAvr
             };
             _unitOfWork.CourtRepo.Create(court);
-            await  _unitOfWork.SaveAsync();
+            _unitOfWork.SaveChanges();
 
             var createdSubCourts = new List<SubCourt>();
 
@@ -371,8 +372,11 @@ namespace Services
 
             return imagePath;
         }
-        public async Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId)
+
+        public async Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime? date, int subCourtId)
         {
+            date ??= DateTime.Today;
+
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(courtId);
             if (slotTimes == null)
             {
@@ -389,7 +393,7 @@ namespace Services
                 WeekdayPrice = st.WeekdayPrice,
                 WeekendPrice = st.WeekendPrice,
                 Status = st.Status,
-                IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Date && bd.SubCourtId == subCourtId)
+                IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Value.Date && bd.SubCourtId == subCourtId)
             }).ToList();
         }
     }
