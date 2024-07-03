@@ -53,6 +53,7 @@ namespace Services
                 RoleId = a.RoleId,
                 Image = a.Image,
                 Status = a.Status,
+                Balance = a.Balance,
             }).ToList();
         }
         public AccountDTO GetAccountById(int id)
@@ -73,6 +74,7 @@ namespace Services
                 RoleId = account.RoleId,
                 Status = account.Status,
                 Image = account.Image,
+                Balance = account.Balance,
             };
         }
 
@@ -94,6 +96,7 @@ namespace Services
                 RoleId = account.RoleId,
                 Status = account.Status,
                 Image = account.Image,
+                Balance = account.Balance,
             };
         }
 
@@ -128,6 +131,8 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
+                Image = account.Image,
+                Balance = account.Balance,
             };
         }
 
@@ -148,7 +153,8 @@ namespace Services
                 Email = a.Email,
                 Image = a.Image,
                 RoleId = a.RoleId,
-                Status = a.Status
+                Status = a.Status,
+                Balance = a.Balance,
             }).ToList();
             return accountDTOs;
         }
@@ -166,6 +172,7 @@ namespace Services
                 FullName = user.FullName,
                 PhoneNumber = user.Phone,
                 ImgUrl = user.Image,
+                Balance = user.Balance,
             };
         }
 
@@ -188,7 +195,8 @@ namespace Services
                     Password = info.Password,
                     Image = image,
                     RoleId = 2,
-                    Status = true
+                    Status = true,
+                    Balance = 0,
                 };
                 _unitOfWork.AccountRepo.Create(user);
                 _unitOfWork.SaveChanges();
@@ -211,7 +219,8 @@ namespace Services
                     Password = info.Password,
                     RoleId = info.RoleId,
                     Image = image,
-                    Status = true
+                    Status = true,
+                    Balance = 0,
                 };
                 _unitOfWork.AccountRepo.Create(user);
                 _unitOfWork.SaveChanges();
@@ -345,6 +354,7 @@ namespace Services
 
             return imagePath;
         }
+
 
     }
 }

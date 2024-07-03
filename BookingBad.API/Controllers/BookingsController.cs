@@ -123,6 +123,11 @@ namespace Repositories.API.Controllers
             {
                 return NotFound();
             }
+            var cancelDeadline = booking.StartDate?.AddHours(-12);
+            if (DateTime.Now > cancelDeadline)
+            {
+                return BadRequest(new { message = "Reservations cannot be canceled 12 hours before booking time" });
+            }
             _bookingService.DeleteBooking(id);
             return NoContent();
         }
