@@ -13,7 +13,7 @@ public partial class Booking
 
     public int? PlayerQuantity { get; set; } = 1;
 
-    public double? TotalPrice { get; set; }
+    public double? TotalPrice { get; set; } = 0;
 
     public string? Note { get; set; } = string.Empty;
 

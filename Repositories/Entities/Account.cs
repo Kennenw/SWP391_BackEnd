@@ -22,6 +22,7 @@ public partial class Account
     public bool? Status { get; set; }
 
     public string? Image { get; set; }
+    public double? Balance { get; set; } = 0;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 

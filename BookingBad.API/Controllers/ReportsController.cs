@@ -47,6 +47,20 @@ namespace BookingBad.API.Controllers
             }
         }
 
+        [HttpGet("Book-Revenue")]
+        public async Task<IActionResult> GetMonthlyRevenueBook(int year, int month, int day)
+        {
+            try
+            {
+                var revenue = await reportServices.GetRevenueTotalBooks(year, month, day);
+                return Ok(new { Year = year, Month = month, Day = day, Revenue = revenue });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpGet("Total-Post")]
         public async Task<IActionResult> GetTotalPost()
         {

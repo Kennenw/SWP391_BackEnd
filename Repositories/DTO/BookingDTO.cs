@@ -17,7 +17,14 @@ namespace Repositories.DTO
 
         public int? PlayerQuantity { get; set; }
 
+        public double? TotalHours { get; set; }
+
         public double? TotalPrice { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
         public string? Note { get; set; }
 
         public bool? Status { get; set; }

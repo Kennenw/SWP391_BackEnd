@@ -20,7 +20,7 @@ namespace Services
         Task<BookedSlotDTO> BookFlexibleSchedule(FlexibleScheduleDTO scheduleDTO);
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
         Task<CheckInResponse> CheckIn(int subCourtId, int bookingDetailId);
-        public void DeleteBooking(int id);
+        bool DeleteBooking(int id);
     }
     public class BookingServices : IBookingSevices
     {
@@ -32,14 +32,36 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public void DeleteBooking(int id)
+        public bool DeleteBooking(int id)
         {
-            var items = _unitOfWork.BookingRepo.GetById(id);
-            if (items != null)
+            var booking = _unitOfWork.BookingRepo.GetById(id);
+            if (booking == null)
             {
-                _unitOfWork.BookingRepo.Remove(items);
-                _unitOfWork.SaveChanges();
+                return false;
             }
+            booking.Status = false;
+            _unitOfWork.BookingRepo.Update(booking);
+
+            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll()
+                .Where(bd => bd.BookingId == id)
+                .ToList();
+
+            foreach (var bookingDetail in bookingDetails)
+            {
+                _unitOfWork.BookingDetailRepo.Remove(bookingDetail);
+            }
+            var payment = _unitOfWork.PaymentRepo.GetBookingId(id);
+            if(payment == null) return false;
+            var customerId = _unitOfWork.BookingRepo.GetCustomerIdByBookingId(id);
+            var customer = _unitOfWork.AccountRepo.GetById(customerId.Value);
+            if (customer != null)
+            {
+                customer.Balance ??= 0;
+                customer.Balance += payment.TotalAmount;
+                _unitOfWork.AccountRepo.Update(customer);
+            }
+            _unitOfWork.SaveChanges();
+            return true;
         }
 
         public List<BookingDTO> GetBooking()
@@ -51,6 +73,9 @@ namespace Services
                 BookingTypeId = booking.BookingTypeId,
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
+                TotalHours = booking.TotalHours,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
                 Note = booking.Note,
                 Status = booking.Status,
             }).ToList();
@@ -67,6 +92,9 @@ namespace Services
                     BookingTypeId = booking.BookingTypeId,
                     PlayerQuantity = booking.PlayerQuantity,
                     TotalPrice = booking.TotalPrice,
+                    TotalHours = booking.TotalHours,
+                    StartDate = booking.StartDate,
+                    EndDate = booking.EndDate,
                     Note = booking.Note,
                     Status = booking.Status,
                 }).ToList();
@@ -82,6 +110,9 @@ namespace Services
                 BookingTypeId = booking.BookingTypeId,
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
+                TotalHours = booking.TotalHours,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
                 Note = booking.Note,
                 Status = booking.Status,
             };
@@ -278,6 +309,8 @@ namespace Services
                 SlotTimeEnd = slotTime?.EndTime
             };
         }
+
+
 
     }
 }

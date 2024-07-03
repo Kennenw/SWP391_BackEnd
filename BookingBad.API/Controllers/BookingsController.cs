@@ -93,7 +93,7 @@ namespace Repositories.API.Controllers
             }
         }
 
-        [HttpPost("CheckIn")]
+        [HttpPut("CheckIn")]
         public async Task<IActionResult> CheckIn([FromBody] CheckInDTO request)
         {
             try
@@ -122,6 +122,11 @@ namespace Repositories.API.Controllers
             if (booking == null)
             {
                 return NotFound();
+            }
+            var cancelDeadline = booking.StartDate?.AddHours(-12);
+            if (DateTime.Now > cancelDeadline)
+            {
+                return BadRequest(new { message = "Reservations cannot be canceled 12 hours before booking time" });
             }
             _bookingService.DeleteBooking(id);
             return NoContent();

@@ -83,6 +83,15 @@ namespace Repositories
         {
             return await _dbSet.FindAsync(id);
         }
+
+
+        public async Task<int> UpdateAsync(T entity)
+        {
+            var tracker = _context.Attach(entity);
+            tracker.State = EntityState.Modified;
+
+            return await _context.SaveChangesAsync();
+        }
     }
     public class SuccessObject<T> where T : class
     {

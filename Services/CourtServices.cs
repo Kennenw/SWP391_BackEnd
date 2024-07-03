@@ -17,12 +17,12 @@ namespace Services
         CourtGET GetCourtById(int id);
         void UpdateCourt(int courtId, CourtDTOs courtDTO);
         Task<Court> CreateCourtAsync(CourtDTO courtDTO);
-        public List<CourtDTOs> SearchCourts(string searchTerm);
+        public List<CourtDTOs> SearchCourts(string? searchTerm, int? areaId);
         bool DeleteCourt(int id);
         Task UploadCourtImageAsync(int courtId, byte[] imageBytes);
         void RateCourt(int courtId, int userId, double rating);
         public string GetCourtImagePath(int courtId);
-        Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId);
+        Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime? date, int subCourtId);
 
     }
     public class CourtServices : ICourtServices
@@ -105,6 +105,7 @@ namespace Services
                 {
                     AmenityCourtId = ac.AmenityCourtId,
                     AmenityId = ac.AmenityId,
+                    CourtId = ac.CourtId,
                     Status = ac.Status
                 }).ToList(),          
             };
@@ -161,7 +162,7 @@ namespace Services
                         Status = true,
                     };
                     _unitOfWork.SubCourtRepo.Create(newSubCourt);
-                    _unitOfWork.SaveChanges();
+                    await _unitOfWork.SaveAsync();
                     createdSubCourts.Add(newSubCourt);
                 }
             }
@@ -179,7 +180,7 @@ namespace Services
                             Status = true
                         };
                         _unitOfWork.AmenityCourtRepo.Create(newAmenity);
-                        _unitOfWork.SaveChanges();
+                        await _unitOfWork.SaveAsync();
                     }
                 }
             }
@@ -202,7 +203,7 @@ namespace Services
                             Status = true
                         };
                         _unitOfWork.SlotTimeRepo.Create(slotTime);
-                        _unitOfWork.SaveChanges();
+                        await _unitOfWork.SaveAsync();
                     }
                 }
             }
@@ -238,7 +239,7 @@ namespace Services
                     throw new Exception("Invalid Base64 image format.");
                 }
             }
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveAsync();
             return court;
         }
 
@@ -255,18 +256,22 @@ namespace Services
             return true;
         }
 
-        public List<CourtDTOs> SearchCourts(string searchTerm)
+        public List<CourtDTOs> SearchCourts(string? searchTerm, int? areaId)
         {
-            var courts = _unitOfWork.CourtRepo.GetAll();
+            var courts = _unitOfWork.CourtRepo.GetAll().AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 var lowerSearchTerm = searchTerm.ToLower();
-                courts = courts.Where(c =>
-                    c.CourtName.ToLower().Contains(lowerSearchTerm) ||
-                    (c.Area != null && c.Area.Location.ToLower().Contains(lowerSearchTerm))).ToList();
+                courts = courts.Where(c => c.CourtName.ToLower().Contains(lowerSearchTerm));
             }
-            var courtDTOs = courts.Select(c => new CourtDTOs
+
+            if (areaId.HasValue)
+            {
+                courts = courts.Where(c => c.AreaId == areaId.Value);
+            }
+            var courtList = courts.ToList();
+            var courtDTOs = courtList.Select(c => new CourtDTOs
             {
                 CourtId = c.CourtId,
                 AreaId = c.AreaId,
@@ -367,8 +372,11 @@ namespace Services
 
             return imagePath;
         }
-        public async Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime date, int subCourtId)
+
+        public async Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime? date, int subCourtId)
         {
+            date ??= DateTime.Today;
+
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(courtId);
             if (slotTimes == null)
             {
@@ -385,7 +393,7 @@ namespace Services
                 WeekdayPrice = st.WeekdayPrice,
                 WeekendPrice = st.WeekendPrice,
                 Status = st.Status,
-                IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Date && bd.SubCourtId == subCourtId)
+                IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Value.Date && bd.SubCourtId == subCourtId)
             }).ToList();
         }
     }

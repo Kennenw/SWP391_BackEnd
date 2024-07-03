@@ -12,8 +12,9 @@ namespace Services
         Task<int> GetTotalCourtsAsync();
         Task<int> GetTotalUsersAsync();
         Task<double> GetTotalRevenueAsync();
-        Task<double> GetRevenueAsync(int year, int month, int day);
+        Task<double> GetRevenueAsync(int year, int month, int? day);
         Task<int> GetTotalPostsAsync();
+        Task<double> GetRevenueTotalBooks(int year, int month, int? day);
     }
     public class ReportServices : IReportServices
     {
@@ -23,9 +24,14 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<double> GetRevenueAsync(int year, int month, int day)
+        public async Task<double> GetRevenueAsync(int year, int month, int? day)
         {
-            return await _unitOfWork.BookingRepo.GetRevenueAsync(year, month, day); 
+            return await _unitOfWork.PaymentRepo.GetRevenueAsync(year, month, day); 
+        }
+
+        public async Task<double> GetRevenueTotalBooks(int year, int month, int? day)
+        {
+            return await _unitOfWork.BookingRepo.GetRevenueTotalBook(year, month, day);
         }
 
         public async Task<int> GetTotalCourtsAsync()
@@ -35,7 +41,7 @@ namespace Services
 
         public async Task<double> GetTotalRevenueAsync()
         {
-            return await _unitOfWork.BookingRepo.SumAsync(p => p.TotalPrice ?? 0);
+            return await _unitOfWork.PaymentRepo.SumAsync(p => p.TotalAmount ?? 0);
         }
 
         public async Task<int> GetTotalUsersAsync()
