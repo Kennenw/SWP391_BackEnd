@@ -51,6 +51,9 @@ namespace Services
                 BookingTypeId = booking.BookingTypeId,
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
+                TotalHours = booking.TotalHours,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
                 Note = booking.Note,
                 Status = booking.Status,
             }).ToList();
@@ -67,6 +70,9 @@ namespace Services
                     BookingTypeId = booking.BookingTypeId,
                     PlayerQuantity = booking.PlayerQuantity,
                     TotalPrice = booking.TotalPrice,
+                    TotalHours = booking.TotalHours,
+                    StartDate = booking.StartDate,
+                    EndDate = booking.EndDate,
                     Note = booking.Note,
                     Status = booking.Status,
                 }).ToList();
@@ -82,6 +88,9 @@ namespace Services
                 BookingTypeId = booking.BookingTypeId,
                 PlayerQuantity = booking.PlayerQuantity,
                 TotalPrice = booking.TotalPrice,
+                TotalHours = booking.TotalHours,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
                 Note = booking.Note,
                 Status = booking.Status,
             };
