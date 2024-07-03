@@ -32,5 +32,12 @@ namespace Repositories.Repositories
             return await query.CountAsync();
         }
 
+        public int? GetCustomerIdByBookingId(int bookingId)
+        {
+            return _dbSet
+                .Where(b => b.BookingId == bookingId)
+                .Select(b => b.CustomerId)
+                .FirstOrDefault();
+        }
     }
 }

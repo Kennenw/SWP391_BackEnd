@@ -32,6 +32,10 @@ namespace Repositories.Repositories
 
             return await query.SumAsync(b => b.TotalAmount ?? 0);
         }
-
+        
+        public Payments GetBookingId(int bookingId)
+        {
+            return _dbSet.FirstOrDefault(p => p.BookingId == bookingId );
+        }
     }
 }

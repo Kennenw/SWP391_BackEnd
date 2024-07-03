@@ -23,7 +23,7 @@ namespace Repositories.DTO
         public string? Email { get; set; }
         public string? Image {  get; set; }
         public int? RoleId { get; set; }
-
+        public double? Balance { get; set; } = 0;
         public bool? Status { get; set; }
     }
 
@@ -69,6 +69,7 @@ namespace Repositories.DTO
         public string? PlayingArea { get; set; }
         public string? SortProfile { get; set; }
         public string? ImgUrl { get; set; }
+        public double? Balance { get; set; } = 0;
     }
     
 }
