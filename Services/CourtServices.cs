@@ -67,7 +67,7 @@ namespace Services
             var subCourts = _unitOfWork.SubCourtRepo.GetSubCourtByCourtId(court.CourtId) ?? new List<SubCourt>();
             var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId) ?? new List<AmenityCourt>();
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(court.CourtId) ?? new List<SlotTime>();
-            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll();
+            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll() ?? new List<BookingDetail>();
             var subCourtDTOs = subCourts.Select(sc => new SubCourtGet
             {
                 SubCourtId = sc.SubCourtId,

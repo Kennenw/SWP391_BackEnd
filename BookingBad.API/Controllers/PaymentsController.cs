@@ -11,13 +11,15 @@ public class PaymentsController : ControllerBase
     private readonly IVNPayService _vnPayService;
     private readonly IOptions<VnPayOption> _options;
     private readonly IBookingSevices _bookingSevices;
+    private readonly IAccountServices _accountServices;
 
 
-    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices)
+    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices, IAccountServices accountServices)
     {
         _vnPayService = vnPayService;
         _options = options;
         _bookingSevices = bookingServices;
+        _accountServices = accountServices;
     }
 
     /*    [HttpPost("create-payment")]
@@ -45,7 +47,26 @@ public class PaymentsController : ControllerBase
             {
                 return NotFound("Booking not found.");
             }
+            var customerId = _bookingSevices.GetCustomerIdByBookingId(bookingId);
+            if (!customerId.HasValue)
+            {
+                return BadRequest("Customer ID not found for booking.");
+            }
+            var customerAccount = _accountServices.GetAccountById(customerId.Value);
+            if (customerAccount == null)
+            {
+                return BadRequest("Customer account not found.");
+            }
+            if (customerAccount != null && booking.TotalPrice <= customerAccount.Balance)
+            {
 
+                var result = await _bookingSevices.CompleteBookingWithoutBalance(bookingId);
+                return CreatedAtAction(nameof(CreatePayment), new
+                {
+                    Message = "Booking completed successfully!",
+                    Data = result
+                });
+            }
             // Tạo URL thanh toán từ VNPayService
             var responseUriVnPay = _vnPayService.CreatePayment(new PaymentInfoModel()
             {
@@ -53,7 +74,7 @@ public class PaymentsController : ControllerBase
                 PaymentCode = booking.BookingId + "." + Guid.NewGuid()
             }, HttpContext);
 
-            if (string.IsNullOrEmpty(responseUriVnPay.Uri))
+            if (responseUriVnPay == null || string.IsNullOrEmpty(responseUriVnPay.Uri))
             {
                 return new BadRequestObjectResult(new
                 {
@@ -61,7 +82,7 @@ public class PaymentsController : ControllerBase
                 });
             }
 
-            return Ok(new SuccessObject<object>
+            return CreatedAtAction(nameof(CreatePayment), new
             {
                 Message = "Tạo url thành công!",
                 Data = responseUriVnPay
