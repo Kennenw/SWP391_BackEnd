@@ -21,6 +21,8 @@ namespace Services
         Task<BookedSlotDTO> BookFlexibleSlot(BookedSlotDTO bookedSlotDTO);
         Task<CheckInResponse> CheckIn(int subCourtId, int bookingDetailId);
         bool DeleteBooking(int id);
+        Task<BookedSlotDTO> CompleteBookingWithoutBalance(int bookingId);
+        int? GetCustomerIdByBookingId(int bookingId);
     }
     public class BookingServices : IBookingSevices
     {
@@ -310,7 +312,32 @@ namespace Services
             };
         }
 
+        public async Task<BookedSlotDTO> CompleteBookingWithoutBalance(int bookingId)
+        {
+            var booking = await _unitOfWork.BookingRepo.GetByIdAsync(bookingId);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found.");
+            }
+            var customerId = _unitOfWork.BookingRepo.GetCustomerIdByBookingId(bookingId);
+            var customer = _unitOfWork.AccountRepo.GetById(customerId.Value);
+            if (customer != null)
+            {
+                customer.Balance -= booking.TotalPrice;
+                _unitOfWork.AccountRepo.Update(customer);
+            }
+            await _unitOfWork.SaveAsync();
 
+            return new BookedSlotDTO
+            {
+                BookingId = booking.BookingId,
+                Date = DateTime.Now,  
+            };
+        }
 
+        public int? GetCustomerIdByBookingId(int bookingId)
+        {
+            return _unitOfWork.BookingRepo.GetCustomerIdByBookingId(bookingId);
+        }
     }
 }
