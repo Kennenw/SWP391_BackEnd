@@ -51,7 +51,7 @@ namespace Services
                 Phone = a.Phone,
                 Email = a.Email,
                 RoleId = a.RoleId,
-                Image = a.Image,
+                Image = GetAccountImagePath(a.AccountId),
                 Status = a.Status,
                 Balance = a.Balance,
             }).ToList();
@@ -59,6 +59,7 @@ namespace Services
         public AccountDTO GetAccountById(int id)
         {
             var account = _unitOfWork.AccountRepo.GetById(id);
+            var image = GetAccountImagePath(id);
             if(account == null)
             {
                 return null;
@@ -73,7 +74,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
-                Image = account.Image,
+                Image = image,
                 Balance = account.Balance,
             };
         }
@@ -117,6 +118,7 @@ namespace Services
         public AccountDTO Login(string username, string password)
         {
             var account = _unitOfWork.AccountRepo.GetAccountByEmailAndPassword(username, password);
+            var image = GetAccountImagePath(account.AccountId);
             if (account == null)
             {
                 return null;
@@ -131,7 +133,7 @@ namespace Services
                 Email = account.Email,
                 RoleId = account.RoleId,
                 Status = account.Status,
-                Image = account.Image,
+                Image = image,
                 Balance = account.Balance,
             };
         }
@@ -143,6 +145,7 @@ namespace Services
             {
                 account = account.Where(a => a.AccountName.Contains(query) || a.FullName.Contains(query)).ToList();
             }
+
             var accountDTOs = account.Select(a => new AccountDTO
             {
                 AccountId = a.AccountId,
@@ -151,7 +154,7 @@ namespace Services
                 FullName = a.FullName,
                 Phone = a.Phone,
                 Email = a.Email,
-                Image = a.Image,
+                Image = image,
                 RoleId = a.RoleId,
                 Status = a.Status,
                 Balance = a.Balance,
@@ -162,6 +165,7 @@ namespace Services
         public SelfProfile GetSelfProfile(int id)
         {
             var user = _unitOfWork.AccountRepo.GetById(id);
+            var image = GetAccountImagePath(id);
             if (user == null || user.Status == false)
             {
                 return null;
@@ -171,7 +175,7 @@ namespace Services
                 UserName = user.AccountName,
                 FullName = user.FullName,
                 PhoneNumber = user.Phone,
-                ImgUrl = user.Image,
+                ImgUrl = image,
                 Balance = user.Balance,
             };
         }

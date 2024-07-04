@@ -26,38 +26,59 @@ namespace BookingBad.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPost()
         {
-            var result = postServices.GetPost();
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = postServices.GetPost();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [HttpGet("Search-Post")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> SearchPost(
             [FromQuery] string searchTerm)
         {
-            var result = postServices.PostSearch(searchTerm);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = postServices.PostSearch(searchTerm);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDTO>> GetPost(int id)
         {
-            var post = postServices.GetPostById(id);
-
-            if (post == null)
+            try
             {
-                return NotFound();
-            }
+                var post = postServices.GetPostById(id);
 
-            return post;
+                if (post == null)
+                {
+                    return NotFound();
+                }
+
+                return post;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // PUT: api/Posts/5

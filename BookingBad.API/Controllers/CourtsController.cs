@@ -24,47 +24,74 @@ namespace BookingBad.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CourtDTOs>> GetCourt()
         {
+            try { 
             var result = _courtServices.GetCourts();
             if (result == null)
             {
                 return BadRequest(new { message = "No Court to find" });
             }
             return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // GET: api/Courts/Search
         [HttpGet("Search-Court")]
         public async Task<ActionResult<IEnumerable<CourtDTO>>> SearchCourts(string? searchTerm, int? areaId)
         {
-            var result = _courtServices.SearchCourts(searchTerm, areaId);
-            if (result == null || !result.Any())
+            try
             {
-                return BadRequest(new { message = "No Court to find" });
+                var result = _courtServices.SearchCourts(searchTerm, areaId);
+                if (result == null || !result.Any())
+                {
+                    return BadRequest(new { message = "No Court to find" });
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // GET: api/Courts/{id}
         [HttpGet("{id}")]
         public ActionResult<CourtGET> GetCourtById(int id)
         {
-            var court = _courtServices.GetCourtById(id);
-            if (court == null)
+            try
             {
-                return NotFound(new { message = "Court not found" });
+                var court = _courtServices.GetCourtById(id);
+                if (court == null)
+                {
+                    return NotFound(new { message = "Court not found" });
+                }
+                return Ok(court);
             }
-            return Ok(court);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [HttpGet("GetCourts/{courtId}")]
         public IActionResult GetCourtByIds(int courtId)
         {
-            var court = _courtServices.GetCourtById(courtId);
-            if (court == null)
+            try
             {
-                return NotFound();
+                var court = _courtServices.GetCourtById(courtId);
+                if (court == null)
+                {
+                    return NotFound();
+                }
+                return Ok(court);
             }
-            return Ok(court);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // PUT: api/Courts/Update/{id}
@@ -124,7 +151,7 @@ namespace BookingBad.API.Controllers
                     return NotFound(new { message = "Image not found" });
                 }
                 var image = System.IO.File.ReadAllBytes(imagePath);
-                return File(image, "image/png"); 
+                return File(image, "image/png");
             }
             catch (Exception ex)
             {

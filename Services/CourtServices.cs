@@ -43,7 +43,7 @@ namespace Services
                 OpenTime = c.OpenTime,
                 CloseTime = c.CloseTime,
                 ManagerId = c.ManagerId,
-                Image = c.Image,
+                Image = GetCourtImagePath(c.CourtId),
                 Rules = c.Rules,
                 Status = c.Status,
                 TotalRate = c.TotalRate,
@@ -67,7 +67,7 @@ namespace Services
             var subCourts = _unitOfWork.SubCourtRepo.GetSubCourtByCourtId(court.CourtId) ?? new List<SubCourt>();
             var amenityCourts = _unitOfWork.AmenityCourtRepo.GetAmenityByCourtId(court.CourtId) ?? new List<AmenityCourt>();
             var slotTimes = _unitOfWork.SlotTimeRepo.GetSlotTimeByCourtId(court.CourtId) ?? new List<SlotTime>();
-            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll() ?? new List<BookingDetail>();
+            var bookingDetails = _unitOfWork.BookingDetailRepo.GetAll() ?? new List<BookingDetail>();        
             var subCourtDTOs = subCourts.Select(sc => new SubCourtGet
             {
                 SubCourtId = sc.SubCourtId,
@@ -84,7 +84,7 @@ namespace Services
                     IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date == DateTime.Today && bd.SubCourtId == st.SubCourtId)
                 }).ToList()
             }).ToList();
-
+            var imagePath = GetCourtImagePath(id);
             return new CourtGET
             {
                 CourtId = court.CourtId,
@@ -93,7 +93,7 @@ namespace Services
                 CloseTime = court.CloseTime,
                 ManagerId = court.ManagerId,
                 Rules = court.Rules,
-                Image = court.Image,
+                Image = imagePath,
                 Status = court.Status,
                 Title = court.Title,
                 Address = court.Address,
@@ -279,7 +279,7 @@ namespace Services
                 OpenTime = c.OpenTime,
                 CloseTime = c.CloseTime,
                 Rules = c.Rules,
-                Image = c.Image,
+                Image = GetCourtImagePath(c.CourtId),
                 Status = c.Status,
                 TotalRate = c.TotalRate,
                 Address = c.Address,
