@@ -67,7 +67,7 @@ namespace Services
             {
                 PostId = a.PostId,
                 AccountId = a.AccountId,
-                Image = a.Image,
+                Image = GetPostImagePath(a.PostId),
                 Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
@@ -78,6 +78,7 @@ namespace Services
         public PostDTO GetPostById(int id)
         {
             Post post = _unitOfWork.PostRepo.GetById(id);
+            var image = GetPostImagePath(id);
             if (post == null || post.Status == false)
             {
                 return null;
@@ -87,7 +88,7 @@ namespace Services
             {
                 PostId = post.PostId,
                 AccountId = post.AccountId,
-                Image = post.Image,
+                Image = image,
                 Context = post.Context,
                 TotalRate = post.TotalRate,
                 Title = post.Title,
@@ -142,7 +143,7 @@ namespace Services
             {
                 PostId = a.PostId,
                 AccountId = a.AccountId,
-                Image = a.Image,
+                Image = GetPostImagePath(a.PostId),
                 Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
@@ -180,6 +181,25 @@ namespace Services
             post.TotalRate = totalRatings > 0 ? (double)totalRatings / countRatings : 0;
             _unitOfWork.PostRepo.Update(post);
             _unitOfWork.SaveChanges();
+        }
+
+        public string GetPostImagePath(int postId)
+        {
+            var post = _unitOfWork.PostRepo.GetById(postId);
+            if (post == null)
+            {
+                throw new Exception("Post not found.");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            var imagePath = Path.Combine(uploadPath, post.Image);
+
+            if (!System.IO.File.Exists(imagePath))
+            {
+                throw new Exception("Image file not found.");
+            }
+
+            return imagePath;
         }
     }
 }
