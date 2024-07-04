@@ -21,7 +21,7 @@ namespace BookingDemo.API.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountServices  accountServices;
+        private readonly IAccountServices accountServices;
 
         private readonly IEmailServices emailServices;
         public AccountsController(IAccountServices accountServices, IEmailServices emailServices)
@@ -34,25 +34,38 @@ namespace BookingDemo.API.Controllers
         [HttpGet("{AccountId:int}")]
         public ActionResult<IEnumerable<AccountDTO>> GetAccountById(int AccountId)
         {
-            var account = accountServices.GetAccountById(AccountId);
-            if (account == null)
+            try
             {
-                return NotFound();
+                var account = accountServices.GetAccountById(AccountId);
+                if (account == null)
+                {
+                    return NotFound();
+                }
+                return Ok(account);
             }
-            return Ok(account);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         // GET: api/Accounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAccounts()
         {
-
-            var result = accountServices.GetAccount();
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = accountServices.GetAccount();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
         // Endpoint to send OTP
         [HttpPost("SendMail")]
@@ -98,46 +111,66 @@ namespace BookingDemo.API.Controllers
         public async Task<ActionResult<IEnumerable<AccountDTO>>> SearchAccount(
             [FromQuery] string searchTerm)
         {
- 
-            var result = accountServices.Search(searchTerm);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = accountServices.Search(searchTerm);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [HttpGet("SelfProfile/{id:int}")]
         public async Task<ActionResult<SelfProfile>> SeltProfile(int id)
         {
-            var account = accountServices.GetSelfProfile(id);
-
-            if (account == null)
+            try
             {
-                return NotFound();
-            }
+                var account = accountServices.GetSelfProfile(id);
 
-            return account;
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                return account;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
         [HttpGet("Account/{id:int}")]
         public async Task<ActionResult<AccountDTO>> GetAccount(int id)
         {
-            var account =  accountServices.GetAccountById(id);
-
-            if (account == null)
+            try
             {
-                return NotFound();
-            }
+                var account = accountServices.GetAccountById(id);
 
-            return account;
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                return account;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
 
 
         [HttpGet("Login")]
         public async Task<ActionResult<AccountDTO>> Login(string email, string pass)
         {
-            var account = accountServices.Login(email,pass);
+            var account = accountServices.Login(email, pass);
 
             if (account == null)
             {
@@ -146,7 +179,7 @@ namespace BookingDemo.API.Controllers
 
             return account;
         }
-       
+
 
         [HttpPost]
         [Route("Register")]
@@ -260,7 +293,7 @@ namespace BookingDemo.API.Controllers
             }
             accountServices.DeleteAccount(id);
             return Ok(new SuccessObject<object> { Message = "Delete Successfully !" });
-                      
+
         }
 
 

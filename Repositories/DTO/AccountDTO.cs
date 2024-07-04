@@ -27,13 +27,7 @@ namespace Repositories.DTO
         public bool? Status { get; set; }
     }
 
-    public class LoginInformation //request
-    {
-        [Required]
-        public string? Email { get; set; }
-        [Required]
-        public string? Password { get; set; }
-    }
+
     public class RegisterInformation //request
     {
         public string? FullName { get; set; }
@@ -66,8 +60,6 @@ namespace Repositories.DTO
         public string UserName { get; set; } = null!;
         public string? FullName { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? PlayingArea { get; set; }
-        public string? SortProfile { get; set; }
         public string? ImgUrl { get; set; }
         public double? Balance { get; set; } = 0;
     }
