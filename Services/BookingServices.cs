@@ -48,12 +48,20 @@ namespace Services
                 .Where(bd => bd.BookingId == id)
                 .ToList();
 
+
             foreach (var bookingDetail in bookingDetails)
             {
+                var checkIns = _unitOfWork.CheckInRepo.GetAll()
+                                .Where(ci => ci.BookingDetailId == bookingDetail.BookingDetailId)
+                                .ToList();
+                foreach (var checkIn in checkIns)
+                {
+                    _unitOfWork.CheckInRepo.Remove(checkIn);
+                }
                 _unitOfWork.BookingDetailRepo.Remove(bookingDetail);
             }
             var payment = _unitOfWork.PaymentRepo.GetBookingId(id);
-            if(payment == null) return false;
+            if (payment == null) return false;
             var customerId = _unitOfWork.BookingRepo.GetCustomerIdByBookingId(id);
             var customer = _unitOfWork.AccountRepo.GetById(customerId.Value);
             if (customer != null)
@@ -291,6 +299,9 @@ namespace Services
             var courtId = _unitOfWork.SubCourtRepo.GetCourtIdBySubCourt(subCourtId);
             var court = _unitOfWork.CourtRepo.GetById(courtId.Value);
 
+            var booking = _unitOfWork.BookingRepo.GetById(bookingDetail.BookingId.Value);
+            var customer = _unitOfWork.AccountRepo.GetById(booking.CustomerId.Value);
+
             bookingDetail.Status = false;
             _unitOfWork.BookingDetailRepo.Update(bookingDetail);
 
@@ -302,13 +313,26 @@ namespace Services
                 _unitOfWork.CheckInRepo.Update(checkIn);
             }
 
+            var allBookingDetails = _unitOfWork.BookingDetailRepo.GetAll()
+                .Where(bd => bd.BookingId == booking.BookingId).ToList();
+
+            if (allBookingDetails.All(bd => !bd.Status.Value))
+            {
+                booking.Status = false;
+                _unitOfWork.BookingRepo.Update(booking);
+            }
+
             await _unitOfWork.SaveAsync();
+
             return new CheckInResponse
             {
                 CourtName = court.CourtName,
                 SubCourtName = subCourt.Number,
                 SlotTimeStart = slotTime.StartTime,
-                SlotTimeEnd = slotTime?.EndTime
+                SlotTimeEnd = slotTime?.EndTime,
+                FullName = customer.FullName,
+                CustomerName = customer.AccountName,
+                CustomerEmail = customer.Email,
             };
         }
 

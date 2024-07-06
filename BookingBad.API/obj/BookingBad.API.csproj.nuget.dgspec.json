@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj": {}
+    "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj": {}
   },
   "projects": {
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj": {
+    "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
+        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
         "projectName": "BookingBad.API",
-        "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
+        "projectPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\BookingBad.API\\BookingBad.API.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\BookingBad.API\\obj\\",
+        "outputPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\BookingBad.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj": {
-                "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj"
+              "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\Services.csproj": {
+                "projectPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\Services.csproj"
               }
             }
           }
@@ -103,14 +103,14 @@
         }
       }
     },
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
+    "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
+        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
         "projectName": "Repositories",
-        "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
+        "projectPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\Repositories.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\obj\\",
+        "outputPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -193,14 +193,14 @@
         }
       }
     },
-    "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj": {
+    "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj",
+        "projectUniqueName": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\Services.csproj",
+        "projectPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Services\\obj\\",
+        "outputPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -217,8 +217,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
-                "projectPath": "D:\\FPT\\SE5\\SWP391\\PROJECT\\SWP391_BackEnd\\Repositories\\Repositories.csproj"
+              "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\Repositories.csproj": {
+                "projectPath": "D:\\FPT\\SE5\\SWP391\\BackEnd\\SWP391_BackEnd\\Repositories\\Repositories.csproj"
               }
             }
           }
