@@ -80,6 +80,37 @@ public class PaymentsController : ControllerBase
         }
     }
 
+    [HttpPost("create-deposit")]
+    public async Task<IActionResult> CreateDeposit(int userId, double amount)
+    {
+        try
+        {
+            // Tạo URL nạp tiền từ VNPayService
+            var responseUriVnPay = _vnPayService.CreateDeposit(new PaymentInfoModel()
+            {
+                TotalAmount = amount,
+                PaymentCode = userId + "." + Guid.NewGuid()
+            }, HttpContext, userId);
+
+            if (responseUriVnPay == null || string.IsNullOrEmpty(responseUriVnPay.Uri))
+            {
+                return new BadRequestObjectResult(new
+                {
+                    Message = "Không thể tạo url nạp tiền vào lúc này !"
+                });
+            }
+
+            return Ok(new
+            {
+                Message = "Tạo url nạp tiền thành công!",
+                Data = responseUriVnPay
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
     /*    [HttpGet("return")]
         public IActionResult PaymentReturn([FromQuery] Dictionary<string, string> queryParams)
