@@ -1,7 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Repositories;
+using Repositories.Entities;
 using Repositories.Payment;
 
 namespace Services.Implements;
@@ -11,11 +14,15 @@ public class VNPayService : IVNPayService
     private readonly IConfiguration _configuration;
     private readonly string _paramUrlCallBack = "?payment_method=VnPay&payment_code={0}&success=1&booking_id={1}";
     private readonly IOptions<VnPayOption> _options;
+    private readonly ILogger<VNPayService> _logger;
+    private readonly UnitOfWork _unitOfWork;
 
-    public VNPayService(IConfiguration configuration, IOptions<VnPayOption> options)
+    public VNPayService(IConfiguration configuration, IOptions<VnPayOption> options, UnitOfWork unitOfWork, ILogger<VNPayService> logger)
     {
         _configuration = configuration;
         _options = options;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public ResponseUriModel CreatePayment(PaymentInfoModel model, HttpContext context)
@@ -54,7 +61,32 @@ public class VNPayService : IVNPayService
     public PaymentResponseModel PaymentExecute(IQueryCollection collection)
     {
         var response = PaymentHelper.GetParamPaymentCallBack(collection, _options.Value.HashSecret);
+        if (response.Success)
+        {
+            try
+            {
+                var bookingId = int.Parse(response.OrderId);
+                var booking = _unitOfWork.BookingRepo.GetById(bookingId);
+                if (booking != null)
+                {
+                    booking.Status = true;
+                    _unitOfWork.BookingRepo.Update(booking);
+                   
+                    _unitOfWork.SaveChanges();
 
+                    _logger.LogInformation($"Booking status updated to true and payment recorded for BookingId: {bookingId}");
+                }
+                else
+                {
+                    _logger.LogWarning($"Booking not found for BookingId: {bookingId}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating booking status and recording payment");
+                throw;
+            }
+        }
         return response.Adapt<PaymentResponseModel>();
     }
 }

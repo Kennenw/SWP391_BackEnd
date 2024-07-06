@@ -73,6 +73,9 @@ namespace Repositories.DTO
 
     public class CheckInResponse
     {
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }
+        public string? FullName { get; set; }
         public string CourtName { get; set; }
         public string SubCourtName { get; set; }
         public string SlotTimeStart { get; set; }
