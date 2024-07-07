@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\entities\\payments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\entities\\payments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\services\\vnpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\vnpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,16 +19,32 @@
       "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\ivnpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\repositories\\paymentrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\paymentrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\dto\\paymentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\dto\\paymentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\payment\\responseurimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\payment\\responseurimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\repositories\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{575AC699-CA6D-4A2E-8FE1-C87E8DB735CC}|Repositories\\Repositories.csproj|solutionrelative:repositories\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\services\\postservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8AF2604-550F-423B-A9E9-EE8E410E5F20}|Services\\Services.csproj|solutionrelative:services\\postservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\controllers\\courtscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|d:\\main\\projects\\fpt\\swp391\\swp391_backend\\bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{105AEE7C-8BD0-4B75-8CD7-6CB4E7978E41}|BookingBad.API\\BookingBad.API.csproj|solutionrelative:bookingbad.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,44 +98,137 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
+              "Title": "PaymentRepo.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories\\PaymentRepo.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\PaymentRepo.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Repositories\\PaymentRepo.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\PaymentRepo.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAAYwBMAAABRAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T15:27:19.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ResponseUriModel.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Payment\\ResponseUriModel.cs",
+              "RelativeDocumentMoniker": "Repositories\\Payment\\ResponseUriModel.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Payment\\ResponseUriModel.cs",
+              "RelativeToolTip": "Repositories\\Payment\\ResponseUriModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T14:38:47.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "VnPayLibrary.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Payment\\VnPayLibrary.cs",
+              "RelativeDocumentMoniker": "Repositories\\Payment\\VnPayLibrary.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Payment\\VnPayLibrary.cs",
+              "RelativeToolTip": "Repositories\\Payment\\VnPayLibrary.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAQwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T14:38:43.007Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Payments.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Entities\\Payments.cs",
+              "RelativeDocumentMoniker": "Repositories\\Entities\\Payments.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\Entities\\Payments.cs",
+              "RelativeToolTip": "Repositories\\Entities\\Payments.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T14:38:35.447Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "PaymentDTO.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\PaymentDTO.cs",
               "RelativeDocumentMoniker": "Repositories\\DTO\\PaymentDTO.cs",
               "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Repositories\\DTO\\PaymentDTO.cs",
               "RelativeToolTip": "Repositories\\DTO\\PaymentDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAApAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-06T17:18:07.325Z"
+              "WhenOpened": "2024-07-06T17:18:07.325Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "IVNPayService.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\IVNPayService.cs",
               "RelativeDocumentMoniker": "Services\\IVNPayService.cs",
               "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\IVNPayService.cs",
               "RelativeToolTip": "Services\\IVNPayService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAABgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-06T17:17:50.486Z"
+              "WhenOpened": "2024-07-06T17:17:50.486Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "VNPayService.cs",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\VNPayService.cs",
               "RelativeDocumentMoniker": "Services\\VNPayService.cs",
               "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\VNPayService.cs",
               "RelativeToolTip": "Services\\VNPayService.cs",
-              "ViewState": "AQIAAFwAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAuwFIAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-06T17:17:48.153Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "PaymentsController.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\PaymentsController.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\PaymentsController.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\PaymentsController.cs",
+              "RelativeToolTip": "BookingBad.API\\Controllers\\PaymentsController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-06T17:17:23.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PostServices.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\PostServices.cs",
+              "RelativeDocumentMoniker": "Services\\PostServices.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\Services\\PostServices.cs",
+              "RelativeToolTip": "Services\\PostServices.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T14:38:21.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CourtsController.cs",
+              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\CourtsController.cs",
+              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\CourtsController.cs",
+              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\CourtsController.cs",
+              "RelativeToolTip": "BookingBad.API\\Controllers\\CourtsController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T14:24:41.781Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\appsettings.json",
               "RelativeDocumentMoniker": "BookingBad.API\\appsettings.json",
@@ -120,18 +237,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-07-06T17:17:35.558Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PaymentsController.cs",
-              "DocumentMoniker": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\PaymentsController.cs",
-              "RelativeDocumentMoniker": "BookingBad.API\\Controllers\\PaymentsController.cs",
-              "ToolTip": "D:\\Main\\Projects\\FPT\\SWP391\\SWP391_BackEnd\\BookingBad.API\\Controllers\\PaymentsController.cs",
-              "RelativeToolTip": "BookingBad.API\\Controllers\\PaymentsController.cs",
-              "ViewState": "AQIAAFcAAAAAAAAAAAAYwBQAAAAqAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-06T17:17:23.349Z"
             }
           ]
         }
