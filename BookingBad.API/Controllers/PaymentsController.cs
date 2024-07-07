@@ -94,6 +94,36 @@ public class PaymentsController : ControllerBase
         }
     }
 
+    [HttpPost("create-deposit")]
+public async Task<IActionResult> CreateDeposit(int userId, double amount)
+{
+    try
+    {
+        var responseUriVnPay = _vnPayService.CreateDeposit(new PaymentInfoModel()
+        {
+            TotalAmount = amount,
+            PaymentCode = userId + "." + Guid.NewGuid()
+        }, HttpContext, userId);
+
+        if (responseUriVnPay == null || string.IsNullOrEmpty(responseUriVnPay.Uri))
+        {
+            return new BadRequestObjectResult(new
+            {
+                Message = "Cannot create deposit URL at this moment!"
+            });
+        }
+
+        return Ok(new
+        {
+            Message = "Deposit URL created successfully!",
+            Data = responseUriVnPay
+        });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+
 /*    [HttpGet("return")]
     public IActionResult PaymentReturn([FromQuery] Dictionary<string, string> queryParams)
     {

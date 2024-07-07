@@ -11,7 +11,7 @@ namespace Services
     public interface IVNPayService
     {
         ResponseUriModel CreatePayment(PaymentInfoModel model, HttpContext context);
-        ResponseUriModel CreateDeposit(PaymentInfoModel model, HttpContext context, int userId); // Thêm hàm này
+        ResponseUriModel CreateDeposit(PaymentInfoModel model, HttpContext context, int userId);
         PaymentResponseModel PaymentExecute(IQueryCollection collection);
     }
 }
