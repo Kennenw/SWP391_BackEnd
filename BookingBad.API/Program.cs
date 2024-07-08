@@ -1,6 +1,7 @@
 using Microsoft.Extensions.FileProviders;
 using NETCore.MailKit.Extensions;
 using Repositories.DTO;
+using Repositories.Entities;
 using Repositories.Payment;
 using Repositories.Repositories;
 using Services;
@@ -75,6 +76,7 @@ namespace Repositories.API
             builder.Services.AddScoped<BookingDetailsRepo>();
             builder.Services.AddScoped<PostServices>();
             builder.Services.AddScoped<CourtServices>();
+            builder.Services.AddScoped<GenericRepository<Payments>>();
             // Register memory cache
             builder.Services.AddMemoryCache();
 

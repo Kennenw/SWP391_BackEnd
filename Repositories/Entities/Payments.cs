@@ -10,7 +10,7 @@ namespace Repositories.Entities
         public double? PaymentAmount { get; set; }
         public double? TotalAmount { get; set; }
         public string PaymentCode { get; set; }
-        public string Status { get; set; } 
-        public virtual Booking? Booking { get; set; }
+        public string Status { get; set; }
+        public virtual Booking Booking { get; set; }
     }
 }
