@@ -39,6 +39,26 @@ public class PaymentsController : ControllerBase
                 return NotFound("Booking not found.");
             }
 
+            var customerId = _bookingSevices.GetCustomerIdByBookingId(bookingId);
+            if (!customerId.HasValue)
+            {
+                return BadRequest("Customer ID not found for booking.");
+            }
+            var customerAccount = _accountServices.GetAccountById(customerId.Value);
+            if (customerAccount == null)
+            {
+                return BadRequest("Customer account not found.");
+            }
+            if (customerAccount != null && booking.TotalPrice <= customerAccount.Balance)
+            {
+
+                var result = await _bookingSevices.CompleteBookingWithoutBalance(bookingId);
+                return CreatedAtAction(nameof(CreatePayment), new
+                {
+                    Message = "Booking completed successfully!",
+                    Data = result
+                });
+            }
             // Tạo URL thanh toán từ VNPayService
             var responseUriVnPay = _vnPayService.CreatePayment(new PaymentInfoModel()
             {
@@ -97,7 +117,7 @@ public class PaymentsController : ControllerBase
                 });
             }
 
-            return Ok(new
+            return CreatedAtAction(nameof(CreateDeposit), new
             {
                 Message = "Deposit URL created successfully!",
                 Data = responseUriVnPay

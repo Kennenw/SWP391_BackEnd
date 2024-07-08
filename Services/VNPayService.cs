@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Repositories;
 using Repositories.Payment;
 
 namespace Services.Implements
@@ -12,11 +13,13 @@ namespace Services.Implements
         private readonly string _paramUrlCallBack = "?payment_method=VnPay&payment_code={0}&success=1&booking_id={1}";
         private readonly string _paramDepositUrlCallBack = "?payment_method=VnPay&payment_code={0}&success=1&user_id={1}";
         private readonly IOptions<VnPayOption> _options;
+        private readonly UnitOfWork _unitOfWork;
 
-        public VNPayService(IConfiguration configuration, IOptions<VnPayOption> options)
+        public VNPayService(IConfiguration configuration, IOptions<VnPayOption> options, UnitOfWork unitOfWork)
         {
             _configuration = configuration;
             _options = options;
+            _unitOfWork = unitOfWork;
         }
 
         public ResponseUriModel CreatePayment(PaymentInfoModel model, HttpContext context)
@@ -86,6 +89,17 @@ namespace Services.Implements
         public PaymentResponseModel PaymentExecute(IQueryCollection collection)
         {
             var response = PaymentHelper.GetParamPaymentCallBack(collection, _options.Value.HashSecret);
+            if (response.Success)
+            {
+                var bookingId = int.Parse(response.OrderId);
+                var booking = _unitOfWork.BookingRepo.GetById(bookingId);
+                if (booking != null)
+                {
+                    booking.Status = true;
+                    _unitOfWork.BookingRepo.Update(booking);
+                    _unitOfWork.SaveChanges();
+                }
+            }
             return response.Adapt<PaymentResponseModel>();
         }
     }
