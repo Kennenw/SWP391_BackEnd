@@ -12,18 +12,21 @@ public class PaymentsController : ControllerBase
 {
     private readonly IVNPayService _vnPayService;
     private readonly IOptions<VnPayOption> _options;
-    private readonly IBookingSevices _bookingSevices;
+    private readonly IBookingSevices _bookingServices;
     private readonly IAccountServices _accountServices;
     private readonly GenericRepository<Payments> _paymentRepo;
+    private readonly UnitOfWork _unitOfWork;
 
 
-    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices, IAccountServices accountServices, GenericRepository<Payments> paymentRepo)
+    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices, 
+        IAccountServices accountServices, GenericRepository<Payments> paymentRepo, UnitOfWork unitOfWork)
     {
         _vnPayService = vnPayService;
         _options = options;
-        _bookingSevices = bookingServices;
+        _bookingServices = bookingServices;
         _accountServices = accountServices;
         _paymentRepo = paymentRepo;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -33,13 +36,13 @@ public class PaymentsController : ControllerBase
         try
         {
             // Lấy thông tin booking từ BookingServices
-            var booking = _bookingSevices.GetBookingById(bookingId);
+            var booking = _bookingServices.GetBookingById(bookingId);
             if (booking == null)
             {
                 return NotFound("Booking not found.");
             }
 
-            var customerId = _bookingSevices.GetCustomerIdByBookingId(bookingId);
+            var customerId = _bookingServices.GetCustomerIdByBookingId(bookingId);
             if (!customerId.HasValue)
             {
                 return BadRequest("Customer ID not found for booking.");
@@ -52,7 +55,7 @@ public class PaymentsController : ControllerBase
             if (customerAccount != null && booking.TotalPrice <= customerAccount.Balance)
             {
 
-                var result = await _bookingSevices.CompleteBookingWithoutBalance(bookingId);
+                var result = await _bookingServices.CompleteBookingWithoutBalance(bookingId);
                 return CreatedAtAction(nameof(CreatePayment), new
                 {
                     Message = "Booking completed successfully!",
@@ -128,51 +131,44 @@ public class PaymentsController : ControllerBase
             return BadRequest(ex.Message);
         }
 
-        /*    [HttpGet("return")]
-            public IActionResult PaymentReturn([FromQuery] Dictionary<string, string> queryParams)
-            {
-                if (queryParams == null || !queryParams.Any())
-                    return BadRequest("Invalid parameters");
-
-                if (!queryParams.TryGetValue("vnp_SecureHash", out var signature))
-                    return BadRequest("Missing vnp_SecureHash parameter");
-
-                queryParams.Remove("vnp_SecureHash");
-
-                bool isValid = _paymentService.ValidateSignature(queryParams, signature);
-
-                if (isValid)
-                {
-                    // Handle successful payment return logic here
-                    return Ok("Payment successful");
-                }
-                else
-                {
-                    return BadRequest("Invalid signature");
-                }
-            }*/
-
-        /*    [HttpPost("notify")]
-            public IActionResult PaymentNotify([FromForm] Dictionary<string, string> queryParams)
-            {
-                if (queryParams == null || !queryParams.Any())
-                    return BadRequest("Invalid parameters");
-
-                if (!queryParams.TryGetValue("vnp_SecureHash", out var signature))
-                    return BadRequest("Missing vnp_SecureHash parameter");
-
-                queryParams.Remove("vnp_SecureHash");
-
-                bool isValid = _paymentService.ValidateSignature(queryParams, signature);
-                if (isValid)
-                {
-                    // Handle notification logic here
-                    return Ok("Notification received");
-                }
-                else
-                {
-                    return BadRequest("Invalid signature");
-                }
-            }*/
     }
+
+    [HttpPut("update-payment-status/{paymentId}")]
+    public IActionResult UpdatePaymentStatus(int paymentId)
+    {
+        try
+        {
+            var payment = _paymentRepo.GetById(paymentId);
+            if (payment == null)
+            {
+                return NotFound("Payment not found.");
+            }
+
+            // Cập nhật trạng thái thanh toán thành công
+            payment.Status = "success";
+
+            _paymentRepo.Update(payment);
+
+            // Lấy thông tin booking dựa trên BookingId của payment
+            var booking = _bookingServices.GetBookingById((int)payment.BookingId);
+            if (booking != null)
+            {
+                booking.Status = true;
+                _unitOfWork.BookingRepo.UpdateBookingStatus((int)payment.BookingId, (bool)booking.Status);
+                _unitOfWork.SaveChanges();
+            }
+
+            return Ok(new
+            {
+                Message = $"Updated payment status to 'success' for Payment ID {paymentId}.",
+                Data = new { Payment = payment, Booking = booking }
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
 }

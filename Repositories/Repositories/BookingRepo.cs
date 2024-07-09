@@ -39,5 +39,15 @@ namespace Repositories.Repositories
                 .Select(b => b.CustomerId)
                 .FirstOrDefault();
         }
+
+        public void UpdateBookingStatus(int bookingId, bool status)
+        {
+            var booking = _dbSet.FirstOrDefault(b => b.BookingId == bookingId);
+            if (booking != null)
+            {
+                booking.Status = status;
+                _context.SaveChanges();
+            }
+        }
     }
 }
