@@ -57,6 +57,7 @@ namespace Repositories.API
             builder.Services.AddTransient<IBookingDetailsServices, BookingDetailsServices>();
             builder.Services.AddTransient<IPostServices, PostServices>();
             builder.Services.AddTransient<ICourtServices, CourtServices>();
+            builder.Services.AddTransient<IReportServices, ReportServices>();
 
             // Register VNPayOptions
             builder.Services.Configure<VnPayOption>(builder.Configuration.GetSection("PaymentConfig:VnPay"));
@@ -77,6 +78,7 @@ namespace Repositories.API
             builder.Services.AddScoped<PostServices>();
             builder.Services.AddScoped<CourtServices>();
             builder.Services.AddScoped<GenericRepository<Payments>>();
+            builder.Services.AddScoped<ReportServices>();
             // Register memory cache
             builder.Services.AddMemoryCache();
 

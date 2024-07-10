@@ -12,24 +12,9 @@ namespace Repositories.Repositories
     {
         public BookingRepo() { }
 
-        public async Task<int> GetRevenueTotalBook(int? year, int? month, int? day)
+        public int GetTotalBookingsCount()
         {
-            var query = _dbSet.Where(b => b.Status == true && b.StartDate.HasValue);
-
-            if (year.HasValue)
-            {
-                query = query.Where(b => b.StartDate.Value.Year == year.Value);
-                if (month.HasValue && month.Value > 0)
-                {
-                    query = query.Where(b => b.StartDate.Value.Month == month.Value);
-                    if (day.HasValue && day.Value > 0)
-                    {
-                        query = query.Where(b => b.StartDate.Value.Day == day.Value);
-                    }
-                }
-            }
-
-            return await query.CountAsync();
+            return _dbSet.Count();
         }
 
         public int? GetCustomerIdByBookingId(int bookingId)
@@ -38,6 +23,12 @@ namespace Repositories.Repositories
                 .Where(b => b.BookingId == bookingId)
                 .Select(b => b.CustomerId)
                 .FirstOrDefault();
+        }
+        public async Task<double> GetSuccessfulBookingRateAsync()
+        {
+            var totalBookings = await _dbSet.CountAsync();
+            var successfulBookings = await _dbSet.CountAsync(b => b.Status == true);
+            return (double)successfulBookings / totalBookings;
         }
 
         public void UpdateBookingStatus(int bookingId, bool status)

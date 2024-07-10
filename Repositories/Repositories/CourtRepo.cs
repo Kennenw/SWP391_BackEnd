@@ -11,9 +11,9 @@ namespace Repositories.Repositories
     public class CourtRepo : GenericRepository<Court>
     {
         public CourtRepo() { }
-        public async Task<int> CountAsync()
+        public int GetTotalCourtsCount()
         {
-            return await _dbSet.Where(ar => ar.Status == true).CountAsync();
+            return _dbSet.Where(ar => ar.Status == true).Count();
         }
     }
 }

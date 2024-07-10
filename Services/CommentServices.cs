@@ -17,6 +17,8 @@ namespace Services
         public void CreateComment(CommentDTO commentDTO);
         public void UpdateComment(int id, CommentDTO commentDTO);
         public void DeleteComment(int id);
+        List<CommentDTO> GetCommentByCourt(int courtId);
+        List<CommentDTO> GetCommentByPost(int postId);
     }
     public class CommentServices : ICommentServices
     {
@@ -67,13 +69,40 @@ namespace Services
                 throw new Exception("Either PostId or CourtId must be provided");
             }
 
-            _unitOfWork.CommentRepo.Create(comment); 
+            _unitOfWork.CommentRepo.Create(comment);
             _unitOfWork.SaveChanges();
         }
 
 
+        public List<CommentDTO> GetCommentByPost(int postId)
+        {
+            return _unitOfWork.CommentRepo.GetAll().
+                Where(c => c.PostId == postId).Select(comment => new CommentDTO
+                {
+                    UserId = comment.UserId,
+                    CommentId = comment.CommentId,
+                    Title = comment.Title,
+                    Image = comment.Image,
+                    Context = comment.Context,
+                    PostId = comment.PostId,
+                    Status = comment.Status,
+                }).ToList();
+        }
 
-
+        public List<CommentDTO> GetCommentByCourt(int courtId)
+        {
+            return _unitOfWork.CommentRepo.GetAll().
+                Where(c => c.CourtId == courtId).Select(comment => new CommentDTO
+                {
+                    UserId = comment.UserId,
+                    CommentId = comment.CommentId,
+                    Title = comment.Title,
+                    Image = comment.Image,
+                    Context = comment.Context,
+                    CourtId = comment.CourtId,
+                    Status = comment.Status,
+                }).ToList();
+        }
 
         public void DeleteComment(int id)
         {
@@ -115,7 +144,7 @@ namespace Services
                 Title = comment.Title,
                 Image = comment.Image,
                 Context = comment.Context,
-                PostId = comment.PostId,    
+                PostId = comment.PostId,
                 CourtId = comment.CourtId,
             };
         }

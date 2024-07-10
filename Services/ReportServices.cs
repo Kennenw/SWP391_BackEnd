@@ -9,12 +9,13 @@ namespace Services
 {
     public interface IReportServices
     {
-        Task<int> GetTotalCourtsAsync();
-        Task<int> GetTotalUsersAsync();
+        Task<int> GetTotalBookingsCountAsync();
+        Task<double> GetSuccessfulBookingRateAsync();
+        Task<List<object>> GetTotalRevenueByMonthYearAsync();
+        int GetTotalCourtsCount();
+        int GetTotalAccountsCount();
         Task<double> GetTotalRevenueAsync();
-        Task<double> GetRevenueAsync(int year, int month, int? day);
-        Task<int> GetTotalPostsAsync();
-        Task<double> GetRevenueTotalBooks(int year, int month, int? day);
+        int GetTotalPostsCount();
     }
     public class ReportServices : IReportServices
     {
@@ -24,34 +25,38 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<double> GetRevenueAsync(int year, int month, int? day)
+        public async Task<int> GetTotalBookingsCountAsync()
         {
-            return await _unitOfWork.PaymentRepo.GetRevenueAsync(year, month, day); 
+            return _unitOfWork.BookingRepo.GetTotalBookingsCount();
         }
 
-        public async Task<double> GetRevenueTotalBooks(int year, int month, int? day)
+        public async Task<double> GetSuccessfulBookingRateAsync()
         {
-            return await _unitOfWork.BookingRepo.GetRevenueTotalBook(year, month, day);
-        }
-
-        public async Task<int> GetTotalCourtsAsync()
-        {
-            return await _unitOfWork.CourtRepo.CountAsync();    
+            return await _unitOfWork.BookingRepo.GetSuccessfulBookingRateAsync();
         }
 
         public async Task<double> GetTotalRevenueAsync()
         {
-            return await _unitOfWork.PaymentRepo.SumAsync(p => p.TotalAmount ?? 0);
+            return _unitOfWork.PaymentRepo.GetTotalRevenue();
         }
 
-        public async Task<int> GetTotalUsersAsync()
+        public int GetTotalCourtsCount()
         {
-            return await _unitOfWork.AccountRepo.CountAsync();
+            return _unitOfWork.CourtRepo.GetTotalCourtsCount();
         }
 
-        public async Task<int> GetTotalPostsAsync()
+        public int GetTotalAccountsCount()
         {
-            return await _unitOfWork.PostRepo.CountAsync();
+            return _unitOfWork.AccountRepo.GetTotalAccountsCount();
+        }
+
+        public int GetTotalPostsCount()
+        {
+            return _unitOfWork.PostRepo.GetTotalPosts();
+        }
+        public async Task<List<object>> GetTotalRevenueByMonthYearAsync()
+        {
+            return await _unitOfWork.PaymentRepo.GetTotalRevenueByMonthYear();
         }
     }
 }

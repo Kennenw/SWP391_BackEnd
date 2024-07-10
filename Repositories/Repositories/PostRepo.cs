@@ -11,9 +11,9 @@ namespace Repositories.Repositories
     public class PostRepo : GenericRepository<Post>
     {
         public PostRepo() { }
-        public async Task<int> CountAsync()
+        public int GetTotalPosts()
         {
-            return await _dbSet.Where(ar => ar.Status == true).CountAsync();
+            return _dbSet.Where(ar => ar.Status == true).Count();
         }
     }
 }
