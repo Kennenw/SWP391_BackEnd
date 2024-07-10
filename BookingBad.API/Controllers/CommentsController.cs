@@ -44,6 +44,19 @@ namespace BookingBad.API.Controllers
             return comment;
         }
 
+        // GET: api/Comments/5
+        [HttpGet("by-court/{courtId}")]
+        public ActionResult<List<CommentDTO>> GetCommentsByCourt(int courtId)
+        {
+            return commentServices.GetCommentByCourt(courtId);
+        }
+
+        [HttpGet("by-post/{postId}")]
+        public ActionResult<List<CommentDTO>> GetCommentsByPost(int postId)
+        {
+            return commentServices.GetCommentByPost(postId);
+        }
+
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

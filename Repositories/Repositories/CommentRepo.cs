@@ -10,5 +10,6 @@ namespace Repositories.Repositories
     public class CommentRepo : GenericRepository<Comment>
     {
         public CommentRepo() { }
+
     }
 }

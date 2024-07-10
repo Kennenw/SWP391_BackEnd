@@ -41,10 +41,9 @@ namespace Repositories.Repositories
             return res;
         }
 
-       
-        public async Task<int> CountAsync()
+        public int GetTotalAccountsCount()
         {
-            return await _dbSet.Where(ar => ar.Status == true).CountAsync();
+            return _dbSet.Where(ar => ar.Status == true).Count();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repositories.Entities;
 using Services;
 
 namespace BookingBad.API.Controllers
@@ -8,64 +9,59 @@ namespace BookingBad.API.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
-        public readonly IReportServices reportServices;
-        public  ReportsController()
+        public readonly IReportServices _reportServices;
+        public ReportsController(ReportServices reportServices)
         {
-            reportServices = new ReportServices();
-        }
-        [HttpGet("Total-Courts")]
-        public async Task<IActionResult> GetTotalCourts()
-        {
-            var total = await reportServices.GetTotalCourtsAsync();
-            return Ok(total);
+            _reportServices = reportServices;
         }
 
-        [HttpGet("Total-Account")]
-        public async Task<IActionResult> GetTotalAccount()
+        [HttpGet("total-bookings")]
+        public async Task<IActionResult> GetTotalBookingsCount()
         {
-            var total = await reportServices.GetTotalUsersAsync();
-            return Ok(total);   
+            var count = await _reportServices.GetTotalBookingsCountAsync();
+            return Ok(count);
         }
-        [HttpGet("Total-Revenue")]
+
+
+        [HttpGet("successful-booking-rate")]
+        public async Task<IActionResult> GetSuccessfulBookingRate()
+        {
+            var rate = await _reportServices.GetSuccessfulBookingRateAsync();
+            return Ok(rate);
+        }
+
+        [HttpGet("total-courts")]
+        public IActionResult GetTotalCourtsCount()
+        {
+            var count = _reportServices.GetTotalCourtsCount();
+            return Ok(count);
+        }
+
+        [HttpGet("total-accounts")]
+        public IActionResult GetTotalAccountsCount()
+        {
+            var count = _reportServices.GetTotalAccountsCount();
+            return Ok(count);
+        }
+
+        [HttpGet("total-revenue")]
         public async Task<IActionResult> GetTotalRevenue()
         {
-            var totalRevenue = await reportServices.GetTotalRevenueAsync();
-            return Ok(totalRevenue);
+            var revenue = await _reportServices.GetTotalRevenueAsync();
+            return Ok(revenue);
         }
 
-        [HttpGet("Monthly-Revenue")]
-        public async Task<IActionResult> GetMonthlyRevenue(int year, int month, int day)
+        [HttpGet("total-posts")]
+        public IActionResult GetTotalPostsCount()
         {
-            try
-            {
-                var revenue = await reportServices.GetRevenueAsync(year, month, day);
-                return Ok(new { Year = year, Month = month, Day = day, Revenue = revenue });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var count = _reportServices.GetTotalPostsCount();
+            return Ok(count);
         }
-
-        [HttpGet("Book-Revenue")]
-        public async Task<IActionResult> GetMonthlyRevenueBook(int year, int month, int day)
+        [HttpGet("total-revenue-by-month-year")]
+        public async Task<IActionResult> GetTotalRevenueByMonthYear()
         {
-            try
-            {
-                var revenue = await reportServices.GetRevenueTotalBooks(year, month, day);
-                return Ok(new { Year = year, Month = month, Day = day, Revenue = revenue });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("Total-Post")]
-        public async Task<IActionResult> GetTotalPost()
-        {
-            var postRevenue = await reportServices.GetTotalPostsAsync();
-            return Ok(postRevenue);
+            var revenueByMonthYear = await _reportServices.GetTotalRevenueByMonthYearAsync();
+            return Ok(revenueByMonthYear);
         }
     }
 }

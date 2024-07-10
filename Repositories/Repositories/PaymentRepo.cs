@@ -11,31 +11,29 @@ namespace Repositories.Repositories
     public class PaymentRepo : GenericRepository<Payments>
     {
         public PaymentRepo() { }
-        public async Task<double> GetRevenueAsync(int? year, int? month, int? day)
+        public async Task<List<object>> GetTotalRevenueByMonthYear()
         {
-            var query = _dbSet.Where(b => b.PaymentDate.HasValue);
-
-            if (year.HasValue)
-            {
-                query = query.Where(b => b.PaymentDate.Value.Year == year.Value);
-
-                if (month.HasValue && month.Value > 0)
+            var revenueByMonthYear = await _dbSet
+                .Where(p => p.PaymentDate != null)
+                .GroupBy(p => new { p.PaymentDate.Value.Year, p.PaymentDate.Value.Month, p.PaymentDate.Value.Day })
+                .Select(g => new
                 {
-                    query = query.Where(b => b.PaymentDate.Value.Month == month.Value);
+                    MonthYear = $"{g.Key.Year}-{g.Key.Month:D2}-{g.Key.Day}",
+                    TotalAmount = g.Sum(p => p.TotalAmount)
+                })
+                .ToListAsync();
 
-                    if (day.HasValue && day.Value > 0)
-                    {
-                        query = query.Where(b => b.PaymentDate.Value.Day == day.Value);
-                    }
-                }
-            }
-
-            return await query.SumAsync(b => b.TotalAmount ?? 0);
+            return revenueByMonthYear.Cast<object>().ToList();
         }
-        
+
         public Payments GetBookingId(int bookingId)
         {
             return _dbSet.FirstOrDefault(p => p.BookingId == bookingId );
         }
+        public double GetTotalRevenue()
+        {
+            return _dbSet.Sum(b => b.TotalAmount ?? 0);
+        }
+
     }
 }
