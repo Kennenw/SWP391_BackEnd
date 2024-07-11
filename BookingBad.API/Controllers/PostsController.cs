@@ -91,7 +91,7 @@ namespace BookingBad.API.Controllers
 
         // POST: api/Posts
         [HttpPost]
-        public async Task<ActionResult<PostDTO>> PostPost(PostDTO post)
+        public async Task<IActionResult> PostPost(PostDTO post)
         {
             postServices.CreatePost(post);
             return CreatedAtAction("GetPost", new { id = post.PostId }, post);

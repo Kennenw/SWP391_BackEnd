@@ -16,12 +16,12 @@ namespace Services
     {
         public List<PostDTO> PostSearch(string query);
         public PostDTO GetPostById(int id);
-        public void CreatePost(PostDTO postDTO);
+        Task<Post> CreatePost(PostDTO postDTO);
         public void UpdatePost(int id, PostDTO postDTO);
         public void DeletePost(int id);
         Task UploadPostImageAsync(int postId, byte[] imageBytes);
         public List<PostDTO> GetPost();
-        void RatePost(int userId,int postId, double rating);
+        void RatePost(int userId, int postId, double rating);
     }
     public class PostServices : IPostServices
     {
@@ -32,24 +32,57 @@ namespace Services
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public void CreatePost(PostDTO postDTO)
+        public async Task<Post> CreatePost(PostDTO postDTO)
         {
             Post post = new Post()
             {
                 AccountId = postDTO.AccountId,
                 Context = postDTO.Context,
-                Status = true,  
+                Status = true,
                 Title = postDTO.Title,
-                Image = postDTO.Image,
             };
             _unitOfWork.PostRepo.Create(post);
             _unitOfWork.SaveChanges();
+
+            if (!string.IsNullOrEmpty(postDTO.Image) && postDTO.Image != "string")
+            {
+                try
+                {
+                    var base64Parts = postDTO.Image.Split(',');
+                    if (base64Parts.Length == 2)
+                    {
+                        var base64Data = base64Parts[1];
+                        var imageBytes = Convert.FromBase64String(base64Data);
+                        var fileName = Guid.NewGuid().ToString() + ".png";
+                        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+                        if (!Directory.Exists(uploadPath))
+                            Directory.CreateDirectory(uploadPath);
+
+                        var filePath = Path.Combine(uploadPath, fileName);
+                        await File.WriteAllBytesAsync(filePath, imageBytes);
+
+                        post.Image = fileName;
+                        _unitOfWork.PostRepo.Update(post);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Base64 image format.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    throw new Exception("Invalid Base64 image format.");
+                }
+            }
+            await _unitOfWork.SaveAsync();
+            return post;
         }
 
         public void DeletePost(int id)
         {
             Post post = _unitOfWork.PostRepo.GetById(id);
-            if(post != null)
+            if (post != null)
             {
                 post.Status = false;
                 _unitOfWork.PostRepo.Update(post);
@@ -62,7 +95,7 @@ namespace Services
             if (!string.IsNullOrEmpty(query))
             {
                 post = post.Where(a => a.Title.Contains(query)).ToList();
-            }       
+            }
             var postDTOs = post.Where(a => a.Status == true).Select(a => new PostDTO
             {
                 PostId = a.PostId,
@@ -98,7 +131,7 @@ namespace Services
         public void UpdatePost(int id, PostDTO postDTO)
         {
             var post = _unitOfWork.PostRepo.GetById(id);
-            if(post != null)
+            if (post != null)
             {
                 post.Title = postDTO.Title;
                 post.Context = postDTO.Context;
@@ -138,7 +171,7 @@ namespace Services
 
         public List<PostDTO> GetPost()
         {
-            var post = _unitOfWork.PostRepo.GetAll();          
+            var post = _unitOfWork.PostRepo.GetAll();
             var postDTOs = post.Where(a => a.Status == true).Select(a => new PostDTO
             {
                 PostId = a.PostId,
