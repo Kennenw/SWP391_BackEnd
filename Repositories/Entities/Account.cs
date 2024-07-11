@@ -25,6 +25,8 @@ public partial class Account
     public double? Balance { get; set; } = 0;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+     
+    public virtual ICollection<Payments> Payments { get; set; } = new List<Payments>();
 
     public virtual ICollection<Court> Courts { get; set; } = new List<Court>();
 
