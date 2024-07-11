@@ -22,6 +22,7 @@ namespace Services
         Task UploadPostImageAsync(int postId, byte[] imageBytes);
         public List<PostDTO> GetPost();
         void RatePost(int userId, int postId, double rating);
+        string GetPostImagePath(int courtId);
     }
     public class PostServices : IPostServices
     {
