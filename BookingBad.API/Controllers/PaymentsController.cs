@@ -179,7 +179,41 @@ public class PaymentsController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
-
     }
+
+    [HttpPut("update-deposit-balance/{paymentId}")]
+    public IActionResult UpdateDepositBalance(int paymentId)
+    {
+        try
+        {
+            var payment = _paymentRepo.GetById(paymentId);
+            if (payment == null)
+            {
+                return NotFound("Payment not found.");
+            }
+   /*         if (payment.Status != "success")
+            {
+                return BadRequest("Payment status is not 'success'.");
+            }*/
+
+            var result = _accountServices.UpdateBalanceByPayment(paymentId);
+            if (!result)
+            {
+                return BadRequest("Failed to update balance.");
+            }
+
+            var account = _accountServices.GetAccountById(payment.UserId.Value);
+            return Ok(new
+            {
+                Message = $"Updated balance for Account ID {account.AccountId}.",
+                Data = account
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
 }

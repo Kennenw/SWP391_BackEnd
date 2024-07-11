@@ -35,5 +35,11 @@ namespace Repositories.Repositories
             return _dbSet.Sum(b => b.TotalAmount ?? 0);
         }
 
+        public Payments GetByPaymentCode(string paymentCode)
+        {
+            return _context.Payments.FirstOrDefault(p => p.PaymentCode == paymentCode);
+        }
+
+
     }
 }

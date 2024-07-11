@@ -91,16 +91,37 @@ namespace Services.Implements
             var response = PaymentHelper.GetParamPaymentCallBack(collection, _options.Value.HashSecret);
             if (response.Success)
             {
-                var bookingId = int.Parse(response.OrderId);
-                var booking = _unitOfWork.BookingRepo.GetById(bookingId);
-                if (booking != null)
+                if (response.OrderType == "deposit")
                 {
-                    booking.Status = true;
-                    _unitOfWork.BookingRepo.Update(booking);
-                    _unitOfWork.SaveChanges();
+                    var userId = int.Parse(response.UserId);
+                    var payment = _unitOfWork.PaymentRepo.GetByPaymentCode(response.PaymentCode);
+                    if (payment != null && payment.Status == "pending")
+                    {
+                        payment.Status = "success";
+                        var account = _unitOfWork.AccountRepo.GetById(userId);
+                        if (account != null)
+                        {
+                            account.Balance += payment.TotalAmount;
+                            _unitOfWork.AccountRepo.Update(account);
+                        }
+                        _unitOfWork.PaymentRepo.Update(payment);
+                        _unitOfWork.SaveChanges();
+                    }
+                }
+                else
+                {
+                    var bookingId = int.Parse(response.OrderId);
+                    var booking = _unitOfWork.BookingRepo.GetById(bookingId);
+                    if (booking != null)
+                    {
+                        booking.Status = true;
+                        _unitOfWork.BookingRepo.Update(booking);
+                        _unitOfWork.SaveChanges();
+                    }
                 }
             }
             return response.Adapt<PaymentResponseModel>();
         }
+
     }
 }

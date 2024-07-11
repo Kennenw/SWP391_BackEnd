@@ -30,6 +30,8 @@ namespace Services
         bool UpdateRoleUser(int user_id, Role role_id);
         Task UploadAccountImageAsync(int accountId, byte[] imageBytes);
         string GetAccountImagePath(int accountId);
+
+        bool UpdateBalanceByPayment(int paymentId);
     }
     public class AccountServices : IAccountServices
     {
@@ -359,6 +361,25 @@ namespace Services
             return imagePath;
         }
 
+        public bool UpdateBalanceByPayment(int paymentId)
+        {
+            var payment = _unitOfWork.PaymentRepo.GetById(paymentId);
+            if (payment == null)
+            {
+                return false;
+            }
 
+            var accountId = payment.UserId;
+            var account = _unitOfWork.AccountRepo.GetById((int)accountId);
+            if (account == null)
+            {
+                return false;
+            }
+
+            account.Balance = payment.TotalAmount;
+            _unitOfWork.AccountRepo.Update(account);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
     }
 }

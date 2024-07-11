@@ -102,6 +102,8 @@ namespace Repositories.Payment
             public string Customer { get; set; }
             public string TotalAmount { get; set; }
             public string PaymentCode { get; set; }
+
+            public string OrderType { get; set; }
         }
     }
 }
