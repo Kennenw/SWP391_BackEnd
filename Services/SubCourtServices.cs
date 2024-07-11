@@ -11,6 +11,7 @@ namespace Services
 {
     public interface ISubCourtServices
     {
+        List<SubCourtDTO> getSubCourt();
         SubCourtDTO getSubCourt (int id);
         void createSubCourt(SubCourtDTO subCourtDTO);
         void updateSubCourt(int id, SubCourtDTO subCourtDTO);
@@ -23,6 +24,8 @@ namespace Services
         {
             _unitOfWork = new UnitOfWork();
         }
+
+
         public  void createSubCourt(SubCourtDTO subCourtDTO)
         {
             SubCourt subCourt = new SubCourt();
@@ -52,6 +55,17 @@ namespace Services
                 CourtId = item.CourtId,
                 Status = item.Status
             };
+        }
+
+        public List<SubCourtDTO> getSubCourt()
+        {
+            return _unitOfWork.SubCourtRepo.GetAll().
+                Select(item => new SubCourtDTO {
+                SubCourtId = item.SubCourtId,
+                Number = item.Number,
+                CourtId = item.CourtId,
+                Status = item.Status
+            }).ToList();
         }
 
         public void updateSubCourt(int id, SubCourtDTO subCourtDTO)
