@@ -133,5 +133,24 @@ namespace BookingBad.API.Controllers
             postServices.RatePost(postId, model.UserId, model.RatingValue);
             return CreatedAtAction("GetPost", new { idPost = postId }, postId);
         }
+
+        [HttpGet("{postId}/Image")]
+        public IActionResult GetCourtImage(int postId)
+        {
+            try
+            {
+                var imagePath = postServices.GetPostImagePath(postId);
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    return NotFound(new { message = "Image not found" });
+                }
+                var image = System.IO.File.ReadAllBytes(imagePath);
+                return File(image, "image/png");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
