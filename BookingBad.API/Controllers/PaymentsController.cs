@@ -17,8 +17,7 @@ public class PaymentsController : ControllerBase
     private readonly GenericRepository<Payments> _paymentRepo;
     private readonly UnitOfWork _unitOfWork;
 
-
-    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices, 
+    public PaymentsController(IVNPayService vnPayService, IOptions<VnPayOption> options, IBookingSevices bookingServices,
         IAccountServices accountServices, GenericRepository<Payments> paymentRepo, UnitOfWork unitOfWork)
     {
         _vnPayService = vnPayService;
@@ -28,7 +27,6 @@ public class PaymentsController : ControllerBase
         _paymentRepo = paymentRepo;
         _unitOfWork = unitOfWork;
     }
-
 
     [HttpPost("create-payment")]
     public async Task<IActionResult> CreatePayment(int bookingId)
@@ -54,7 +52,6 @@ public class PaymentsController : ControllerBase
             }
             if (customerAccount != null && booking.TotalPrice <= customerAccount.Balance)
             {
-
                 var result = await _bookingServices.CompleteBookingWithoutBalance(bookingId);
                 return CreatedAtAction(nameof(CreatePayment), new
                 {
@@ -81,6 +78,7 @@ public class PaymentsController : ControllerBase
             var payment = new Payments
             {
                 BookingId = bookingId,
+                UserId = customerId,
                 PaymentDate = DateTime.Now,
                 PaymentAmount = booking.TotalPrice,
                 TotalAmount = booking.TotalPrice,
@@ -106,6 +104,7 @@ public class PaymentsController : ControllerBase
     {
         try
         {
+            // Tạo URL thanh toán từ VNPayService
             var responseUriVnPay = _vnPayService.CreateDeposit(new PaymentInfoModel()
             {
                 TotalAmount = amount,
@@ -120,9 +119,22 @@ public class PaymentsController : ControllerBase
                 });
             }
 
+            // Lưu thông tin thanh toán vào cơ sở dữ liệu với trạng thái "pending"
+            var payment = new Payments
+            {
+                BookingId = null,
+                UserId = userId,
+                PaymentDate = DateTime.Now,
+                PaymentAmount = amount,
+                TotalAmount = amount,
+                PaymentCode = responseUriVnPay.Uri,
+                Status = "pending"
+            };
+            _paymentRepo.Create(payment);
+
             return CreatedAtAction(nameof(CreateDeposit), new
             {
-                Message = "Deposit URL created successfully!",
+                Message = "Deposit URL created and payment saved successfully!",
                 Data = responseUriVnPay
             });
         }
@@ -130,7 +142,6 @@ public class PaymentsController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
     }
 
     [HttpPut("update-payment-status/{paymentId}")]
@@ -168,7 +179,7 @@ public class PaymentsController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+
+
     }
-
-
 }
