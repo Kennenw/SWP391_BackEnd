@@ -34,6 +34,44 @@ namespace BookingBad.API.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SubCourtDTO>>> GetSubCourt()
+        {
+            try
+            {
+                var result = subCourtServices.getSubCourt();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<SubCourtDTO>> GetSubCourtrById(int id)
+        {
+            try
+            {
+                var subC = subCourtServices.getSubCourt(id);
+                if (subC == null)
+                {
+                    return NotFound();
+                }
+                return Ok(subC);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
         // POST: api/CourtNumbers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
