@@ -39,7 +39,10 @@ namespace Repositories.Repositories
         {
             return _context.Payments.FirstOrDefault(p => p.PaymentCode == paymentCode);
         }
-
+        public Payments  GetLatestPayment()
+        {
+            return  _dbSet.OrderByDescending(p => p.PaymentId).FirstOrDefault();
+        }
 
     }
 }
