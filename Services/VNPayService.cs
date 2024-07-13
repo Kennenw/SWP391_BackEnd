@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Repositories;
+using Repositories.Entities;
 using Repositories.Payment;
 
 namespace Services.Implements
@@ -122,6 +124,9 @@ namespace Services.Implements
             }
             return response.Adapt<PaymentResponseModel>();
         }
-
+        public Payments GetLatestPayment()
+        {
+            return _unitOfWork.PaymentRepo.GetLatestPayment();
+        }
     }
 }

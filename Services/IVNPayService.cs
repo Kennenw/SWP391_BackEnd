@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Repositories.Entities;
 using Repositories.Payment;
 using System;
 using System.Collections.Generic;
@@ -13,5 +15,6 @@ namespace Services
         ResponseUriModel CreatePayment(PaymentInfoModel model, HttpContext context);
         ResponseUriModel CreateDeposit(PaymentInfoModel model, HttpContext context, int userId);
         PaymentResponseModel PaymentExecute(IQueryCollection collection);
+        public Payments GetLatestPayment();
     }
 }

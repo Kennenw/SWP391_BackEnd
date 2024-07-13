@@ -216,4 +216,26 @@ public class PaymentsController : ControllerBase
     }
 
 
+    [HttpGet("latest-payment")]
+    public async Task<IActionResult> GetLatestPayment()
+    {
+        try
+        {
+            var latestPayment = _vnPayService.GetLatestPayment();
+            if (latestPayment == null)
+            {
+                return NotFound("No payment found.");
+            }
+
+            return Ok(new
+            {
+                Message = "Latest payment retrieved successfully.",
+                Data = latestPayment
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
