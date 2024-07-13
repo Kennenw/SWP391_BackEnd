@@ -23,6 +23,7 @@ namespace Services
         public List<PostDTO> GetPost();
         void RatePost(int userId, int postId, double rating);
         string GetPostImagePath(int courtId);
+        List<PostDTO> GetPostByUser(int userId);
     }
     public class PostServices : IPostServices
     {
@@ -105,6 +106,7 @@ namespace Services
                 Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
+                Status = a.Status,
             }).ToList();
             return postDTOs;
         }
@@ -126,6 +128,7 @@ namespace Services
                 Context = post.Context,
                 TotalRate = post.TotalRate,
                 Title = post.Title,
+                Status = post.Status
             };
         }
 
@@ -181,6 +184,7 @@ namespace Services
                 Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
+                Status = a.Status,
             }).ToList();
             return postDTOs;
         }
@@ -234,6 +238,22 @@ namespace Services
             }
 
             return imagePath;
+        }
+
+        public List<PostDTO> GetPostByUser(int userId)
+        {
+            return _unitOfWork.PostRepo.GetAll().
+                Where(p => p.AccountId == userId).
+                Select(post => new PostDTO
+                {
+                    PostId = post.PostId,
+                    AccountId = post.AccountId,
+                    Image = GetPostImagePath(post.PostId),
+                    Context = post.Context,
+                    TotalRate = post.TotalRate,
+                    Title = post.Title,
+                    Status = post.Status,
+                }).ToList();
         }
     }
 }

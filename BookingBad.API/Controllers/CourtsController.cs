@@ -20,6 +20,24 @@ namespace BookingBad.API.Controllers
             _courtServices = courtServices;
         }
 
+        [HttpGet("LatestCreated")]
+        public IActionResult GetLatestCreatedCourts(int count)
+        {
+            try
+            {
+                var courts = _courtServices.GetLatestCreatedCourts(count);
+                if (courts == null || !courts.Any())
+                {
+                    return NotFound(new { message = "No courts found" });
+                }
+                return Ok(courts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
         // GET: api/Courts
         [HttpGet]
         public ActionResult<IEnumerable<CourtDTOs>> GetCourt()

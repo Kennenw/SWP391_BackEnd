@@ -41,6 +41,24 @@ namespace BookingBad.API.Controllers
             }
         }
 
+        [HttpGet("User/{idUser}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostByUser(int idUser)
+        {
+            try
+            {
+                var result = postServices.GetPostByUser(idUser);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
         [HttpGet("Search-Post")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> SearchPost(
             [FromQuery] string searchTerm)

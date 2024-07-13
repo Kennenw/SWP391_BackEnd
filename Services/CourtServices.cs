@@ -23,7 +23,7 @@ namespace Services
         void RateCourt(int courtId, int userId, double rating);
         public string GetCourtImagePath(int courtId);
         Task<List<SlotTimeDTO>> GetSlotTimesByDate(int courtId, DateTime? date, int subCourtId);
-
+        List<CourtDTOs> GetLatestCreatedCourts(int count);
     }
     public class CourtServices : ICourtServices
     {
@@ -395,6 +395,33 @@ namespace Services
                 Status = st.Status,
                 IsBooked = bookingDetails.Any(bd => bd.SlotId == st.SlotId && bd.Date.HasValue && bd.Date.Value.Date == date.Value.Date && bd.SubCourtId == subCourtId)
             }).ToList();
+        }
+
+        public List<CourtDTOs> GetLatestCreatedCourts(int count)
+        {
+            var courts = _unitOfWork.CourtRepo.GetAll()
+            .OrderByDescending(c => c.CourtId)
+            .Take(count)
+            .ToList();
+
+            var courtDTOs = courts.Select(c => new CourtDTOs
+            {
+                CourtId = c.CourtId,
+                AreaId = c.AreaId,
+                CourtName = c.CourtName,
+                OpenTime = c.OpenTime,
+                CloseTime = c.CloseTime,
+                ManagerId = c.ManagerId,
+                Image = GetCourtImagePath(c.CourtId),
+                Rules = c.Rules,
+                Status = c.Status,
+                TotalRate = c.TotalRate,
+                Address = c.Address,
+                Title = c.Title,
+                PriceAvr = c.PricePerHour,
+            }).ToList();
+
+            return courtDTOs;
         }
     }
 }
