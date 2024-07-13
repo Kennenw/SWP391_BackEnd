@@ -21,6 +21,7 @@ namespace Services
         public void DeletePost(int id);
         Task UploadPostImageAsync(int postId, byte[] imageBytes);
         public List<PostDTO> GetPost();
+        List<PostDTO> GetPostByUser(int userId);
         void RatePost(int userId, int postId, double rating);
         string GetPostImagePath(int courtId);
     }
@@ -181,6 +182,7 @@ namespace Services
                 Context = a.Context,
                 TotalRate = a.TotalRate,
                 Title = a.Title,
+                Status = a.Status,
             }).ToList();
             return postDTOs;
         }
@@ -234,6 +236,22 @@ namespace Services
             }
 
             return imagePath;
+        }
+
+        public List<PostDTO> GetPostByUser(int idUser)
+        {
+            return _unitOfWork.PostRepo.GetAll().
+                Where(p => p.AccountId == idUser).
+                Select(post => new PostDTO
+                {
+                    PostId = post.PostId,
+                    AccountId = post.AccountId,
+                    Image = GetPostImagePath(post.PostId),
+                    Context = post.Context,
+                    TotalRate = post.TotalRate,
+                    Title = post.Title,
+                    Status = post.Status,
+                }).ToList();
         }
     }
 }

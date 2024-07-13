@@ -14,6 +14,7 @@ namespace Repositories.DTO
         public double? TotalRate { get; set; } = 0;
         public string? Image { get; set; }
         public string? Title { get; set; }
+        public bool? Status { get; set; }
 
     }
     public class CommentDTO
